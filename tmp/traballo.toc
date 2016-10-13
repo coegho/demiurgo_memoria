@@ -1,0 +1,111 @@
+\select@language {galician}
+\contentsline {chapter}{\numberline {1}Introduci\IeC {\'o}n}{1}
+\contentsline {chapter}{\numberline {2}Planificaci\IeC {\'o}n e presupostos}{3}
+\contentsline {chapter}{\numberline {3}Especificaci\IeC {\'o}n de requisitos}{5}
+\contentsline {section}{\numberline {3.1}Definici\IeC {\'o}ns}{5}
+\contentsline {subsubsection}{Partida}{5}
+\contentsline {subsubsection}{Mundo}{5}
+\contentsline {subsubsection}{Xogador}{5}
+\contentsline {subsubsection}{Director de xogo (DX)}{6}
+\contentsline {subsubsection}{Clase}{6}
+\contentsline {subsubsection}{Obxecto}{6}
+\contentsline {subsubsection}{Personaxe}{6}
+\contentsline {subsubsection}{Decisi\IeC {\'o}n}{6}
+\contentsline {subsubsection}{Acci\IeC {\'o}n}{6}
+\contentsline {subsubsection}{Suceso}{7}
+\contentsline {subsubsection}{Rolda}{7}
+\contentsline {subsubsection}{Rexistro de personaxe}{7}
+\contentsline {subsubsection}{Estancia}{7}
+\contentsline {subsubsection}{Tirada}{7}
+\contentsline {subsubsection}{Recipiente}{7}
+\contentsline {section}{\numberline {3.2}Casos de uso}{8}
+\contentsline {subsection}{\numberline {3.2.1}Descrici\IeC {\'o}n de actores}{8}
+\contentsline {subsection}{\numberline {3.2.2}Descrici\IeC {\'o}n de casos de uso}{8}
+\contentsline {subsubsection}{CU-01: Alta de xogadores}{8}
+\contentsline {paragraph}{Actores}{8}
+\contentsline {paragraph}{Escenario principal}{8}
+\contentsline {subsubsection}{CU-02: Xesti\IeC {\'o}n de usuarios}{8}
+\contentsline {paragraph}{Actores}{8}
+\contentsline {paragraph}{Escenario principal}{9}
+\contentsline {subsubsection}{CU-03: Definici\IeC {\'o}n dunha nova clase}{9}
+\contentsline {paragraph}{Actores}{9}
+\contentsline {paragraph}{Escenario principal}{9}
+\contentsline {paragraph}{Escenario alternativo}{9}
+\contentsline {subsubsection}{CU-04: Creaci\IeC {\'o}n de personaxe}{9}
+\contentsline {paragraph}{Actores}{9}
+\contentsline {paragraph}{Escenario principal}{9}
+\contentsline {paragraph}{Escenario alternativo}{9}
+\contentsline {subsubsection}{CU-05: Resoluci\IeC {\'o}n de decisi\IeC {\'o}ns en acci\IeC {\'o}ns}{9}
+\contentsline {paragraph}{Actores}{9}
+\contentsline {paragraph}{Escenario principal}{10}
+\contentsline {paragraph}{Escenario alternativo}{10}
+\contentsline {subsubsection}{CU-06: Creaci\IeC {\'o}n dunha estancia}{10}
+\contentsline {paragraph}{Actores}{10}
+\contentsline {paragraph}{Escenario principal}{10}
+\contentsline {paragraph}{Escenario alternativo}{10}
+\contentsline {subsubsection}{CU-07: Execuci\IeC {\'o}n dun suceso}{10}
+\contentsline {paragraph}{Actores}{10}
+\contentsline {paragraph}{Escenario principal}{10}
+\contentsline {paragraph}{Escenario alternativo}{10}
+\contentsline {subsubsection}{CU-08: Cambio de estancia dun obxecto}{11}
+\contentsline {paragraph}{Actores}{11}
+\contentsline {paragraph}{Escenario principal}{11}
+\contentsline {section}{\numberline {3.3}Requisitos funcionais}{11}
+\contentsline {subsection}{\numberline {3.3.1}Requisito FN.01}{11}
+\contentsline {subsection}{\numberline {3.3.2}Requisito FN.02}{11}
+\contentsline {subsection}{\numberline {3.3.3}Requisito FN.03}{11}
+\contentsline {subsection}{\numberline {3.3.4}Requisito FN.04}{11}
+\contentsline {subsection}{\numberline {3.3.5}Requisito FN.05}{12}
+\contentsline {subsection}{\numberline {3.3.6}Requisito FN.06}{12}
+\contentsline {subsection}{\numberline {3.3.7}Requisito FN.04}{12}
+\contentsline {subsection}{\numberline {3.3.8}Requisito FN.07}{12}
+\contentsline {subsection}{\numberline {3.3.9}Requisito FN.08}{12}
+\contentsline {subsection}{\numberline {3.3.10}Requisito FN.09}{13}
+\contentsline {subsection}{\numberline {3.3.11}Requisito FN.10}{13}
+\contentsline {subsection}{\numberline {3.3.12}Requisito FN.11}{13}
+\contentsline {subsection}{\numberline {3.3.13}Requisito FN.12}{13}
+\contentsline {subsection}{\numberline {3.3.14}Requisito FN.13}{13}
+\contentsline {subsection}{\numberline {3.3.15}Requisito FN.14}{14}
+\contentsline {subsection}{\numberline {3.3.16}Requisito FN.15}{14}
+\contentsline {subsection}{\numberline {3.3.17}Requisito FN.16}{14}
+\contentsline {subsection}{\numberline {3.3.18}Requisito FN.17}{14}
+\contentsline {section}{\numberline {3.4}Restrici\IeC {\'o}ns de dese\IeC {\~n}o}{14}
+\contentsline {subsection}{\numberline {3.4.1}Requisito RD.01}{14}
+\contentsline {section}{\numberline {3.5}Requisitos non funcionais}{15}
+\contentsline {subsection}{\numberline {3.5.1}Requisito NF.01}{15}
+\contentsline {subsection}{\numberline {3.5.2}Requisito NF.02}{15}
+\contentsline {subsection}{\numberline {3.5.3}Requisito NF.03}{15}
+\contentsline {subsection}{\numberline {3.5.4}Requisito NF.04}{15}
+\contentsline {subsection}{\numberline {3.5.5}Requisito NF.05}{16}
+\contentsline {subsection}{\numberline {3.5.6}Requisito NF.06}{16}
+\contentsline {subsection}{\numberline {3.5.7}Requisito NF.07}{16}
+\contentsline {subsection}{\numberline {3.5.8}Requisito NF.08}{16}
+\contentsline {subsection}{\numberline {3.5.9}Requisito NF.09}{16}
+\contentsline {subsection}{\numberline {3.5.10}Requisito NF.10}{17}
+\contentsline {subsection}{\numberline {3.5.11}Requisito NF.11}{17}
+\contentsline {subsection}{\numberline {3.5.12}Requisito NF.12}{17}
+\contentsline {subsection}{\numberline {3.5.13}Requisito NF.13}{17}
+\contentsline {section}{\numberline {3.6}Requisitos de proxecto}{17}
+\contentsline {subsection}{\numberline {3.6.1}Requisito PR.01}{17}
+\contentsline {section}{\numberline {3.7}Requisitos de calidade}{18}
+\contentsline {subsection}{\numberline {3.7.1}Requisito CA.01}{18}
+\contentsline {subsection}{\numberline {3.7.2}Requisito CA.02}{18}
+\contentsline {subsection}{\numberline {3.7.3}Requisito CA.03}{18}
+\contentsline {section}{\numberline {3.8}Requisitos de almacenamento}{18}
+\contentsline {subsection}{\numberline {3.8.1}Requisito AL.01}{18}
+\contentsline {chapter}{\numberline {4}Dese\IeC {\~n}o}{19}
+\contentsline {chapter}{\numberline {5}Exemplos}{21}
+\contentsline {section}{\numberline {5.1}Un exemplo de secci\IeC {\'o}n}{21}
+\contentsline {subsection}{\numberline {5.1.1}Un exemplo de subsecci\IeC {\'o}n}{21}
+\contentsline {subsection}{\numberline {5.1.2}Otro exemplo de subsecci\IeC {\'o}n}{21}
+\contentsline {subsubsection}{Un exemplo de subsubsecci\IeC {\'o}n}{21}
+\contentsline {subsubsection}{Un exemplo de subsubsecci\IeC {\'o}n}{21}
+\contentsline {subsubsection}{Un exemplo de subsubsecci\IeC {\'o}n}{21}
+\contentsline {section}{\numberline {5.2}Exemplos de figuras e cadros}{22}
+\contentsline {section}{\numberline {5.3}Exemplos de referencias \IeC {\'a} bibliograf\IeC {\'\i }a}{22}
+\contentsline {section}{\numberline {5.4}Exemplos de enumeraci\IeC {\'o}ns}{22}
+\contentsline {chapter}{\numberline {6}Conclusi\IeC {\'o}ns e posibles ampliaci\IeC {\'o}ns}{25}
+\contentsline {chapter}{\numberline {A}Manuais t\IeC {\'e}cnicos}{27}
+\contentsline {chapter}{\numberline {B}Manuais de usuario}{29}
+\contentsline {chapter}{\numberline {C}Licenza}{31}
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{33}
