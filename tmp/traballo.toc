@@ -1,5 +1,9 @@
 \select@language {galician}
 \contentsline {chapter}{\numberline {1}Introduci\IeC {\'o}n}{1}
+\contentsline {section}{\numberline {1.1}Obxectivos xerais}{1}
+\contentsline {section}{\numberline {1.2}Documentaci\IeC {\'o}n}{1}
+\contentsline {section}{\numberline {1.3}Descrici\IeC {\'o}n do sistema}{1}
+\contentsline {section}{\numberline {1.4}Informaci\IeC {\'o}n adicional de interese}{1}
 \contentsline {chapter}{\numberline {2}Planificaci\IeC {\'o}n e presupostos}{3}
 \contentsline {chapter}{\numberline {3}Especificaci\IeC {\'o}n de requisitos}{5}
 \contentsline {section}{\numberline {3.1}Definici\IeC {\'o}ns}{5}
@@ -54,58 +58,58 @@
 \contentsline {subsection}{\numberline {3.3.1}Requisito FN.01}{11}
 \contentsline {subsection}{\numberline {3.3.2}Requisito FN.02}{11}
 \contentsline {subsection}{\numberline {3.3.3}Requisito FN.03}{11}
-\contentsline {subsection}{\numberline {3.3.4}Requisito FN.04}{11}
+\contentsline {subsection}{\numberline {3.3.4}Requisito FN.04}{12}
 \contentsline {subsection}{\numberline {3.3.5}Requisito FN.05}{12}
 \contentsline {subsection}{\numberline {3.3.6}Requisito FN.06}{12}
 \contentsline {subsection}{\numberline {3.3.7}Requisito FN.04}{12}
 \contentsline {subsection}{\numberline {3.3.8}Requisito FN.07}{12}
-\contentsline {subsection}{\numberline {3.3.9}Requisito FN.08}{12}
+\contentsline {subsection}{\numberline {3.3.9}Requisito FN.08}{13}
 \contentsline {subsection}{\numberline {3.3.10}Requisito FN.09}{13}
 \contentsline {subsection}{\numberline {3.3.11}Requisito FN.10}{13}
 \contentsline {subsection}{\numberline {3.3.12}Requisito FN.11}{13}
 \contentsline {subsection}{\numberline {3.3.13}Requisito FN.12}{13}
-\contentsline {subsection}{\numberline {3.3.14}Requisito FN.13}{13}
+\contentsline {subsection}{\numberline {3.3.14}Requisito FN.13}{14}
 \contentsline {subsection}{\numberline {3.3.15}Requisito FN.14}{14}
 \contentsline {subsection}{\numberline {3.3.16}Requisito FN.15}{14}
 \contentsline {subsection}{\numberline {3.3.17}Requisito FN.16}{14}
 \contentsline {subsection}{\numberline {3.3.18}Requisito FN.17}{14}
-\contentsline {section}{\numberline {3.4}Restrici\IeC {\'o}ns de dese\IeC {\~n}o}{14}
-\contentsline {subsection}{\numberline {3.4.1}Requisito RD.01}{14}
+\contentsline {section}{\numberline {3.4}Restrici\IeC {\'o}ns de dese\IeC {\~n}o}{15}
+\contentsline {subsection}{\numberline {3.4.1}Requisito RD.01}{15}
 \contentsline {section}{\numberline {3.5}Requisitos non funcionais}{15}
 \contentsline {subsection}{\numberline {3.5.1}Requisito NF.01}{15}
 \contentsline {subsection}{\numberline {3.5.2}Requisito NF.02}{15}
-\contentsline {subsection}{\numberline {3.5.3}Requisito NF.03}{15}
-\contentsline {subsection}{\numberline {3.5.4}Requisito NF.04}{15}
+\contentsline {subsection}{\numberline {3.5.3}Requisito NF.03}{16}
+\contentsline {subsection}{\numberline {3.5.4}Requisito NF.04}{16}
 \contentsline {subsection}{\numberline {3.5.5}Requisito NF.05}{16}
 \contentsline {subsection}{\numberline {3.5.6}Requisito NF.06}{16}
-\contentsline {subsection}{\numberline {3.5.7}Requisito NF.07}{16}
-\contentsline {subsection}{\numberline {3.5.8}Requisito NF.08}{16}
-\contentsline {subsection}{\numberline {3.5.9}Requisito NF.09}{16}
+\contentsline {subsection}{\numberline {3.5.7}Requisito NF.07}{17}
+\contentsline {subsection}{\numberline {3.5.8}Requisito NF.08}{17}
+\contentsline {subsection}{\numberline {3.5.9}Requisito NF.09}{17}
 \contentsline {subsection}{\numberline {3.5.10}Requisito NF.10}{17}
 \contentsline {subsection}{\numberline {3.5.11}Requisito NF.11}{17}
-\contentsline {subsection}{\numberline {3.5.12}Requisito NF.12}{17}
-\contentsline {subsection}{\numberline {3.5.13}Requisito NF.13}{17}
-\contentsline {section}{\numberline {3.6}Requisitos de proxecto}{17}
-\contentsline {subsection}{\numberline {3.6.1}Requisito PR.01}{17}
+\contentsline {subsection}{\numberline {3.5.12}Requisito NF.12}{18}
+\contentsline {subsection}{\numberline {3.5.13}Requisito NF.13}{18}
+\contentsline {section}{\numberline {3.6}Requisitos de proxecto}{18}
+\contentsline {subsection}{\numberline {3.6.1}Requisito PR.01}{18}
 \contentsline {section}{\numberline {3.7}Requisitos de calidade}{18}
 \contentsline {subsection}{\numberline {3.7.1}Requisito CA.01}{18}
-\contentsline {subsection}{\numberline {3.7.2}Requisito CA.02}{18}
-\contentsline {subsection}{\numberline {3.7.3}Requisito CA.03}{18}
-\contentsline {section}{\numberline {3.8}Requisitos de almacenamento}{18}
-\contentsline {subsection}{\numberline {3.8.1}Requisito AL.01}{18}
-\contentsline {chapter}{\numberline {4}Dese\IeC {\~n}o}{19}
-\contentsline {chapter}{\numberline {5}Exemplos}{21}
-\contentsline {section}{\numberline {5.1}Un exemplo de secci\IeC {\'o}n}{21}
-\contentsline {subsection}{\numberline {5.1.1}Un exemplo de subsecci\IeC {\'o}n}{21}
-\contentsline {subsection}{\numberline {5.1.2}Otro exemplo de subsecci\IeC {\'o}n}{21}
-\contentsline {subsubsection}{Un exemplo de subsubsecci\IeC {\'o}n}{21}
-\contentsline {subsubsection}{Un exemplo de subsubsecci\IeC {\'o}n}{21}
-\contentsline {subsubsection}{Un exemplo de subsubsecci\IeC {\'o}n}{21}
-\contentsline {section}{\numberline {5.2}Exemplos de figuras e cadros}{22}
-\contentsline {section}{\numberline {5.3}Exemplos de referencias \IeC {\'a} bibliograf\IeC {\'\i }a}{22}
-\contentsline {section}{\numberline {5.4}Exemplos de enumeraci\IeC {\'o}ns}{22}
-\contentsline {chapter}{\numberline {6}Conclusi\IeC {\'o}ns e posibles ampliaci\IeC {\'o}ns}{25}
-\contentsline {chapter}{\numberline {A}Manuais t\IeC {\'e}cnicos}{27}
-\contentsline {chapter}{\numberline {B}Manuais de usuario}{29}
-\contentsline {chapter}{\numberline {C}Licenza}{31}
-\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{33}
+\contentsline {subsection}{\numberline {3.7.2}Requisito CA.02}{19}
+\contentsline {subsection}{\numberline {3.7.3}Requisito CA.03}{19}
+\contentsline {section}{\numberline {3.8}Requisitos de almacenamento}{19}
+\contentsline {subsection}{\numberline {3.8.1}Requisito AL.01}{19}
+\contentsline {chapter}{\numberline {4}Dese\IeC {\~n}o}{21}
+\contentsline {chapter}{\numberline {5}Exemplos}{23}
+\contentsline {section}{\numberline {5.1}Un exemplo de secci\IeC {\'o}n}{23}
+\contentsline {subsection}{\numberline {5.1.1}Un exemplo de subsecci\IeC {\'o}n}{23}
+\contentsline {subsection}{\numberline {5.1.2}Otro exemplo de subsecci\IeC {\'o}n}{23}
+\contentsline {subsubsection}{Un exemplo de subsubsecci\IeC {\'o}n}{23}
+\contentsline {subsubsection}{Un exemplo de subsubsecci\IeC {\'o}n}{23}
+\contentsline {subsubsection}{Un exemplo de subsubsecci\IeC {\'o}n}{23}
+\contentsline {section}{\numberline {5.2}Exemplos de figuras e cadros}{24}
+\contentsline {section}{\numberline {5.3}Exemplos de referencias \IeC {\'a} bibliograf\IeC {\'\i }a}{24}
+\contentsline {section}{\numberline {5.4}Exemplos de enumeraci\IeC {\'o}ns}{24}
+\contentsline {chapter}{\numberline {6}Conclusi\IeC {\'o}ns e posibles ampliaci\IeC {\'o}ns}{27}
+\contentsline {chapter}{\numberline {A}Manuais t\IeC {\'e}cnicos}{29}
+\contentsline {chapter}{\numberline {B}Manuais de usuario}{31}
+\contentsline {chapter}{\numberline {C}Licenza}{33}
+\contentsline {chapter}{Bibliograf\IeC {\'\i }a}{35}

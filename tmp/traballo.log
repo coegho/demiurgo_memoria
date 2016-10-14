@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/TeX Live for SUSE Linux) (format=pdflatex 2016.3.8)  13 OCT 2016 21:09
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/TeX Live for SUSE Linux) (format=pdflatex 2016.3.8)  13 OCT 2016 21:56
 entering extended mode
  restricted \write18 enabled.
  Source specials enabled.
@@ -499,12 +499,6 @@ File: figuras/logo_usc-eps-converted-to.pdf Graphic file (type pdf)
 Package pdftex.def Info: figuras/logo_usc-eps-converted-to.pdf used on input li
 ne 3.
 (pdftex.def)             Requested size: 113.81102pt x 73.87013pt.
-
-Overfull \hbox (2.78058pt too wide) in paragraph at lines 6--7
-[][]\OT1/cmr/bx/n/12 D. (No-me do Di-rec-tor)\OT1/cmr/m/n/12 , Pro-fe-sor do De
--par-ta-men-to de Electr^^Soni-ca e Compu-
- []
-
 )
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <13.13947> not available
@@ -589,18 +583,19 @@ Cap\'{\i }tulo 3.
 [5
 
 
-] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15] [16] [17]) [18]
+] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15] [16] [17] [18]) [19] [20
+
+
+]
 \openout2 = `capitulos/cap4.aux'.
 
 
 (./capitulos/cap4.tex
 Cap\'{\i }tulo 4.
-) [19
+) [21
 
 
-
-
-] [20
+] [22
 
 
 ]
@@ -608,7 +603,7 @@ Cap\'{\i }tulo 4.
 
  (./capitulos/exemplos.tex
 Cap\'{\i }tulo 5.
-[21
+[23
 
 
 ]
@@ -622,14 +617,14 @@ Package epstopdf Info: Source file: <figuras/figura01.eps>
 rted-to.pdf figuras/figura01.eps>
 (epstopdf)             \includegraphics on input line 30.
 Package epstopdf Info: Output file is already uptodate.
- <figuras/figura01-eps-converted-to.pdf, id=131, 1060.96375pt x 513.92pt>
+ <figuras/figura01-eps-converted-to.pdf, id=138, 1060.96375pt x 513.92pt>
 File: figuras/figura01-eps-converted-to.pdf Graphic file (type pdf)
 
 <use figuras/figura01-eps-converted-to.pdf>
 Package pdftex.def Info: figuras/figura01-eps-converted-to.pdf used on input li
 ne 30.
 (pdftex.def)             Requested size: 426.79134pt x 206.73277pt.
- [22 <./figuras/figura01-eps-converted-to.pdf>] (/usr/share/texmf/tex/latex/lis
+ [24 <./figuras/figura01-eps-converted-to.pdf>] (/usr/share/texmf/tex/latex/lis
 tings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
@@ -660,7 +655,7 @@ Overfull \hbox (53.36043pt too wide) in paragraph at lines 97--98
 [][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-) [23] [24
+) [25] [26
 
 
 ]
@@ -668,17 +663,6 @@ Overfull \hbox (53.36043pt too wide) in paragraph at lines 97--98
 
  (./capitulos/conclusions.tex
 Cap\'{\i }tulo 6.
-) [25
-
-
-] [26
-
-
-]
-\openout2 = `capitulos/apendicea.aux'.
-
- (./capitulos/apendicea.tex
-Ap\'endice A.
 ) [27
 
 
@@ -686,10 +670,10 @@ Ap\'endice A.
 
 
 ]
-\openout2 = `capitulos/apendiceb.aux'.
+\openout2 = `capitulos/apendicea.aux'.
 
- (./capitulos/apendiceb.tex
-Ap\'endice B.
+ (./capitulos/apendicea.tex
+Ap\'endice A.
 ) [29
 
 
@@ -697,14 +681,25 @@ Ap\'endice B.
 
 
 ]
-\openout2 = `capitulos/licenza.aux'.
+\openout2 = `capitulos/apendiceb.aux'.
 
- (./capitulos/licenza.tex
-Ap\'endice C.
+ (./capitulos/apendiceb.tex
+Ap\'endice B.
 ) [31
 
 
 ] [32
+
+
+]
+\openout2 = `capitulos/licenza.aux'.
+
+ (./capitulos/licenza.tex
+Ap\'endice C.
+) [33
+
+
+] [34
 
 
 ]
@@ -722,7 +717,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 10--11
 go da wi-ki-pe-dia
  []
 
-) [33
+) [35
 
 
 ] (./traballo.aux (./capitulos/titulo.aux) (./capitulos/certificacion.aux) (./c
@@ -756,10 +751,10 @@ amsfonts/cm/cmsl12.pfb></usr/share/texmf/fonts/type1/public/amsfonts/cm/cmsy10.
 pfb></usr/share/texmf/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texm
 f/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texmf/fonts/type1/publi
 c/amsfonts/cm/cmtt12.pfb>
-Output written on traballo.pdf (47 pages, 241572 bytes).
+Output written on traballo.pdf (49 pages, 243166 bytes).
 PDF statistics:
- 225 PDF objects out of 1000 (max. 8388607)
- 155 compressed objects within 2 object streams
+ 232 PDF objects out of 1000 (max. 8388607)
+ 160 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

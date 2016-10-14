@@ -1,70 +1,122 @@
 \chapter{Especificación de requisitos}
 
-Antes de comezar a desenvolver o software deberase facer unha especificación dos requisitos que este debe cumprir. Neste caso o primeiro que faremos será definir casos de uso do sistema, para posteriormente extraer a partir deles unha serie de requisitos funcionais e non funcionais.
+Antes de comezar a desenvolver o software deberase facer unha especificación dos
+requisitos que este debe cumprir. Neste caso o primeiro que faremos será definir
+casos de uso do sistema, para posteriormente extraer a partir deles unha serie
+de requisitos funcionais e non funcionais.
 
 \section{Definicións}
-Nos casos de uso e requisitos faremos referencia a estas definicións, polo que é necesario explicalas aquí con precisión.
+Nos casos de uso e requisitos faremos referencia a estas definicións, polo que é
+necesario explicalas aquí con precisión.
 
 \subsubsection{Partida}
-Instancia concreta deste software xestionada por un administrador. Cada partida debe ter unha base de datos propia e un directorio cos ficheiros que compoñen o mundo. Non se contempla a comunicación entre partidas distintas.
+Instancia concreta deste software xestionada por un administrador. Cada partida
+debe ter unha base de datos propia e un directorio cos ficheiros que compoñen o
+mundo. Non se contempla a comunicación entre partidas distintas.
 
 \subsubsection{Mundo}
-O mundo de xogo é a abstracción de todos os obxectos e clases correspondentes a unha partida. Pódese distinguir entre a definición do mundo e o seu estado:
+O mundo de xogo é a abstracción de todos os obxectos e clases correspondentes a
+unha partida. Pódese distinguir entre a definición do mundo e o seu estado:
 \begin{itemize}
 \item Definición: O conxunto das clases descritas polos directores de xogo.
 \item Estado: O conxunto dos obxectos instanciados a partir das clases.
 \end{itemize}
 
 \subsubsection{Xogador}
-Usuario que ten control dun personaxe e toma decisións en base a este. Os xogadores non poden modificar o mundo directamente, senón que as súas interaccións co mundo realízanse a través dos personaxes.
+Usuario que ten control dun personaxe e toma decisións en base a este. Os
+xogadores non poden modificar o mundo directamente, senón que as súas
+interaccións co mundo realízanse a través dos personaxes.
 
 \subsubsection{Director de xogo (DX)}
-Usuario con privilexios que pode alterar o mundo de forma directa, e resolver as decisións dos xogadores. Poden tanto alterar a definición do mundo (creando e modificando clases) como cambiar o estado do mesmo (instanciando obxectos e modificándoos). Os directores de xogo non teñen personaxe propio.
+Usuario con privilexios que pode alterar o mundo de forma directa, e resolver as
+decisións dos xogadores. Poden tanto alterar a definición do mundo (creando e
+modificando clases) como cambiar o estado do mesmo (instanciando obxectos e
+modificándoos). Os directores de xogo non teñen personaxe propio.
 
 \subsubsection{Clase}
-No ámbito do mundo de xogo, abstracción dun conxunto de obxectos con atributos e métodos comúns, seguindo o paradigma da programación orientada a obxectos. Os directores de xogo poden crear e modificar estas clases.
-Un exemplo de clase sería {\it espada}, {\it porta}, {\it cabalo} ou {\it guerreiro}.
+No ámbito do mundo de xogo, abstracción dun conxunto de obxectos con atributos e
+métodos comúns, seguindo o paradigma da programación orientada a obxectos. Os
+directores de xogo poden crear e modificar estas clases.
+Un exemplo de clase sería {\it espada}, {\it porta}, {\it cabalo} ou {\it
+guerreiro}.
 
 \subsubsection{Obxecto}
-No ámbito do mundo de xogo, cada unha das instancias dunha clase concreta. Os obxectos {\it existen} no mundo, e sitúanse nunha determinada estancia. É labor dos directores de xogo crealos, modificalos e destruílos. Todos os obxectos posúen un identificador global dentro do mundo.
-Un exemplo de obxecto sería {\it a segunda mesa da posada}, {\it o personaxe dun dos xogadores} ou {\it o can que acompaña ao grupo de personaxes}.
+No ámbito do mundo de xogo, cada unha das instancias dunha clase concreta. Os
+obxectos {\it existen} no mundo, e sitúanse nunha determinada estancia. É labor
+dos directores de xogo crealos, modificalos e destruílos. Todos os obxectos
+posúen un identificador global dentro do mundo.
+Un exemplo de obxecto sería {\it a segunda mesa da posada}, {\it o personaxe dun
+dos xogadores} ou {\it o can que acompaña ao grupo de personaxes}.
 
 \subsubsection{Personaxe}
-Obxecto especial que representa a un xogador no mundo. Toda a información percibida polo personaxe será posta en coñecemento do xogador correspondente, e toda decisión tomada polo xogador determinará as accións do personaxe.
+Obxecto especial que representa a un xogador no mundo. Toda a información
+percibida polo personaxe será posta en coñecemento do xogador correspondente, e
+toda decisión tomada polo xogador determinará as accións do personaxe.
 
 \subsubsection{Decisión}
-Descrición verbal dun xogador explicando a acción que pretende que realice o seu personaxe. As decisións están redactadas en linguaxe informal, pero con suficiente información como para que o director de xogo poda entender o que o xogador pretende. É labor do director de xogo xerar as accións a partir das decisións dos xogadores.
-Un exemplo de decisión sería: {\it ''O meu personaxe achégase á espada incrustada na pedra, di en voz alta 'alá vou' e trata de arrincala.''}
+Descrición verbal dun xogador explicando a acción que pretende que realice o seu
+personaxe. As decisións están redactadas en linguaxe informal, pero con
+suficiente información como para que o director de xogo poda entender o que o
+xogador pretende. É labor do director de xogo xerar as accións a partir das
+decisións dos xogadores.
+Un exemplo de decisión sería: {\it ''O meu personaxe achégase á espada
+incrustada na pedra, di en voz alta 'alá vou' e trata de arrincala.''}
 
 \subsubsection{Acción}
-Conxunto de liñas de código que alterarán o mundo de xogo en función dunha decisión dun xogador. A acción é redactada por un director de xogo segundo o que interprete lendo a decisión correspondente.
+Conxunto de liñas de código que alterarán o mundo de xogo en función dunha
+decisión dun xogador. A acción é redactada por un director de xogo segundo o que
+interprete lendo a decisión correspondente.
 
 \subsubsection{Suceso}
-Conxunto de liñas de código que alterarán o mundo de xogo pero que non depende da decisión de ningún xogador. Os sucesos son provocados polos directores de xogo cando precisen alterar algo do mundo sen ser consecuencia directa das accións dos xogadores.
+Conxunto de liñas de código que alterarán o mundo de xogo pero que non depende
+da decisión de ningún xogador. Os sucesos son provocados polos directores de
+xogo cando precisen alterar algo do mundo sen ser consecuencia directa das
+accións dos xogadores.
 
 \subsubsection{Rolda}
-No mundo de xogo, en cada estancia as accións se resolven divididas por roldas. Por cada rolda, cada personaxe pode facer como máximo unha acción. Estas roldas representan simbolicamente o paso do tempo dentro do mundo, aínda que o avance do tempo pode non coincidir exactamente en todas as estancias por igual.
+No mundo de xogo, en cada estancia as accións se resolven divididas por roldas.
+Por cada rolda, cada personaxe pode facer como máximo unha acción. Estas roldas
+representan simbolicamente o paso do tempo dentro do mundo, aínda que o avance
+do tempo pode non coincidir exactamente en todas as estancias por igual.
 
 \subsubsection{Rexistro de personaxe}
-Todo o que perciba un personaxe determinado será almacenado nun rexistro. O xogador ten acceso a este rexistro, polo que poderá consultar en todo momento todo o que o seu personaxe puido oír, ver ou percibir de calquera xeito.
+Todo o que perciba un personaxe determinado será almacenado nun rexistro. O
+xogador ten acceso a este rexistro, polo que poderá consultar en todo momento
+todo o que o seu personaxe puido oír, ver ou percibir de calquera xeito.
 
 \subsubsection{Estancia}
-Cada un dos recintos pechados nos que se divide o mundo de xogo. Tamén coñecidas como {\it habitacións}. Todos os obxectos están situados nunha estancia, incluídos os personaxes, e en calquera momento poden cambiar de estancia. As estancias pódense agrupar en {\it rexións} mediante nomes compostos.
-Exemplos de estancias poderían ser {\it Capital/mercado}, {\it montañas/mina abandonada/terceira sección} ou {\it castelo antigo/segunda planta/habitación 1}.
+Cada un dos recintos pechados nos que se divide o mundo de xogo. Tamén coñecidas
+como {\it habitacións}. Todos os obxectos están situados nunha estancia,
+incluídos os personaxes, e en calquera momento poden cambiar de estancia. As
+estancias pódense agrupar en {\it rexións} mediante nomes compostos.
+Exemplos de estancias poderían ser {\it Capital/mercado}, {\it montañas/mina
+abandonada/terceira sección} ou {\it castelo antigo/segunda planta/habitación
+1}.
 
 \subsubsection{Tirada}
-Resultado aleatorio que representa unha tirada de dados. A tirada especifica o número de dados tirados e o número de caras de cada dado. Este resultado emprégase xeralmente para determinar o éxito ou o fracaso das accións dos personaxes ou doutros obxectos.
+Resultado aleatorio que representa unha tirada de dados. A tirada especifica o
+número de dados tirados e o número de caras de cada dado. Este resultado
+emprégase xeralmente para determinar o éxito ou o fracaso das accións dos
+personaxes ou doutros obxectos.
 
 \subsubsection{Recipiente}
-Calquera obxecto coa capacidade de almacenar outros obxectos. Estes últimos estarán vinculados ao obxecto recipiente, por tanto atoparanse sempre na mesma estancia. Un obxecto pode ser recipiente de varias listas distintas.
-Un exemplo de recipiente é {\it un cofre do tesouro}, {\it un barril} ou un {\it xogador co seu inventario}. Un exemplo de recipiente con varias listas pode ser {\it un xogador no que se diferencien os obxectos que leva nas mans dos que leva nas costas}.
+Calquera obxecto coa capacidade de almacenar outros obxectos. Estes últimos
+estarán vinculados ao obxecto recipiente, por tanto atoparanse sempre na mesma
+estancia. Un obxecto pode ser recipiente de varias listas distintas.
+Un exemplo de recipiente é {\it un cofre do tesouro}, {\it un barril} ou un {\it
+xogador co seu inventario}. Un exemplo de recipiente con varias listas pode ser
+{\it un xogador no que se diferencien os obxectos que leva nas mans dos que leva
+nas costas}.
 
 
 \section{Casos de uso}
-Mediante os casos de uso podemos representar situacións típicas do noso software, as cales suporán un bo xeito de extraer requisitos funcionais.
+Mediante os casos de uso podemos representar situacións típicas do noso
+software, as cales suporán un bo xeito de extraer requisitos funcionais.
 
 \subsection{Descrición de actores}
-Inicialmente teremos que definir os actores que se relacionan co sistema nos nosos casos de uso. Identificamos tres actores diferenciados: director de xogo, xogador e administrador.
+Inicialmente teremos que definir os actores que se relacionan co sistema nos
+nosos casos de uso. Identificamos tres actores diferenciados: director de xogo,
+xogador e administrador.
 \begin{itemize}
 \item {\bf Director de xogo:} Este actor correspóndese coa definición descrita previamente; o seu cometido por tanto será dirixir a partida, recibindo decisións dos xogadores e transcribíndoas como accións dos seus personaxes.
 \item {\bf Xogador:} Calquera usuario que participe na partida cun personaxe. Redacta decisións e envíaas ao DX.
@@ -72,68 +124,113 @@ Inicialmente teremos que definir os actores que se relacionan co sistema nos nos
 \end{itemize}
 
 \subsection{Descrición de casos de uso}
-A continuación atopamos os seguintes casos de uso, elaborados a partir de entrevistas con usuarios potenciais. Son posibles situacións que se poden dar durante a execución do software.
-Por simplificar daremos por feito que todos os casos de uso requerirán ao usuario en cuestión estar autenticado (salvo o caso de uso CU-01).
+A continuación atopamos os seguintes casos de uso, elaborados a partir de
+entrevistas con usuarios potenciais. Son posibles situacións que se poden dar
+durante a execución do software.
+Por simplificar daremos por feito que todos os casos de uso requerirán ao
+usuario en cuestión estar autenticado (salvo o caso de uso CU-01).
 
 \subsubsection{CU-01: Alta de xogadores}
 \paragraph{Actores}
 Xogador
 \paragraph{Escenario principal}
-O caso de uso comeza cando un usuario anónimo se rexistra no sistema. Para isto emprega a opción {\it crear novo usuario}, onde introducirá os datos básicos da súa conta. Por defecto, o seu rol no sistema será o de xogador.
+O caso de uso comeza cando un usuario anónimo se rexistra no sistema. Para isto
+emprega a opción {\it crear novo usuario}, onde introducirá os datos básicos da
+súa conta. Por defecto, o seu rol no sistema será o de xogador.
 
 \subsubsection{CU-02: Xestión de usuarios}
 \paragraph{Actores}
 Administrador
 \paragraph{Escenario principal}
-O caso de uso comeza cando o administrador desexa asignar un usuario como DX. Neste caso, abre a sección de {\it xestión de usuarios} e escribe o nome do usuario cuxos permisos desexa cambiar. O administrador cambia entón o seu tipo de usuario de {\it xogador} a {\it director de xogo}. De ter xa un personaxe asignado, deixará de estalo neste mesmo momento.
+O caso de uso comeza cando o administrador desexa asignar un usuario como DX.
+Neste caso, abre a sección de {\it xestión de usuarios} e escribe o nome do
+usuario cuxos permisos desexa cambiar. O administrador cambia entón o seu tipo
+de usuario de {\it xogador} a {\it director de xogo}. De ter xa un personaxe
+asignado, deixará de estalo neste mesmo momento.
 
 
 \subsubsection{CU-03: Definición dunha nova clase}
 \paragraph{Actores}
 Director de xogo
 \paragraph{Escenario principal}
-O caso de uso comeza cando un director de xogo pretende crear unha nova clase na partida. Na interface gráfica deberá acoder á sección de {\it definición do mundo}. Unha vez aí, escollerá a opción de crear unha clase nova, e implementará a clase como desexe. Unha vez rematada, o sistema analizará a clase para comprobar se ten algún erro (léxico ou sintáctico), e en caso de non atopar ningún, a clase será almacenada e estará lista para o seu uso posterior.
+O caso de uso comeza cando un director de xogo pretende crear unha nova clase na
+partida. Na interface gráfica deberá acoder á sección de {\it definición do
+mundo}. Unha vez aí, escollerá a opción de crear unha clase nova, e implementará
+a clase como desexe. Unha vez rematada, o sistema analizará a clase para
+comprobar se ten algún erro (léxico ou sintáctico), e en caso de non atopar
+ningún, a clase será almacenada e estará lista para o seu uso posterior.
 
 \paragraph{Escenario alternativo}
-A clase ten algún erro, por tanto o sistema non a garda nun ficheiro e, no seu lugar, mostra unha mensaxe de erro instando ao DX a reescribila.
+A clase ten algún erro, por tanto o sistema non a garda nun ficheiro e, no seu
+lugar, mostra unha mensaxe de erro instando ao DX a reescribila.
 
 \subsubsection{CU-04: Creación de personaxe}
 \paragraph{Actores}
 Director de xogo, xogador
 \paragraph{Escenario principal}
-O caso de uso comeza cando un xogador desexa crear o seu personaxe. O xogador accede á sección de {\it creación de personaxe}, onde atopará un cadro de texto que lle solicitará unha breve descrición do que desexa. O xogador redacta o texto e envíao ao sistema.
-O director de xogo trata este texto como unha decisión máis, e a acción consecuente é crear un obxecto personaxe ligado ao xogador que o solicitou, situado nunha estancia concreta.
+O caso de uso comeza cando un xogador desexa crear o seu personaxe. O xogador
+accede á sección de {\it creación de personaxe}, onde atopará un cadro de texto
+que lle solicitará unha breve descrición do que desexa. O xogador redacta o
+texto e envíao ao sistema.
+O director de xogo trata este texto como unha decisión máis, e a acción
+consecuente é crear un obxecto personaxe ligado ao xogador que o solicitou,
+situado nunha estancia concreta.
 
 \paragraph{Escenario alternativo}
-O DX non ten información suficiente na descrición como para facer un personaxe. O DX elimina esta descrición e escribe unha resposta ao xogador, que se verá obrigado a repetir o proceso.
+O DX non ten información suficiente na descrición como para facer un personaxe.
+O DX elimina esta descrición e escribe unha resposta ao xogador, que se verá
+obrigado a repetir o proceso.
 
 \subsubsection{CU-05: Resolución de decisións en accións}
 \paragraph{Actores}
 Director de xogo, xogador
 \paragraph{Escenario principal}
-O caso de uso comeza cun xogador desexando facer algo na partida. Accede á sección de {\it actuar}, onde poderá ler as últimas accións que sucederon na estancia na que se atopa o seu personaxe. O xogador redacta a súa decisión e envíaa ao DX. Unha vez feito isto, non poderá tomar máis decisións ata que a primeira se resolva.
-O director de xogo recibe unha notificación de que hai estancias con decisións non resoltas. Accese á sección de {\it resolver accións}, onde ve unha lista de estancias con decisións sen resolver. Abre unha das estancias e le a lista de decisións e os xogadores que as enviaron, ademais do estado actual da estancia. En consecuencia, escribirá as accións que mellor representen as decisións tomadas polos xogadores, que pasarán a ser executada polo sistema. Finaliza o proceso, e o sistema executa o código das accións introducidas polo DX. O xogador observa entón un breve texto describindo o sucedido.
+O caso de uso comeza cun xogador desexando facer algo na partida. Accede á
+sección de {\it actuar}, onde poderá ler as últimas accións que sucederon na
+estancia na que se atopa o seu personaxe. O xogador redacta a súa decisión e
+envíaa ao DX. Unha vez feito isto, non poderá tomar máis decisións ata que a
+primeira se resolva.
+O director de xogo recibe unha notificación de que hai estancias con decisións
+non resoltas. Accese á sección de {\it resolver accións}, onde ve unha lista de
+estancias con decisións sen resolver. Abre unha das estancias e le a lista de
+decisións e os xogadores que as enviaron, ademais do estado actual da estancia.
+En consecuencia, escribirá as accións que mellor representen as decisións
+tomadas polos xogadores, que pasarán a ser executada polo sistema. Finaliza o
+proceso, e o sistema executa o código das accións introducidas polo DX. O
+xogador observa entón un breve texto describindo o sucedido.
 
 \paragraph{Escenario alternativo}
-O DX comete algún erro escribindo o código das accións, polo que non se poderán executar. O sistema devolve unha mensaxe de erro.
+O DX comete algún erro escribindo o código das accións, polo que non se poderán
+executar. O sistema devolve unha mensaxe de erro.
 
 \subsubsection{CU-06: Creación dunha estancia}
 \paragraph{Actores}
 Director de xogo
 \paragraph{Escenario principal}
-O caso de uso comeza cando o director de xogo pretende engadir unha nova estancia ao mundo. Accede á sección de {\it lista de estancias}, onde aparecerán as estancias que xa existen debidamente ordenadas. Mediante a opción {\it crear nova estancia} poderá crear unha estancia nova de cero (sen obxectos). Finaliza o proceso e a estancia créase.
+O caso de uso comeza cando o director de xogo pretende engadir unha nova
+estancia ao mundo. Accede á sección de {\it lista de estancias}, onde aparecerán
+as estancias que xa existen debidamente ordenadas. Mediante a opción {\it crear
+nova estancia} poderá crear unha estancia nova de cero (sen obxectos). Finaliza
+o proceso e a estancia créase.
 
 \paragraph{Escenario alternativo}
-O DX pode optar por crear a estancia a partir dun modelo e non dende cero. Neste caso, executarase un código determinado no momento de crearse a estancia, que a encherá de obxectos predefinidos.
+O DX pode optar por crear a estancia a partir dun modelo e non dende cero. Neste
+caso, executarase un código determinado no momento de crearse a estancia, que a
+encherá de obxectos predefinidos.
 
 \subsubsection{CU-07: Execución dun suceso}
 \paragraph{Actores}
 Director de xogo
 \paragraph{Escenario principal}
-O caso de uso comeza cando o director de xogo pretende causar un suceso nunha estancia. O DX accede á sección de {\it lista de estancias}, e selecciona a estancia na que desexe causar o suceso. Unha vez no panel da estancia, selecciona a opción {\it causar suceso}, e escribe o código do suceso. Cando finaliza a opción, o sistema executa o código.
+O caso de uso comeza cando o director de xogo pretende causar un suceso nunha
+estancia. O DX accede á sección de {\it lista de estancias}, e selecciona a
+estancia na que desexe causar o suceso. Unha vez no panel da estancia,
+selecciona a opción {\it causar suceso}, e escribe o código do suceso. Cando
+finaliza a opción, o sistema executa o código.
 
 \paragraph{Escenario alternativo}
-O DX comete algún erro escribindo o código do suceso, polo que non se poderán executar. O sistema devolve unha mensaxe de erro.
+O DX comete algún erro escribindo o código do suceso, polo que non se poderán
+executar. O sistema devolve unha mensaxe de erro.
 
 \subsubsection{CU-08: Cambio de estancia dun obxecto}
 \paragraph{Actores}
@@ -143,109 +240,109 @@ O caso de uso comeza cando o director de xogo pretende mover un obxecto dunha es
 
 
 \section{Requisitos funcionais}
-\subsection{Requisito FN.01}
+\subsection{Requisito FN.01}~\\
 {\bf Título:} Alta de usuarios\\
 {\bf Descrición:} A aplicación debe permitir que se creen novas contas de usuario.\\
 {\bf Casos de uso relacionados:} CU-01\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.02}
+\subsection{Requisito FN.02}~\\
 {\bf Título:} Modificación de usuarios\\
 {\bf Descrición:} A aplicación debe permitir que se modifiquen contas de usuario existentes.\\
 {\bf Casos de uso relacionados:} CU-02\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.03}
+\subsection{Requisito FN.03}~\\
 {\bf Título:} Identificación de usuarios\\
 {\bf Descrición:} A aplicación debe permitir que os usuarios se identifiquen correctamente.\\
 {\bf Casos de uso relacionados:} CU-02, CU-03, CU-04, CU-05, CU-06, CU-07, CU-08\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.04}
+\subsection{Requisito FN.04}~\\
 {\bf Título:} Creación de clases\\
 {\bf Descrición:} A aplicación debe permitir ao director de xogo crear clases novas no mundo.\\
 {\bf Casos de uso relacionados:} CU-03\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.05}
+\subsection{Requisito FN.05}~\\
 {\bf Título:} Modificación de clases
 {\bf Descrición:} A aplicación debe permitir ao director de xogo modificar clases existentes.\\
 {\bf Casos de uso relacionados:} CU-03\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.06}
+\subsection{Requisito FN.06}~\\
 {\bf Título:} Eliminación de clases\\
 {\bf Descrición:} A aplicación debe permitir ao director de xogo eliminar clases existentes. A aplicación debe garantir que non se borra unha clase da que hai obxectos instanciados.\\
 {\bf Casos de uso relacionados:} CU-03\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.04}
+\subsection{Requisito FN.04}~\\
 {\bf Título:} Herdanza de clases\\
 {\bf Descrición:} A aplicación debe permitir facer que unhas clases sexan fillas de outras, herdando deste xeito os seus métodos.\\
 {\bf Casos de uso relacionados:} CU-03\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.07}
+\subsection{Requisito FN.07}~\\
 {\bf Título:} Creación de obxecto\\
 {\bf Descrición:} A aplicación debe permitir crear novos obxectos dende as clases xa existentes. Estes obxectos créanse no contexto dunha estancia determinada.\\
 {\bf Casos de uso relacionados:} CU-04, CU-05, CU-06, CU-07
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.08}
+\subsection{Requisito FN.08}~\\
 {\bf Título:} Modificación de obxecto\\
 {\bf Descrición:} A aplicación debe permitir modificar os atributos de obxectos existentes.\\
 {\bf Casos de uso relacionados:} CU-05, CU-07
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.09}
+\subsection{Requisito FN.09}~\\
 {\bf Título:} Eliminación de obxecto\\
 {\bf Descrición:} A aplicación debe permitir eliminar obxectos nas estancias.\\
 {\bf Casos de uso relacionados:} CU-05, CU-07
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.10}
+\subsection{Requisito FN.10}~\\
 {\bf Título:} Ligazón de obxecto personaxe a xogador\\
 {\bf Descrición:} A aplicación debe permitir que un determinado obxecto personaxe se asocie a un xogador, para deste xeito permitir ao xogador ver os resultados das súas accións e enviar as súas decisións á estancia axeitada.\\
 {\bf Casos de uso relacionados:} CU-04\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.11}
+\subsection{Requisito FN.11}~\\
 {\bf Título:} Creación dunha estancia baleira\\
 {\bf Descrición:} A aplicación debe permitir ao director de xogo crear unha nova estancia de cero que non conteña obxectos.\\
 {\bf Casos de uso relacionados:} CU-06\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.12}
+\subsection{Requisito FN.12}~\\
 {\bf Título:} Eliminación dunha estancia\\
 {\bf Descrición:} A aplicación debe permitir ao director de xogo eliminar unha estancia do mundo. Todos os obxectos que conteña a estancia serán eliminados. A estancia non pode conter personaxes.\\
 {\bf Casos de uso relacionados:} CU-06\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito FN.13}
+\subsection{Requisito FN.13}~\\
 {\bf Título:} Creación dun modelo de estancia\\
 {\bf Descrición:} A aplicación debe permitir ao director de xogo deseñar un modelo de estancia. Este modelo conterá código que se executará no momento de crear a estancia.\\
 {\bf Casos de uso relacionados:} CU-06\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito FN.14}
+\subsection{Requisito FN.14}~\\
 {\bf Título:} Creación dunha estancia dende modelo
 {\bf Descrición:} A aplicación debe permitir ao director de xogo crear unha nova estancia empregando un modelo de estancia, executando o código que este modelo contén.\\
 {\bf Casos de uso relacionados:} CU-06\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito FN.15}
+\subsection{Requisito FN.15}~\\
 {\bf Título:} Cambio de estancia dun obxecto\\
 {\bf Descrición:} A aplicación debe permitir ao director de xogo mover un obxecto dunha estancia a outra. O identificador global do obxecto permanece igual, pero na nova estancia pode ter un identificador local diferente.\\
 {\bf Casos de uso relacionados:} CU-05, CU-07\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.16}
+\subsection{Requisito FN.16}~\\
 {\bf Título:} Envío de decisións\\
 {\bf Descrición:} A aplicación debe permitir aos xogadores enviar as súas decisións para que o DX poda tratalas.\\
 {\bf Casos de uso relacionados:} CU-05\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.17}
+\subsection{Requisito FN.17}~\\
 {\bf Título:} Visualización de resultados\\
 {\bf Descrición:} A aplicación debe permitir que os xogadores podan ver os resultados das accións que involucren aos seus personaxes, sexan accións causadas polas súas decisións, ou accións e sucesos na estancia na que se atopa o seu personaxe.
 {\bf Casos de uso relacionados:} CU-05, CU-07
@@ -255,7 +352,7 @@ O caso de uso comeza cando o director de xogo pretende mover un obxecto dunha es
 
 \section{Restricións de deseño}
 
-\subsection{Requisito RD.01}
+\subsection{Requisito RD.01}~\\
 {\bf Título:} Uso de ferramentas libres\\
 {\bf Descrición:} A aplicación debe realizarse empregando unicamente ferramentas libres, como unha forma non só de reducir custos, senón tamén de permitir unha licencia libre do propios software resultante.\\
 {\bf Importancia:} Esencial
@@ -263,67 +360,67 @@ O caso de uso comeza cando o director de xogo pretende mover un obxecto dunha es
 
 \section{Requisitos non funcionais}
 
-\subsection{Requisito NF.01}
+\subsection{Requisito NF.01}~\\
 {\bf Título:} Linguaxe: Lóxica de estancias\\
 {\bf Descrición:} A linguaxe debe proporcionar ao DX a capacidade de crear e eliminar estancias, mover obxectos dunha estancia á outra, obter a lista de personaxes nunha estancia, e asignar variables locais para nomear aos obxectos ou almacenar datos de tipos primitivos.O código executado nunha estancia non debe afectar nun principio a outras estancias diferentes, salvo no movemento de obxectos entre elas.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.02}
+\subsection{Requisito NF.02}~\\
 {\bf Título:} Linguaxe: Lóxica de visibilidade e ocultación\\
 {\bf Descrición:} A linguaxe debe proporcionar a capacidade de determinar que obxectos son visibles por un personaxe e cales non mediante o uso de condicións. Isto non ten un efecto real na xogabilidade (un personaxe pode interactuar cun obxecto cuxa existencia descoñece se así o determina o DX no seu código), mais é relevante \\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito NF.03}
+\subsection{Requisito NF.03}~\\
 {\bf Título:} Linguaxe: Lóxica de inventario\\
 {\bf Descrición:} A linguaxe debe permitir que uns obxectos se conteñan aos outros. Na práctica isto ten varias consecuencias, sendo a máis importante o feito de que o obxecto dependente deba estar forzosamente na mesma estancia co obxecto recipiente. Tamén ten o seu efecto na visibilidade, xa que se un personaxe non pode ver ao recipiente nunca poderá ver os obxectos que contén. A linguaxe debe ofrecer a capacidade de especificar as clases que poden converterse en recipientes, métodos para introducir uns obxectos noutros, e tamén proporcionará a capacidade de recibir a lista de obxectos dun recipiente.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.04}
+\subsection{Requisito NF.04}~\\
 {\bf Título:} Linguaxe: Tipos de datos básicos\\
 {\bf Descrición:} A linguaxe debe implementar como tipos primitivos os números (enteiros ou en punto flotante) e as cadeas de texto. Tamén deben implementarse os arrays, sexan de números ou de obxectos.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.05}
+\subsection{Requisito NF.05}~\\
 {\bf Título:} Linguaxe: Lóxica de eventos\\
 {\bf Descrición:} A linguaxe debe ofrecer a opción de definir código de clase que se executa automaticamente ante determinados eventos, tales como o cambio de rolda, a chegada de novos obxectos á estancia ou o cambio de estancia do propio obxecto.\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito NF.06}
+\subsection{Requisito NF.06}~\\
 {\bf Título:} Linguaxe: Condicionais e tiradas de dados\\
 {\bf Descrición:} A linguaxe debe ofrecer a capacidade de empregar condicións lóxicas para alterar o fluxo do código. Polo outro lado, a linguaxe debe prover dun método de obter valores aleatorios para simular as tiradas de dados, nas que o DX poda especificar o número de dados lanzados e o número de caras de cada dado.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.07}
+\subsection{Requisito NF.07}~\\
 {\bf Título:} Linguaxe: Iteracións\\
 {\bf Descrición:} A linguaxe debe prover de funcións que permitan traballar en listas de elementos de forma iterativa, tratando cada elemento por separado.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.08}
+\subsection{Requisito NF.08}~\\
 {\bf Título:} Linguaxe: Operacións lóxicas e matemáticas\\
 {\bf Descrición:} A linguaxe debe ofrecer as operacións lóxicas e matemáticas básicas, tales como comparacións, sumas e multiplicacións. Tamén debe permitir a operación en arrays, sexa entre dous arrays ou entre un array e un número (elemento a elemento).\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.09}
+\subsection{Requisito NF.09}~\\
 {\bf Título:} Linguaxe: Prioridade de decisións\\
 {\bf Descrición:} A linguaxe debe permitir definir a orde na que se resolverán as decisións dos xogadores mediante funcións de comparación. No momento de resolver as decisións, estas aparecerán ante o DX ordenadas como corresponda.\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito NF.10}
+\subsection{Requisito NF.10}~\\
 {\bf Título:} Resultado textual: Seccións comúns e particulares\\
 {\bf Descrición:} No momento de mostrar o texto resultante dunha acción, o DX debe ter a opción de escribir unha narración común en 3ª persoa para todos os personaxes, e narracións personalizadas en 2ª persoa para cada xogador por separado.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.11}
+\subsection{Requisito NF.11}~\\
 {\bf Título:} Resultado textual: Condicións\\
 {\bf Descrición:} No momento de mostrar o texto resultante dunha acción, o DX deberá ter a opción de definir condicións en determinados bloques de texto. Os xogadores que non cumplan tales condicións non poderán ler eses bloques de texto. As condicións poderán estar determinadas por variables locais da estancia e por variables de obxectos concretos.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.12}
+\subsection{Requisito NF.12}~\\
 {\bf Título:} Resultado textual: Formato especial\\
 {\bf Descrición:} No momento de mostrar o texto resultante dunha acción, o DX poderá empregar formato especial, tal como letra en negriña ou cursiva, ou o uso de imaxes e enlaces web.\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito NF.13}
+\subsection{Requisito NF.13}~\\
 {\bf Título:} Resultado textual: Anonimato\\
 {\bf Descrición:} No momento de mostrar o texto resultante dunha acción, os xogadores non lerán directamente o nome dos personaxes mencionados, senón que verán o nome co que eles coñezan a tales personaxes.\\
 {\bf Importancia:} Opcional
@@ -331,29 +428,30 @@ O caso de uso comeza cando o director de xogo pretende mover un obxecto dunha es
 
 
 \section{Requisitos de proxecto}
-\subsection{Requisito PR.01}
+\subsection{Requisito PR.01}~\\
 {\bf Título:} Data límite do proxecto\\
-{\bf Descrición:} O proxecto deberá rematarse antes do 8 de xullo do 2016, data establecida no regulamento de traballos fin de grao para GREI da USC.\\
+{\bf Descrición:} O proxecto deberá rematarse antes do 8 de febreiro do 2017,
+data establecida no regulamento de traballos fin de grao para GREI da USC.\\
 {\bf Importancia:} Esencial
 
 \section{Requisitos de calidade}
-\subsection{Requisito CA.01}
+\subsection{Requisito CA.01}~\\
 {\bf Título:} Internacionalización\\
 {\bf Descrición:} O software deberá estar deseñado de tal xeito que se poda traducir facilmente a distintos idiomas sen realizar cambios no código.\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito CA.02}
+\subsection{Requisito CA.02}~\\
 {\bf Título:} Manual de usuario\\
 {\bf Descrición:} O software resultante deberá ir acompañado dun manual de usuario que explique o funcionamento do mesmo, incidindo especialmente no uso da linguaxe propia.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito CA.03}
+\subsection{Requisito CA.03}~\\
 {\bf Título:} Protección contra ataques\\
 {\bf Descrición:} O software resultante deberá estar protexido contra os principais ataques, como por exemplo a inxección de código SQL e a introdución de código HTML e Javascript non intencionado.\\
 {\bf Importancia:} Esencial
 
 \section{Requisitos de almacenamento}
-\subsection{Requisito AL.01}
+\subsection{Requisito AL.01}~\\
 {\bf Título:} Persistencia da información\\
 {\bf Descrición:} A aplicación debe garantir que a información do mundo (clases, obxectos, estancias) se conservará cando a aplicación remate e volva a poñerse en funcionamento.\\
 {\bf Importancia:} Esencial
