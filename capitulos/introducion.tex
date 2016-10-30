@@ -5,13 +5,202 @@
 % conforma a Memoria, Descrición do Sistema, Información Adicional de Interese
 % (métodos, técnicas ou arquitecturas utilizadas, xustificación da súa elección,
 % etc.).
-
-Introdución do documento
+Un xogo de rol é un xogo de interpretación no que o conxunto de xogadores vai
+desenvolvendo unha narrativa común, interpretando cada un deles a un personaxe
+ficticio que inflúe na historia coas súas accións. Un dos participantes asume o
+papel de mestre ou director de xogo, que é esencialmente o que asume a labor de
+deseñar a historia e fiar os acontecementos, mentres que o resto de xogadores
+toman decisións en base aos seus personaxes. Cando un xogador pretende facer
+algunha acción con risco de fracasar, o éxito ou fracaso da súa acción
+determínase mediante unha tirada de dados. Por tanto, podería dicirse que os
+xogos de rol no seu concepto son un termo medio entre o teatro e os contacontos.
+\par
+A orixe dos xogos de rol é discutida, pero é habitual considerar que o xénero
+queda plenamente definido con Dungeons and Dragons, publicado en 1974. Esta saga
+leva os xogos de rol ao seu auxe comercial nos anos 80, onde xurden numerosos
+xogos que seguen a súa estela. Non pasou moito tempo ata que este fenómeno se
+extendeu aos ordenadores, especialmente na época de internet, o que propiciou
+que se comezaran a organizar partidas de rol mediante correo electrónico e
+posteriormente a través de foros, o que se pasou a denominar como rol asíncrono
+debido a que os xogadores podían participar con horarios totalmente distintos.
+\par
+A finais dos 70 por outra banda comezou a desenvolverse software deseñado
+especificamente para xogar ao rol, no que non era necesario un director de xogo
+xa que o propio sistema era o que xestionaba toda a partida; un exemplo disto é
+o software MUD (Multi-User Dungeon) e todos os seus descendentes, sendo o MUD1
+(ano 1978) o primeiro mundo virtual existente. Isto tiña o inconveniente de que
+o xogador só podía tomar decisións prefixadas no propio sistema e seguir
+historias totalmente predeseñadas, sen apenas capacidade de improvisación real.
+Cando este software foi emplazado en servidores en liña coa aparición de
+Internet, o número de xogadores por partida aumentou pero o problema mantívose;
+a diferencia dos foros de rol que aínda existen hoxe en día, nos que se mantén a
+figura tradicional do director de xogo.
+\par
+A día de hoxe os xogos de rol están moi estendidos, especialmente entre a xente
+nova, e na rede hai numerosos exemplos dos dous grandes grupos mencionados:
+software de rol síncrono por un lado (coñecidos como MUD en referencia ao
+software que iniciou este xénero), e foros e grupos de correo de rol asíncrono
+polo outro. Non obstante, é no punto medio onde se atopa unha carencia: non hai
+ningún software deseñado para partidas de rol asíncrono. O obxectivo deste
+proxecto é precisamente dotar ao mercado dun software deseñado para facilitar o
+traballo do director de xogo, que proporcione unha linguaxe de script para que o
+director poida construír un mundo parcialmente automatizado, pero no que en
+última instancia o xogador non estea restrinxido a un espectro limitado de
+decisións.
 
 \section{Obxectivos xerais}
+O obxectivo deste traballo é o de deseñar e implementar unha ferramenta software
+que facilite a dirección de partidas de rol asíncrono en liña, empregando para
+isto unha linguaxe de script propia, é dicir:
+\begin{itemize}
+  \item Definir unha linguaxe formal que permita ao usuario crear un mundo virtual
+  mediante a especificación de obxectos distintos cos seus atributos, entre eles os obxectos que representen
+  aos propios personaxes dos xogadores, ademais de permitir definir interaccións preprogramadas
+  entre os propios obxectos. Esta linguaxe debe estar plantexada para servir ao xogo de rol, polo
+  que terá en conta elementos clave neste contexto: estancias (habitacións), visibilidade ou
+  ocultación das accións e sucesos, cálculos para comprobar o resultado das accións, etc.
+  \item Implementar dita linguaxe formal mediante un intérprete de script.
+  \item Deseñar unha base de datos que dote de persistencia ao mundo virtual.
+  \item Deseñar unha interface web para interactuar co sistema de tal modo que o
+  director de xogo poida empregar a linguaxe de script directamente; os xogadores pola contra só precisan dunha caixa de
+  texto para explicarlle ao director as accións que desexan realizar, quedando nas mans deste a
+  interacción co mundo interno.
+\end{itemize}
 
 \section{Documentación}
+O proxecto seguirá unha metodoloxía de desenvolvemento áxil, polo que a maior
+parte da documentación obterase a partir de comentarios no propio código. A
+maiores incluiranse toda a documentación adicional como diagramas de clases
+ou diagramas entidade-relación. O documento estará dividido nos seguintes
+capítulos (o capítulo 1 é esta propia introdución):
+\begin{itemize}
+  \item O capítulo 2 contén a planificación do proxecto, tanto os recursos
+  necesarios como a propia planificación temporal.
+  \item O capítulo 3 é o destinado á especificación de requisitos:
+  definicións, casos de uso, e a lista de requisitos obtidos.
+  \item O capítulo 4 referirase ao deseño do sistema, dende a interrelación dos
+  distintos compoñentes á descrición en detalle do seu funcionamento.
+\end{itemize}
 
 \section{Descrición do sistema}
+O proxecto consta dun software entregable formado por varios compoñentes
+diferenciados pero interrelacionados entre si:
+\begin{itemize}
+  \item A linguaxe na que se fundamenta o sistema. O sistema precisa unha linguaxe
+  orientada a obxectos, na que se poidan especificar clases cos seus atributos e métodos. Unha parte crucial
+  deste traballo é a de describir formalmente esta linguaxe de forma que cumpra a súa función de
+  definir o mundo virtual do xogo, tal e como se indican nos obxectivos deste anteproxecto. Debe
+  realizarse unha análise das solucións abertas dispoñibles, e no caso de non atopar unha linguaxe
+  que satisfaga todas as necesidades do sistema, será necesario implementar unha de cero co seu
+  correspondente intérprete.
+  \begin{itemize}
+    \item Esta linguaxe deberá conter todo o necesario para un correcto tratamento
+    da información:
+    variables, operadores aritméticos e lóxicos, condicións lóxicas, modificación de atributos, etc.
+    Todo isto debe ser debidamente especificado na etapa de deseño.
+  \end{itemize}
+  \item A interface web que tanto o director como os xogadores empregarán para
+  interactuar co mundo.
+  \begin{itemize}
+    \item Os xogadores poderán en todo momento ver o estado do seu personaxe e ler o texto descritivo
+    das accións sucedidas na súa presencia (redactado e filtrado segundo o criterio do director de
+    xogo), ademais de escribir en linguaxe natural as actuacións que desexan realizar (decisións
+    na terminoloxía do sistema) na seguinte iteración ou quenda. En ningún momento terán acceso
+    á linguaxe de xogo propiamente dita, nin a datos do mundo virtual alleos ao seu personaxe.
+    \item O director de xogo pola súa parte terá acceso a unha consola de comandos,
+    que lle permitirá alterar o mundo virtual mediante o uso da linguaxe de xogo. Recibirá todas as peticións de
+    actuación dos xogadores e escribirá o código en consecuencia que deberá ser executado; en
+    tempo de execución o director de xogo poderá instanciar novos obxectos, chamar aos métodos
+    de obxectos xa instanciados ou modificar os seus atributos directamente.
+  \end{itemize}
+  \item A capa de software que mantén o estado do mundo e xestiona o resto de
+  aspectos do sistema, tales como a xestión de usuarios, ademais de servir de ponte entre o resto de compoñentes.
+  \item Outros compoñentes necesarios para o funcionamento do sistema: servidor
+  web e base de datos relacional.
+\end{itemize}
+O software a entregar por tanto terá dous elementos diferenciados: a interface web, sen lóxica interna e
+que se limitará a enviar e recibir mensaxes, e o motor do xogo, que se conectará coa interface web para
+comunicarse, pero que debe deseñarse tendo en mente a posibilidade de incorporar outros modos de
+comunicarse con el no futuro, tales como software de escritorio para os usuarios. Estas vías alternativas e
+o seu desenvolvemento, en todo caso, non entran no alcance deste proxecto concreto.
 
 \section{Información adicional de interese}
+% métodos, técnicas ou arquitecturas utilizadas, xustificación da súa elección
+\subsection{Tecnoloxías empregadas}
+
+\subsubsection{Java}
+Para o desenvolvemento do software deste Traballo de Fin de Grao escolleuse Java
+como linguaxe para os distintos compoñentes. Os principais argumentos a favor
+para realizar esta escolla foron os seguintes:
+\begin{itemize}
+  \item Java é unha linguaxe amplamente difundida, cunha extensa documentación
+  na rede. Ademais disto, o autor deste TFG está familiarizado coa súa sintaxe.
+  \item Dispón de numerosas librarías que permiten desenvolver os distintos
+  compoñentes do proxecto. Dispón en particular de ferramentas para desenvolver
+  analizadores léxico-sintácticos, e de librarías para montar sistemas web.
+  \item É compatible coa maioría de entornos de desenvolvemento, nomeadamente
+  Eclipse, entorno que se empregará neste proxecto.
+\end{itemize}
+
+\subsubsection{ANTLR}
+Un dos pilares centrais deste Traballo de Fin de Grao é a linguaxe de script
+empregada polo Director de Xogo para comunicarse co sistema. Debido á alta
+especifidade deste proxecto, optouse por deseñar unha linguaxe de
+cero no canto de adaptar unha linguaxe de propósito xeral.
+\par
+Escolleuse ANTLR como ferramenta para deseñar a linguaxe e xerar os
+correspondentes analizadores léxico e sintáctico. ANTLR trátase dunha ferramenta
+que a partir dunha gramática elabora un analizador sintáctico descendente;
+grazas a isto podemos deseñar unha gramática que satisfaga os requisitos do
+proxecto e deixar en mans de ANTLR o proceso de parsing.
+
+\subsubsection{Servizos web: Grizzly + Jersey}
+Para a comunicación entre o servidor de xogo e o servidor web valoráronse
+distintas posibilidades e métodos. Unha primeira aproximación suxeriu o uso de
+Java RMI para comunicar ambos compoñentes, aproveitando o feito de que ambos
+funcionaban sobre JVM. Non obstante, optouse finalmente por descartar esta
+opción e empregar servizos web de tipo REST en base ás seguintes cuestións:
+\begin{itemize}
+  \item Java RMI só funciona entre programas que funcionen sobre JVM. A pesar de
+  non ser este un problema no alcance actual deste proxecto, limita a evolución
+  do sistema no futuro; empregando servizos web ábrese a porta a comunicarse co
+  servidor de xogo mediante outras aplicacións desenvolvidas noutras
+  tecnoloxías.
+  \item Java RMI é unha tecnoloxía menos flexible que os servizos
+  web, de mantemento máis complexo e que pode xerar dificultades cando os dous
+  servidores se atopan en distintas ubicacións físicas. Pola contra, Os servizos
+  web só requiren unha conexión vía HTTP entre ambos servidores, polo que son
+  máis fáciles de empregar.
+  \item Con Java RMI é necesario compartir código entre ambos servidores para
+  poder compartir POJOs ({\it Plain Old Java Objects}). Mediante os servizos
+  web, en cambio, a comunicación pode realizarse mediante obxectos JSON.
+\end{itemize}
+Para implementar os servizos web optouse por empregar as librarías Grizzly e
+Jersey, por tratarse da opción máis sinxela de poñer en funcionamento o
+servidor. Por un lado, Grizzly ofrece todo o necesario para poder montar un
+servidor web sen necesidade de programas adicionais, empregando simplemente o
+executable da nosa aplicación. Polo outro, Jersey encárgase da recepción,
+manipulación e resposta das peticións web recibidas.
+
+\subsubsection{Apache Maven}
+Tanto no servidor de xogo como no servidor web, decidiuse empregar Maven para
+xestionar os distintos paquetes e dependencias. As principais vantaxes disto
+son:
+\begin{itemize}
+  \item Ofrece unha estrutura de directorios estandarizada que facilita o
+  mantemento do código.
+  \item Simplifica a xestión de dependencias, descargando de forma automática os
+  paquetes necesarios.
+\end{itemize}
+
+\subsubsection{Spring Framework}
+Spring é un Framework que facilita o desenvolvemento de aplicacións complexas.
+Ten módulos útiles para todo tipo de tarefas, tales como montar un servidor web,
+empregar o patrón modelo-vista-controlador ou executar tests de JUnit.
+\par
+Neste proxecto empregaremos Spring no compoñente web, é dicir, Spring axudará a
+crear un servidor web que se conecte co servidor de xogo.
+
+\subsubsection{MariaDB}
+MariaDB é un xestor de bases de datos derivado de MySQL. Empregaremos bases de
+datos MariaDB no noso proxecto para manter a persistencia do sistema de xogo.

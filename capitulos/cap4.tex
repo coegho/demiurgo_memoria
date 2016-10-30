@@ -1,8 +1,40 @@
 \chapter{Deseño}
 
-Deseño: cómo se realiza o Sistema, a división deste en diferentes compoñentes e
-a comunicación entre eles. Así mesmo, determinarase o equipamento hardware e
-software necesario, xustificando a súa elección no caso de que non fora un
-requisito previo. Debe achegarse a un nivel suficiente de detalle que permita
-comprender a totalidade da estrutura do produto desenvolvido, utilizando no 
-posible representacións gráficas.
+%Deseño: cómo se realiza o Sistema, a división deste en diferentes compoñentes e
+%a comunicación entre eles. Así mesmo, determinarase o equipamento hardware e
+%software necesario, xustificando a súa elección no caso de que non fora un
+%requisito previo. Debe achegarse a un nivel suficiente de detalle que permita
+%comprender a totalidade da estrutura do produto desenvolvido, utilizando no 
+%posible representacións gráficas.
+
+O sistema deste proxecto está inicialmente dividido en dous compoñentes ben
+diferenciados pero comunicados entre si:
+\begin{itemize}
+  \item O servidor de xogo, co nome interno de {\it Demiurgo},
+  compoñente fundamental do sistema encargado de xestionar internamente os
+  mundos de xogo.
+  \item O servidor web co que interactuarán os usuarios, que terá como cometido
+  facer de ponte entre usuarios e servidor de xogo sen aplicar ningunha lóxica
+  interna.
+\end{itemize}
+
+Estes dous compoñentes comunícanse entre si mediante servizos web de tipo REST:
+o servidor web recibe peticións dos usuarios e fai peticións ao servidor de
+xogo mediante o envío de obxectos JSON a través de HTTP.
+
+\section{Servidor de xogo}
+\subsection{Linguaxe COE}
+O sistema precisa dunha linguaxe de script que permita ao Director de
+Xogo manipular os obxectos que compoñen o mundo. Esta linguaxe desenvolveuse
+mediante a ferramenta ANTLR, e déuselle o nome de {\bf COE} (acrónimo de {\it
+Código de Obxectos e Escenarios}). Esta é unha linguaxe orientada a obxectos
+cunha sintaxe que lembra a Java ou C++, pero especializada na xestión de
+partidas de rol.
+
+\subsection{Universo de xogo}
+
+\subsection{Servizos web}
+
+\subsection{Base de datos}
+
+\section{Servidor web}
