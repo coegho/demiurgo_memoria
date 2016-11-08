@@ -22,7 +22,11 @@ Estes dous compoñentes comunícanse entre si mediante servizos web de tipo REST
 o servidor web recibe peticións dos usuarios e fai peticións ao servidor de
 xogo mediante o envío de obxectos JSON a través de HTTP.
 
-\section{Servidor de xogo}
+\section{Servidor de xogo: Demiurgo}
+O servidor do xogo contén todo o necesario para manter unha partida de rol:
+mantemento e xestión do universo de xogo, e xestión de usuarios. A comunicación
+con el realízase por medio de servizos web. O nome que se lle deu a este
+software é {\it Demiurgo}.
 \subsection{Linguaxe COE}
 O sistema precisa dunha linguaxe de script que permita ao Director de
 Xogo manipular os obxectos que compoñen o mundo. Esta linguaxe desenvolveuse
@@ -30,11 +34,82 @@ mediante a ferramenta ANTLR, e déuselle o nome de {\bf COE} (acrónimo de {\it
 Código de Obxectos e Escenarios}). Esta é unha linguaxe orientada a obxectos
 cunha sintaxe que lembra a Java ou C++, pero especializada na xestión de
 partidas de rol.
+\par
+O funcionamento desta linguaxe defínese con maior detalle no capítulo 5 deste
+documento.
 
 \subsection{Universo de xogo}
+O servidor é o encargado de manter en memoria todos os obxectos que poboan o
+universo do xogo, ademais de almacenar tamén as clases e os usuarios. Todo isto
+é almacenado en forma de {\it POJOs} ({\it Plain Old Java Objects}), é dicir,
+obxectos Java. A medida que o servidor executa código enviado polo Director de
+Xogo, o universo modifícase segundo sexa preciso, creando e modificando
+obxectos do xogo.
+\par
+Todos os obxectos de xogo, como se precisou en capítulos anteriores, están
+vinculados a escenarios creados polo propio Director de Xogo. Estes escenarios
+tamén son almacenados neste universo de xogo.
+\par
+Nun mesmo servidor é posible ter varios universos de xogo en funcionamento. Os
+distintos universos non teñen ningún tipo de comunicación entre si: funcionan
+como compartimentos estancos.
+\par
+Nos anexos pódense atopar os diagramas de clases que detallan polo miúdo o
+universo de xogo.
 
-\subsection{Servizos web}
+\subsection{Servizos REST}
+A comunicación co servidor de xogo realízase mediante o uso de servizos web
+de tipo REST.
+O servidor provee de todas as funcións necesarias para o seu correcto manexo, que
+serán empregadas tanto polo servidor web como por potenciais terceiras
+aplicacións.
+\par
+Estes servizos realízanse enviando obxectos JSON vía HTTP, que conterán todos os
+datos precisos que a función requira. O servidor pola outra banda responde con
+JSON que conteñen os datos requeridos, ou unha confirmación como mínimo.
+\par
+Todas as peticións REST requiren autenticación do usuario. Unha petición
+de login recibe o nome do usuario e o contrasinal, devolvendo un token que
+identificará ao usuario nas posteriores peticións. Este token cifrado contén o
+nome de usuario e os seus permisos, diferenciando deste modo entre xogadores e
+directores de xogo. Debido a isto, o servidor non precisa almacenar o estado dos
+usuarios conectados.
 
 \subsection{Base de datos}
+O servidor de xogo comunícase cunha base de datos SQL para garantir a
+persistencia do universo de xogo. Nesta almacénase o estado de todos os obxectos
+e escenarios. O estado cárgase da base de datos cando se inicia o programa, e
+gárdase cando se finaliza a súa execución.
 
 \section{Servidor web}
+O servidor web mostra unha interface amigable de cara aos usuarios para poder
+acceder ao sistema. Non ten lóxica interna: a súa función exclusiva é a 
+comunicación co servidor de xogo.
+\par
+Neste proxecto, a maior parte da carga de traballo irá destinada ao servidor de
+xogo por ser o compoñente maior, polo que a complexidade do servidor web é
+reducida. Isto non quita que poda ser mellorado no futuro.
+
+\subsection{Spring Framework}
+O servidor web está desenvolvido mediante o uso de Spring Framework, unha
+libraría opensource para Java que ofrece ferramentas para crear un produto
+software completo. Grazas a este framework é posible centrarse no deseño da web
+e reducir o tempo de traballo en cuestións técnicas.
+\par
+Spring ofrécenos un {\it servlet} que podemos configurar mediante un ficheiro
+XML de configuración. Este servlet conta cun xestor de vistas, co cal podemos
+enlazar os ficheiros que conteñen as vistas (ficheiros {\it jsp}) coas clases
+Java que se encargan de recibir e mostrar os datos ({\it Controllers}).
+
+\subsubsection{Vistas}
+O código HTML que determina o aspecto visual das distintas páxinas está contido
+en ficheiros JSP. Ademais de HTML, inclúense etiquetas JSP para introducir os
+datos obtidos mediante o controlador asociado. Tamén se emprega a libraría JSTL
+para poder empregar certas funcionalidades (como bucles e condicionais) que
+faciliten a representación destes datos.
+
+\subsubsection{Controladores}
+Os controladores son clases Java que se encargan de procesar os datos
+transmitidos entre o usuario e o servidor de xogo. Cada controlador ten unha
+vista asociada, que o servlet de Spring localiza polo seu nome e devolve ao
+usuario, engadindo previamente o controlador os datos necesarios.
