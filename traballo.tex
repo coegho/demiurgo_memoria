@@ -9,13 +9,21 @@
 % Como se incluyen figuras eps hay que compilar con: latex traballo , dvipdf traballo
 %
 
-\documentclass[12pt,twoside,a4paper]{book}
+\documentclass[hidelinks,12pt,twoside,a4paper]{book}
 % pódense engadir todos os packages necesarios
 \usepackage[utf8]{inputenc}
 % \usepackage[latin1]{inputenc}
 \usepackage[galician]{babel}
 % \usepackage[spanish]{babel}
-\usepackage{graphicx}
+
+\ifx\pdftexversion\undefined
+\usepackage[dvips]{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\fi
+
+%\usepackage{graphicx}
 \usepackage[dvips]{epsfig}
 \usepackage{amssymb}
 \usepackage{eurosym}
@@ -23,22 +31,22 @@
 \usepackage{latexsym}
 \usepackage{a4}
 \usepackage{listings}
-% \usepackage{hyperref} % menús no pdf pero non leva ben co package galician
+\usepackage{hyperref} % menús no pdf pero non leva ben co package galician
 
 \begin{document}
 \include{capitulos/titulo}
 \cleardoublepage
 \include{capitulos/certificacion} % paxina de certificación (optativa)
-\cleardoublepage
-\include{capitulos/agradecementos} % paxina de agradecementos (optativa) 
-\cleardoublepage
-\include{capitulos/resumo} % páxina de resumo (optativa) 
+%\cleardoublepage
+%\include{capitulos/agradecementos} % paxina de agradecementos (optativa) 
+%cleardoublepage
+%\include{capitulos/resumo} % páxina de resumo (optativa) 
 
 \cleardoublepage
 \pagestyle{plain}
 \tableofcontents
-\listoffigures
-\listoftables
+%\listoffigures
+%\listoftables
 
 % Agora incluimos os capítulos. Cambiamos a numeración e as cabeceiras
 \cleardoublepage
@@ -52,6 +60,12 @@
 \include{capitulos/cap3}
 \cleardoublepage
 \include{capitulos/cap4}
+\cleardoublepage
+\include{capitulos/cap5}
+\cleardoublepage
+\include{capitulos/cap6}
+\cleardoublepage
+\include{capitulos/anexos}
 \cleardoublepage
 \include{capitulos/exemplos}
 %

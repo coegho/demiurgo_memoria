@@ -1,7 +1,129 @@
-\chapter{Planificación e presupostos}
+\chapter{Xestión do proxecto}
 
 % Planificación e presupostos: debe incluír a estimación do costo (presuposto) e
 % dos recursos necesarios para efectuar a implantación do Traballo, xunto coa
 % planificación temporal do mesmo e a división en fases e tarefas. Recoméndase
 % diferenciar os costos relativos a persoal dos relativos a outros gastos como
 % instalacións e equipos.
+
+A xestión de proxectos conleva unha serie de metodoloxías e técnicas encamiñadas
+a planificar temporalmente o proxecto para acadar o seu alcance no prazo
+previsto, así como garantir a calidade do produto final. Neste capítulo
+definirase a metodoloxía de desenvolvemento empregada no proxecto, e farase unha
+estimación de prazos e custos.
+
+\section{Metodoloxía de desenvolvemento}
+Unha das decisións máis importantes que se deben tomar ao comezo do proxecto é a
+metodoloxía de desenvolvemento a empregar. Esta metodoloxía debe permitirnos
+estruturar o traballo para garantir a súa finalización cuns mínimos
+de calidade aceptables.
+\par
+A escolla da metodoloxía fundaméntase nas características do proxecto. neste
+caso concreto, o noso programa ten unha temática pouco explorada no
+mercado, e empregará diversas tecnoloxías e recursos relativamente novos para o
+desenvolvedor. A maiores, este ten unha experiencia reducida na xestión de
+proxectos grandes. Tendo todas estas cuestións en conta, parece apropiado optar
+por unha metodoloxía de desenvolvemento áxil e descartar o uso de metodoloxías
+menos tolerantes ao cambio.
+
+\subsection{Scrum}
+Optouse polo emprego de {\it Scrum} para o desenvolvemento do software.
+En Scrum, o desenvolvemento realízase de forma incremental mediante iteracións:
+as tarefas distribúense temporalmente en sprints de unha ou dúas semanas por
+norma xeral. Poténciase especialmente a interacción co cliente e márcanse uns
+prazos fixos para cumprir obxectivos, para o cal é preciso priorizar os
+requisitos regularmente.
+
+\subsubsection{Actividades}
+No modelo de Scrum as reunións xiran en torno aos sprints, e podemos atopar as
+seguintes actividades:
+\begin{itemize}
+  \item Daily Scrum ou Stand-up Meeting: Reunións diarias nas que se revisa o
+  o estado do proxecto por parte do equipo. Neste caso concreto non son
+  relevantes por ser un proxecto dunha soa persoa.
+  \item Sprint Planning Meeting: Reunión de planificación do sprint. Realízase
+  ao inicio do sprint, e nela estipúlase o traballo que se realizará no mesmo.
+  \item Sprint Review Meeting: Reunión de revisión do sprint. Faise ao final do
+  sprint, e revísase o traballo completado e non completado.
+  \item Sprint Retrospective: Na retrospectiva do sprint, os membros do equipo
+  dan as súas impresións sobre o mesmo. Isto ten a finalidade de mellorar o
+  proceso de forma continuada.
+\end{itemize}
+
+\subsection{Ferramentas de xestión empregadas}
+Hai numerosas ferramentas dispoñibles para xestionar proxectos de tipo Scrum.
+Neste proxecto empregarase Acunote, que permite levar o control da lista de
+requisitos e dos sprints coas súas tarefas.
+
+\subsubsection{Acunote}
+Trátase dunha ferramenta web que ofrece distintas funcionalidades enfocadas na
+xestión de proxectos con metodoloxías Scrum, tales como a creación e mantemento
+dunha lista de requisitos priorizada (ou {\it product backlog}) para o proxecto,
+xestión de sprints (con nome, data de inicio e fin, e tarefas) e, xa dentro de
+cada sprint, o control do estado de cada tarefa, incluído o tempo investido nela
+e o tempo total requerido. A maiores, Acunote ofrece gráficas e estatísticas do
+proceso xeradas automaticamente para levar o control do mesmo.
+
+\section{Planificación temporal}
+A planificación temporal desenvolveuse inicialmente en base ao anteproxecto
+existente. A metodoloxía Scrum non ofrece unha estruturación concreta do
+proxecto en fases de vida debido ao seu carácter iterativo, mais pódese facer
+unha aproximación dunha división de etapas do mesmo segundo o tipo de traballo
+desenvolvido en cada unha delas.
+
+\subsection{Fase inicial}
+Nesta primeira fase desenvolveuse unha descrición extensa do proxecto e das
+funcionalidades que o produto resultante debe ofrecer. Dividiuse o programa en
+compoñentes e determinouse a forma de interactuar destes entre si. Ademais
+disto, tomáronse as decisións necesarias sobre a organización do traballo e a
+xestión da documentación e de versións.
+
+\subsection{Fase de análise}
+A principal tarefa desta fase foi a de realizar unha análise de requisitos a
+partir de distintas historias de usuario. Definíronse os conceptos chave do
+sistema de forma máis precisa, e marcáronse formalmente os requisitos e as
+limitacións do software. Tamén se decidiron as principais tecnoloxías a
+empregar no software.
+
+\subsection{Fase de definición da linguaxe}
+Esta fase estivo centrada no desenvolvemento dunha definición formal da linguaxe
+do xogo, a linguaxe {\it COE}, e a súa implementación en Java. Non se inclúe o
+desenvolvemento do analizador semántico, tarefa que forma parte da seguinte
+fase.
+
+\subsection{Fase de desenvolvemento}
+Na fase de desenvolvemento implementáronse os distintos compoñentes software do
+proxecto coas súas distintas funcionalidades. Trátase da fase máis longa, e a
+súa realización documéntase en maior detalle no capítulo pertinente deste
+documento (capítulo \ref{ch:implementacion}).
+
+\subsection{Fase de probas}
+Nesta última fase fanse probas unitarias do sistema. A maiores, o sistema
+instálase nun servidor web para realizar probas con usuarios que poden ser
+útiles para extraer posibles melloras en usabilidade ou detectar erros. 
+
+\section{Análise de custos}
+Os custos deste proxecto recaen principalmente na man de obra, os equipos
+informáticos e os servidores. Non hai custos adicionais en adquirir paquetes de
+software, xa que un dos requisitos especificados dende o principio é o uso
+exclusivo de ferramentas libres.
+
+\begin{tabular} { | c | c | r | r | }
+\hline
+Item & Cantidade & Custo unitario & Custo total \\
+\hline
+PC & 1 & 1000,00 \euro{} & 1000,00 \euro{} \\
+\hline
+Persoal & 412,5 horas & 15,00 \euro{} & 6187,00 \euro{} \\
+\hline
+VPS & 2 meses & 20 \euro{} & 40 \euro{} \\
+\hline
+&& Subtotal: & 0 \euro{} \\
+\hline
+&& Custos indirectos: & +20\% \\
+\hline
+&& Total: & 0 \euro{} \\
+\hline
+\end{tabular}
+\begin{tabular} { | c | c | c }
+a & a & a \\

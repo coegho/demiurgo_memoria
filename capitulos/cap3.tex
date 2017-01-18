@@ -1,4 +1,4 @@
-\chapter{Especificación de requisitos}
+\chapter{Análise}
 
 Antes de comezar a desenvolver o software deberase facer unha especificación dos
 requisitos que este debe cumprir. Neste caso o primeiro que faremos será definir
@@ -254,41 +254,41 @@ novos obxectos no mesmo para que o DX o teña en conta.
 
 
 \section{Requisitos funcionais}
-\subsection{Requisito FN.01}~\\
+\subsubsection{Requisito FN.01}~\\
 {\bf Título:} Alta de usuarios\\
 {\bf Descrición:} A aplicación debe permitir que se creen novas contas de usuario.\\
 {\bf Casos de uso relacionados:} CU-01\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.02}~\\
+\subsubsection{Requisito FN.02}~\\
 {\bf Título:} Modificación de usuarios\\
 {\bf Descrición:} A aplicación debe permitir que se modifiquen contas de usuario
 existentes.\\
 {\bf Casos de uso relacionados:} CU-02\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.03}~\\
+\subsubsection{Requisito FN.03}~\\
 {\bf Título:} Identificación de usuarios\\
 {\bf Descrición:} A aplicación debe permitir que os usuarios se identifiquen
 correctamente.\\
 {\bf Casos de uso relacionados:} CU-02, CU-03, CU-04, CU-05, CU-06, CU-07, CU-08\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.04}~\\
+\subsubsection{Requisito FN.04}~\\
 {\bf Título:} Creación de clases\\
 {\bf Descrición:} A aplicación debe permitir ao director de xogo crear clases
 novas no mundo.\\
 {\bf Casos de uso relacionados:} CU-03\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.05}~\\
+\subsubsection{Requisito FN.05}~\\
 {\bf Título:} Modificación de clases
 {\bf Descrición:} A aplicación debe permitir ao director de xogo modificar
 clases existentes.\\
 {\bf Casos de uso relacionados:} CU-03\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.06}~\\
+\subsubsection{Requisito FN.06}~\\
 {\bf Título:} Eliminación de clases\\
 {\bf Descrición:} A aplicación debe permitir ao director de xogo eliminar clases
 existentes. A aplicación debe garantir que non se borra unha clase da que hai
@@ -296,14 +296,14 @@ obxectos instanciados.\\
 {\bf Casos de uso relacionados:} CU-03\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.04}~\\
+\subsubsection{Requisito FN.04}~\\
 {\bf Título:} Herdanza de clases\\
 {\bf Descrición:} A aplicación debe permitir facer que unhas clases sexan
 fillas de outras, herdando deste xeito os seus métodos.\\
 {\bf Casos de uso relacionados:} CU-03\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.07}~\\
+\subsubsection{Requisito FN.07}~\\
 {\bf Título:} Creación de obxecto\\
 {\bf Descrición:} A aplicación debe permitir crear novos obxectos dende as
 clases xa existentes. Estes obxectos créanse no contexto dun escenario
@@ -311,19 +311,19 @@ determinado.\\
 {\bf Casos de uso relacionados:} CU-04, CU-05, CU-06, CU-07
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.08}~\\
+\subsubsection{Requisito FN.08}~\\
 {\bf Título:} Modificación de obxecto\\
 {\bf Descrición:} A aplicación debe permitir modificar os atributos de obxectos existentes.\\
 {\bf Casos de uso relacionados:} CU-05, CU-07
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.09}~\\
+\subsubsection{Requisito FN.09}~\\
 {\bf Título:} Eliminación de obxecto\\
 {\bf Descrición:} A aplicación debe permitir eliminar obxectos nos escenarios.\\
 {\bf Casos de uso relacionados:} CU-05, CU-07
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.10}~\\
+\subsubsection{Requisito FN.10}~\\
 {\bf Título:} Ligazón de obxecto personaxe a xogador\\
 {\bf Descrición:} A aplicación debe permitir que un determinado obxecto
 personaxe se asocie a un xogador, para deste xeito permitir ao xogador ver os
@@ -331,14 +331,14 @@ resultados das súas accións e enviar as súas decisións á estancia axeitada.
 {\bf Casos de uso relacionados:} CU-04\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.11}~\\
+\subsubsection{Requisito FN.11}~\\
 {\bf Título:} Creación dun escenario baleiro\\
 {\bf Descrición:} A aplicación debe permitir ao director de xogo crear un novo
 escenario de cero que non conteña obxectos.\\
 {\bf Casos de uso relacionados:} CU-06\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.12}~\\
+\subsubsection{Requisito FN.12}~\\
 {\bf Título:} Eliminación dun escenario\\
 {\bf Descrición:} A aplicación debe permitir ao director de xogo eliminar un
 escenario do mundo. Todos os obxectos que conteña o escenario serán eliminados.
@@ -346,7 +346,7 @@ O escenario non pode conter personaxes.\\
 {\bf Casos de uso relacionados:} CU-06\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito FN.13}~\\
+\subsubsection{Requisito FN.13}~\\
 {\bf Título:} Creación dun modelo de escenario\\
 {\bf Descrición:} A aplicación debe permitir ao director de xogo deseñar un
 modelo de escenario. Este modelo conterá código que se executará no momento de
@@ -354,14 +354,14 @@ crear a estancia.\\
 {\bf Casos de uso relacionados:} CU-06\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito FN.14}~\\
+\subsubsection{Requisito FN.14}~\\
 {\bf Título:} Creación dun escenario dende modelo
 {\bf Descrición:} A aplicación debe permitir ao director de xogo crear un novo
 escenario empregando un modelo de escenario, executando o código que este modelo contén.\\
 {\bf Casos de uso relacionados:} CU-06\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito FN.15}~\\
+\subsubsection{Requisito FN.15}~\\
 {\bf Título:} Cambio de escenario dun obxecto\\
 {\bf Descrición:} A aplicación debe permitir ao director de xogo mover un
 obxecto dun escenario a outro. O identificador global do obxecto permanece
@@ -369,14 +369,14 @@ igual, pero no novo escenario pode ter un identificador local diferente.\\
 {\bf Casos de uso relacionados:} CU-05, CU-07\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.16}~\\
+\subsubsection{Requisito FN.16}~\\
 {\bf Título:} Envío de decisións\\
 {\bf Descrición:} A aplicación debe permitir aos xogadores enviar as súas
 decisións para que o DX poda tratalas.\\
 {\bf Casos de uso relacionados:} CU-05\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito FN.17}~\\
+\subsubsection{Requisito FN.17}~\\
 {\bf Título:} Visualización de resultados\\
 {\bf Descrición:} A aplicación debe permitir que os xogadores podan ver os
 resultados das accións que involucren aos seus personaxes, sexan accións
@@ -389,7 +389,7 @@ o seu personaxe.
 
 \section{Restricións de deseño}
 
-\subsection{Requisito RD.01}~\\
+\subsubsection{Requisito RD.01}~\\
 {\bf Título:} Uso de ferramentas libres\\
 {\bf Descrición:} A aplicación debe realizarse empregando unicamente
 ferramentas libres, como unha forma non só de reducir custos, senón tamén de
@@ -399,7 +399,7 @@ permitir unha licencia libre do propio software resultante.\\
 
 \section{Requisitos non funcionais}
 
-\subsection{Requisito NF.01}~\\
+\subsubsection{Requisito NF.01}~\\
 {\bf Título:} Linguaxe: Lóxica de escenario\\
 {\bf Descrición:} A linguaxe debe proporcionar ao DX a capacidade de crear e
 eliminar escenarios, mover obxectos dun escenario a outro, obter a lista de
@@ -409,7 +409,7 @@ afectar nun principio a outros escenarios diferentes, salvo no movemento de
 obxectos entre eles.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.02}~\\
+\subsubsection{Requisito NF.02}~\\
 {\bf Título:} Linguaxe: Lóxica de visibilidade e ocultación\\
 {\bf Descrición:} A linguaxe debe proporcionar a capacidade de determinar que
 obxectos son visibles por un personaxe e cales non mediante o uso de
@@ -418,7 +418,7 @@ interactuar cun obxecto cuxa existencia descoñece se así o determina o DX no
 seu código), mais é relevante á hora de ofrecer información aos xogadores. \\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito NF.03}~\\
+\subsubsection{Requisito NF.03}~\\
 {\bf Título:} Linguaxe: Lóxica de inventario\\
 {\bf Descrición:} A linguaxe debe permitir que uns obxectos se conteñan aos
 outros. Na práctica isto ten varias consecuencias, sendo a máis importante o
@@ -430,14 +430,14 @@ converterse en recipientes, métodos para introducir uns obxectos noutros, e
 tamén proporcionará a capacidade de recibir a lista de obxectos dun recipiente.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.04}~\\
+\subsubsection{Requisito NF.04}~\\
 {\bf Título:} Linguaxe: Tipos de datos básicos\\
 {\bf Descrición:} A linguaxe debe implementar como tipos primitivos os números
 (enteiros ou en punto flotante) e as cadeas de texto. Tamén deben implementarse
 os arrays, sexan de números ou de obxectos.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.05}~\\
+\subsubsection{Requisito NF.05}~\\
 {\bf Título:} Linguaxe: Lóxica de eventos\\
 {\bf Descrición:} A linguaxe debe ofrecer a opción de definir código de clase
 que se executa automaticamente ante determinados eventos, tales como o cambio
@@ -445,7 +445,7 @@ de rolda, a chegada de novos obxectos ao escenario ou o cambio de escenario do
 propio obxecto.\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito NF.06}~\\
+\subsubsection{Requisito NF.06}~\\
 {\bf Título:} Linguaxe: Condicionais e tiradas de dados\\
 {\bf Descrición:} A linguaxe debe ofrecer a capacidade de empregar condicións
 lóxicas para alterar o fluxo do código. Polo outro lado, a linguaxe debe prover
@@ -454,13 +454,13 @@ que o DX poda especificar o número de dados lanzados e o número de caras de
 cada dado.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.07}~\\
+\subsubsection{Requisito NF.07}~\\
 {\bf Título:} Linguaxe: Iteracións\\
 {\bf Descrición:} A linguaxe debe prover de funcións que permitan traballar en
 listas de elementos de forma iterativa, tratando cada elemento por separado.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.08}~\\
+\subsubsection{Requisito NF.08}~\\
 {\bf Título:} Linguaxe: Operacións lóxicas e matemáticas\\
 {\bf Descrición:} A linguaxe debe ofrecer as operacións lóxicas e matemáticas
 básicas, tales como comparacións, sumas e multiplicacións. Tamén debe permitir
@@ -468,21 +468,21 @@ a operación en arrays, sexa entre dous arrays ou entre un array e un número
 (elemento a elemento).\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.09}~\\
+\subsubsection{Requisito NF.09}~\\
 {\bf Título:} Linguaxe: Prioridade de decisións\\
 {\bf Descrición:} A linguaxe debe permitir definir a orde na que se resolverán
 as decisións dos xogadores mediante funcións de comparación. No momento de
 resolver as decisións, estas aparecerán ante o DX ordenadas como corresponda.\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito NF.10}~\\
+\subsubsection{Requisito NF.10}~\\
 {\bf Título:} Resultado textual: Seccións comúns e particulares\\
 {\bf Descrición:} No momento de mostrar o texto resultante dunha acción, o DX
 debe ter a opción de escribir unha narración común en 3ª persoa para todos os
 personaxes, e narracións personalizadas en 2ª persoa para cada xogador por separado.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.11}~\\
+\subsubsection{Requisito NF.11}~\\
 {\bf Título:} Resultado textual: Condicións\\
 {\bf Descrición:} No momento de mostrar o texto resultante dunha acción, o DX
 deberá ter a opción de definir condicións en determinados bloques de texto. Os
@@ -491,14 +491,14 @@ texto. As condicións poderán estar determinadas por variables locais do
 escenario e por variables de obxectos concretos.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito NF.12}~\\
+\subsubsection{Requisito NF.12}~\\
 {\bf Título:} Resultado textual: Formato especial\\
 {\bf Descrición:} No momento de mostrar o texto resultante dunha acción, o DX
 poderá empregar formato especial, tal como letra en negriña ou cursiva, ou o
 uso de imaxes e enlaces web.\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito NF.13}~\\
+\subsubsection{Requisito NF.13}~\\
 {\bf Título:} Resultado textual: Anonimato\\
 {\bf Descrición:} No momento de mostrar o texto resultante dunha acción, os
 xogadores non lerán directamente o nome dos personaxes mencionados, senón que
@@ -508,27 +508,27 @@ verán o nome co que eles coñezan a tales personaxes.\\
 
 
 \section{Requisitos de proxecto}
-\subsection{Requisito PR.01}~\\
+\subsubsection{Requisito PR.01}~\\
 {\bf Título:} Data límite do proxecto\\
 {\bf Descrición:} O proxecto deberá rematarse antes do 8 de febreiro do 2017,
 data establecida no regulamento de traballos fin de grao para GREI da USC.\\
 {\bf Importancia:} Esencial
 
 \section{Requisitos de calidade}
-\subsection{Requisito CA.01}~\\
+\subsubsection{Requisito CA.01}~\\
 {\bf Título:} Internacionalización\\
 {\bf Descrición:} O software deberá estar deseñado de tal xeito que se poda
 traducir facilmente a distintos idiomas sen realizar cambios no código.\\
 {\bf Importancia:} Opcional
 
-\subsection{Requisito CA.02}~\\
+\subsubsection{Requisito CA.02}~\\
 {\bf Título:} Manual de usuario\\
 {\bf Descrición:} O software resultante deberá ir acompañado dun manual de
 usuario que explique o funcionamento do mesmo, incidindo especialmente no uso
 da linguaxe propia.\\
 {\bf Importancia:} Esencial
 
-\subsection{Requisito CA.03}~\\
+\subsubsection{Requisito CA.03}~\\
 {\bf Título:} Protección contra ataques\\
 {\bf Descrición:} O software resultante deberá estar protexido contra os
 principais ataques, como por exemplo a inxección de código SQL e a introdución
@@ -536,7 +536,7 @@ de código HTML e Javascript non intencionado.\\
 {\bf Importancia:} Esencial
 
 \section{Requisitos de almacenamento}
-\subsection{Requisito AL.01}~\\
+\subsubsection{Requisito AL.01}~\\
 {\bf Título:} Persistencia da información\\
 {\bf Descrición:} A aplicación debe garantir que a información do mundo
 (clases, obxectos, escenarios) se conservará cando a aplicación remate e volva a

@@ -1,5 +1,154 @@
 \chapter{Deseño}
 
+
+\section{Descrición do sistema}
+O proxecto consta dun software entregable formado por varios compoñentes
+diferenciados pero interrelacionados entre si:
+\begin{itemize}
+  \item A linguaxe na que se fundamenta o sistema. O sistema precisa unha
+  linguaxe orientada a obxectos, na que se poidan especificar clases cos seus
+  atributos e métodos. Unha parte crucial deste traballo é a de describir
+  formalmente esta linguaxe de forma que cumpra a súa función de definir o
+  mundo virtual do xogo, tal e como se indican nos obxectivos deste
+  anteproxecto. Debe realizarse unha análise das solucións abertas dispoñibles,
+  e no caso de non atopar unha linguaxe que satisfaga todas as necesidades do
+  sistema, será necesario implementar unha de cero co seu correspondente
+  intérprete.
+  \begin{itemize}
+    \item Esta linguaxe deberá conter todo o necesario para un correcto
+    tratamento da información:
+    variables, operadores aritméticos e lóxicos, condicións lóxicas,
+    modificación de atributos, etc.
+    Todo isto debe ser debidamente especificado na etapa de deseño.
+  \end{itemize}
+  \item A interface web que tanto o director como os xogadores empregarán para
+  interactuar co mundo.
+  \begin{itemize}
+    \item Os xogadores poderán en todo momento ver o estado do seu personaxe e
+    ler o texto descritivo das accións sucedidas na súa presencia (redactado e
+    filtrado segundo o criterio do director de xogo), ademais de escribir en
+    linguaxe natural as actuacións que desexan realizar ({\it decisións} na
+    terminoloxía do sistema) na seguinte iteración ou quenda. En ningún momento
+    terán acceso á linguaxe de xogo propiamente dita, nin a datos do mundo
+    virtual alleos ao seu personaxe.
+    \item O director de xogo pola súa parte terá acceso a unha consola de comandos,
+    que lle permitirá alterar o mundo virtual mediante o uso da linguaxe de
+    xogo. Recibirá todas as peticións de actuación dos xogadores e escribirá o
+    código en consecuencia que deberá ser executado; en tempo de execución o 
+   director de xogo poderá instanciar novos obxectos, chamar aos métodos de
+   obxectos xa instanciados ou modificar os seus atributos directamente.
+  \end{itemize}
+  \item A capa de software que mantén o estado do mundo e xestiona o resto de
+  aspectos do sistema, tales como a xestión de usuarios, ademais de servir de
+  ponte entre o resto de compoñentes.
+  \item Outros compoñentes necesarios para o funcionamento do sistema: servidor
+  web e base de datos relacional.
+\end{itemize}
+O software a entregar por tanto terá dous elementos diferenciados: a interface
+web, sen lóxica interna e que se limitará a enviar e recibir mensaxes, e o
+motor do xogo, que se conectará coa interface web para comunicarse, pero que
+debe deseñarse tendo en mente a posibilidade de incorporar outros modos de
+comunicarse con el no futuro, tales como software de escritorio para os
+usuarios. Estas vías alternativas e o seu desenvolvemento, en todo caso, non
+entran no alcance deste proxecto concreto.
+
+\section{Información adicional de interese}
+% métodos, técnicas ou arquitecturas utilizadas, xustificación da súa elección
+\subsection{Tecnoloxías empregadas}
+
+\subsubsection{Java SE}
+Para o desenvolvemento do software deste Traballo de Fin de Grao escolleuse Java
+como linguaxe para os distintos compoñentes.
+Os principais argumentos a favor para realizar esta escolla foron os seguintes:
+\begin{itemize}
+  \item Java é unha linguaxe amplamente difundida, cunha extensa documentación
+  na rede. Ademais disto, o autor deste TFG está familiarizado coa súa sintaxe.
+  \item Dispón de numerosas librarías que permiten desenvolver os distintos
+  compoñentes do proxecto. Dispón en particular de ferramentas para desenvolver
+  analizadores léxico-sintácticos, e de librarías para montar sistemas web.
+  \item É compatible coa maioría de entornos de desenvolvemento, nomeadamente
+  Eclipse, entorno que se empregará neste proxecto.
+\end{itemize}
+
+\subsubsection{ANTLR}
+Un dos pilares centrais deste Traballo de Fin de Grao é a linguaxe de script
+empregada polo Director de Xogo para comunicarse co sistema. Debido á alta
+especifidade deste proxecto, optouse por deseñar unha linguaxe de
+cero no canto de adaptar unha linguaxe de propósito xeral.
+\par
+Escolleuse ANTLR como ferramenta para deseñar a linguaxe e xerar os
+correspondentes analizadores léxico e sintáctico. ANTLR trátase dunha ferramenta
+que a partir dunha gramática elabora un analizador sintáctico descendente;
+grazas a isto podemos deseñar unha gramática que satisfaga os requisitos do
+proxecto e deixar en mans de ANTLR o proceso de parsing.
+
+\subsubsection{Servizos web: Grizzly + Jersey}
+Para a comunicación entre o servidor de xogo e o servidor web valoráronse
+distintas posibilidades e métodos. Unha primeira aproximación suxeriu o uso de
+Java RMI para comunicar ambos compoñentes, aproveitando o feito de que ambos
+corrían sobre JVM. Non obstante, optouse finalmente por descartar esta
+opción e empregar servizos web de tipo REST en base ás seguintes cuestións:
+\begin{itemize}
+  \item Java RMI só funciona entre programas que corran sobre JVM. A pesar de
+  non ser este un problema no alcance actual deste proxecto, limita a evolución
+  do sistema no futuro; empregando servizos web ábrese a porta a comunicarse co
+  servidor de xogo mediante outras aplicacións desenvolvidas noutras
+  tecnoloxías.
+  \item Java RMI é unha tecnoloxía menos flexible cós servizos
+  web, de mantemento máis complexo e que pode xerar dificultades cando os dous
+  servidores se atopan en distintas ubicacións físicas. Pola contra, os servizos
+  web só requiren dunha conexión vía HTTP entre ambos servidores, polo que son
+  máis fáciles de empregar.
+  \item Con Java RMI é necesario compartir código entre ambos servidores a
+  través de librarías comúns para poder compartir POJOs ({\it Plain Old Java
+  Objects}). Mediante os servizos web, en cambio, a comunicación pode realizarse
+  mediante obxectos JSON.
+\end{itemize}
+Para implementar os servizos web optouse por empregar as librarías Grizzly e
+Jersey, por tratarse da opción máis sinxela para poñer en funcionamento o
+servidor. Por un lado, Grizzly ofrece todo o necesario para poder montar un
+servidor web sen necesidade de programas adicionais, empregando simplemente o
+executable da nosa aplicación. Polo outro, Jersey encárgase da recepción,
+manipulación e resposta das peticións web recibidas, axilizando a
+implementación do sistema.
+
+\subsubsection{Apache Maven}
+Tanto no servidor de xogo como no servidor web, decidiuse empregar Maven para
+xestionar os distintos paquetes e dependencias. As principais vantaxes disto
+son:
+\begin{itemize}
+  \item Ofrece unha estrutura de directorios estandarizada que facilita o
+  mantemento do código.
+  \item Simplifica a xestión de dependencias, descargando de forma automática os
+  paquetes necesarios.
+  \item Simplifica a execución de tests no código.
+\end{itemize}
+
+\subsubsection{Spring Framework}
+Spring é un Framework que facilita o desenvolvemento de aplicacións complexas.
+Ten módulos útiles para todo tipo de tarefas, tales como montar un servidor web,
+empregar o patrón modelo-vista-controlador ou executar tests de JUnit. A
+principal característica de Spring é a inxección de dependencias, que simplifica
+o control do ciclo de vida dos obxectos: crear os obxectos, chamar aos seus
+métodos de inicialización, e referencialos entre eles.
+\par
+Neste proxecto empregaremos Spring no compoñente web, é dicir, Spring axudará a
+crear un servidor web que se conecte co servidor de xogo. Deste modo, aforrarase
+tempo que poderá ser empregado no deseño da web.
+
+\subsubsection{MariaDB}
+MariaDB é un xestor de bases de datos derivado de MySQL. Empregaremos bases de
+datos MariaDB no noso proxecto para manter a persistencia do sistema de xogo.
+
+\subsubsection{Git}
+Git é unha ferramenta para desenvolvedores que xestiona os cambios realizados no
+código, mantendo un control de versións e facilitando o desenvolvemento de
+software.
+\par
+Neste proxecto empregaremos repositorios Git para os distintos compoñentes.
+Usaremos Github para almacenar estes repositorios nun lugar publicamente
+accesible.
+
 %Deseño: cómo se realiza o Sistema, a división deste en diferentes compoñentes e
 %a comunicación entre eles. Así mesmo, determinarase o equipamento hardware e
 %software necesario, xustificando a súa elección no caso de que non fora un
