@@ -102,28 +102,52 @@ Nesta última fase fanse probas unitarias do sistema. A maiores, o sistema
 instálase nun servidor web para realizar probas con usuarios que poden ser
 útiles para extraer posibles melloras en usabilidade ou detectar erros. 
 
+\section{Xestión da configuración}
+Os elementos de configuración son os distintos elementos cos que traballamos no
+proxecto (en calquera das súas fases) dos cales precisamos manter un control
+sobre os cambios que se poidan realizar neles, xa que poden afectar
+sensiblemente ao desenvolvemento do propio proxecto.
+\par
+Xa que estamos a falar dun proxecto exclusivamente de desenvolvemento de
+software, será o propio código fonte o que consideraremos elemento de
+configuración. Para manter a súa integridade e realizar o control de cambios
+empregaremos a ferramenta Git.
+
+\subsection{Git}
+Git \cite{git} é un software de control de versións que nos permite estabelecer
+repositorios de software e controlar os cambios que se realizan no código. Con
+Git podemos crear un repositorio para cada elemento independente do proxecto e
+manter un control dende calquera ordenador no que traballemos. Permite tamén
+visualizar os cambios realizados en cada {\it submit} e desfacelos en caso de
+ser preciso.
+\subsubsection{GitHub}
+GitHub é unha ferramenta web para desenvolvedores que ofrece aloxamento gratuíto
+para repositorios Git. Deste modo, é posible manter o repositorio en liña e
+traballar co mesmo dende distintos equipos sen necesidade de configurar un
+servidor web.
+
 \section{Análise de custos}
 Os custos deste proxecto recaen principalmente na man de obra, os equipos
 informáticos e os servidores. Non hai custos adicionais en adquirir paquetes de
 software, xa que un dos requisitos especificados dende o principio é o uso
 exclusivo de ferramentas libres.
+\par
+Adicionalmente, consideramos un 20\% de custos indirectos.
 
-\begin{tabular} { | c | c | r | r | }
+\begin{tabular} { | c c r | r | }
 \hline
 Item & Cantidade & Custo unitario & Custo total \\
 \hline
 PC & 1 & 1000,00 \euro{} & 1000,00 \euro{} \\
 \hline
-Persoal & 412,5 horas & 15,00 \euro{} & 6187,00 \euro{} \\
+Persoal & 412,5 horas & 15,00 \euro{} & 6187,50 \euro{} \\
 \hline
 VPS & 2 meses & 20 \euro{} & 40 \euro{} \\
 \hline
-&& Subtotal: & 0 \euro{} \\
+& & Subtotal: & 7227,50 \euro{} \\
 \hline
 && Custos indirectos: & +20\% \\
 \hline
-&& Total: & 0 \euro{} \\
+&& Total: & 8673 \euro{} \\
 \hline
 \end{tabular}
-\begin{tabular} { | c | c | c }
-a & a & a \\

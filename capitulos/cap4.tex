@@ -1,68 +1,197 @@
-\chapter{Deseño}
+\chapter{Arquitectura e ferramentas}
+Neste capítulo describirase a arquitectura do sistema, detallando os distintos
+compoñentes que a forman e como interactúan entre eles. Ademais diso, tamén se
+realizará unha análise das tecnoloxías empregadas no proxecto e os motivos da
+súa escolla entre as ferramentas dispoñibles no mercado.
 
+\section{Arquitectura do sistema}
+A arquitectura do proxecto xa foi parcialmente descrita no anteproxecto, e o
+seu aspecto máis importante é a separación do motor de xogo e a interface
+gráfica en dous elementos diferenciados.
+\par
+O sistema está orientado a realizar partidas de rol por internet. Tal e como
+a interacción co usuario foi formulada previamente, o usuario (neste caso o
+director de xogo) interactúa co sistema mediante o uso de scripts, mais non é a
+única forma: a interface debe proporcionar facilidades para realizar as súas
+tarefas sen deixar todo en mans da linguaxe. Este programa diferénciase dos MUDs
+tradicionais entre outras cousas na forma de entender a interacción
+persoa-ordenador, evitando interfaces áridas para deste modo poder chegar a unha
+maior masa de xogadores que poden ter coñecementos limitados ou nulos de
+programación informática.
+\par
+Debido a isto, é fundamental asumir a existencia de dous elementos de software
+executable diferenciados: o motor de xogo, que chamaremos \textbf{Demiurgo}, e a
+interface de usuario. Ambos elementos describiranse máis en detalle na sección
+\ref{sec:bloques}.
+\par
+Cabe destacar que se asumiu en todo momento o motor de xogo como a prioridade do
+proxecto, e dentro deste, a elaboración da linguaxe de script para o usuario,
+polo que foi o compoñente ao que se destinou unha maior carga de traballo.
+\begin{figure}
+\centerline{\includegraphics[width=15cm]{figuras/diagramas/arquitectura.pdf}}
+\caption{Diagrama da arquitectura do sistema.}
+\label{fig:arquitectura}
+\end{figure}
 
-\section{Descrición do sistema}
-O proxecto consta dun software entregable formado por varios compoñentes
-diferenciados pero interrelacionados entre si:
+\section{Bloques da arquitectura}
+\label{sec:bloques}
+Como xa se mencionou, o sistema está inicialmente dividido en dous grandes
+bloques independentes: o motor de xogo e a interface. A maiores, cada un destes
+compoñentes ten unha arquitectura interna que será descrita a continuación.
+
+\subsection{Motor de xogo: Demiurgo}
+O motor de xogo é o elemento central do sistema. Foi bautizado co nome de
+\textbf{Demiurgo}. As súas principais funcións son manter o mundo (ou mundos) de
+xogo en memoria, mantendo ademais a súa coherencia e integridade; realizar o
+procesamento dos scripts para modificar o seu estado; e por último, xestionar os
+usuarios e o acceso á información. Podemos distinguir os seguintes compoñentes
+diferenciados dentro do motor de xogo:
+
+\subsubsection{Motor de Mundo}
+O motor de Mundo mantén a consistencia dos mundos das distintas partidas
+activas. Garda unha instancia activa de cada clase de xogo, obxecto, escenario e
+demais elementos propios da partida, e ofrece métodos para poder modificar o seu
+estado sen comprometer a súa coherencia interna. As clases empregadas por este
+Motor de Mundo correspóndese co \textit{modelo} do sistema dentro dun patrón
+modelo-vista-controlador.
+
+\subsubsection{Intérprete da linguaxe}
+O intérprete realiza a análise léxica, sintáctica e semántica do código
+script enviado polo director de xogo, para deste modo extraer as súas
+instrucións e alterar o mundo de xogo segundo lle sexa indicado. O intérprete
+por tanto ten acceso ao Motor do Mundo, co que se comunica durante a lectura do
+código continuamente. No capítulo \ref{ch:desenho} especifícase con máis detalle
+o funcionamento deste intérprete.
+
+\subsubsection{Xestor de servizos web}
+Ofrece un \textit{Endpoint} á interface web sobre o que facer peticións HTTP
+para estabelecer o diálogo co motor de xogo. Conta con todos os métodos
+necesarios para poder enviar e recibir información co Demiurgo, dende o envío de
+instrucións e código script ata as distintas peticións de información sobre o
+estado do mundo. As peticións devolven por norma xeral un obxecto JSON, e poden
+recibir como argumentos campos de texto (cando se emprega o método \textit{GET})
+ou un obxecto JSON (cando se emprega o método \textit{POST}).
+
+\subsubsection{Motor de persistencia}
+O motor de persistencia comunícase do xestor da base de datos para manter no
+disco duro unha copia do modelo. A súa función por tanto é transformar os
+obxectos do Motor de Mundo a linguaxe relacional para deste modo almacenar o
+estado do mundo cando o sistema se detén, e facer o proceso contrario para
+recuperar tal estado cando o sistema volve a poñerse en funcionamento.
+
+\subsection{Interface web: DemiurgoWeb}
+Os usuarios do sistema precisan un medio para comunicarse co Motor de Xogo dunha
+forma cómoda e fácil de entender. Neste proxecto asumiuse a creación dunha
+aplicación web para suplir esta función, á que se denominou DemiurgoWeb, que
+permitirá tanto a directores de xogo como a xogadores interactuar co sistema.
+Esta interface web non realizará traballos complexos nin levará o control dos
+privilexios de usuarios: a súa función é exclusivamente facer de ponte co
+Demiurgo enviando peticións HTTP e mostrando resultados por pantalla aos
+usuarios.
+\par
+Demiurgo e DemiurgoWeb deberán desenvolverse como dous programas totalmente
+diferentes e desacoplados, de tal xeito que poidan crearse outras vías para
+acceder ao motor de xogo, tales como apps de móbil, por exemplo.
+\par
+O DemiurgoWeb implementarase en base ao patrón modelo-vista-controlador, polo
+que se deben analizar estas tres partes por separado. A maiores, conta cun
+compoñente adicional chamado \textit{conector Demiurgo}, que se encarga
+de realizar todas as peticións ao Demiurgo.
+
+\subsubsection{Modelo de datos}
+O modelo de datos representa todos os tipos de datos que o sistema manexa:
+clases de xogo, obxectos, escenarios, etcétera. No DemiurgoWeb estas clases
+deberán ser directamente transformables en obxectos JSON e viceversa, xa que
+obterá todos os seus datos a través do conector Demiurgo neste formato.
+
+\subsubsection{Vistas}
+As vistas son elementos deseñados para mostrar unha representación visual da
+información aos usuarios. Non modifican os datos, a súa única función é
+expresalos de forma clara e facilitar a interacción con eles.
+
+\subsubsection{Controladores}
+Os controladores, seguindo co patrón, serán as clases intermedias que obteñan
+os obxectos do modelo para proporcionarllos ás vistas a partir das accións do
+usuario.
+
+\subsubsection{Conector Demiurgo}
+O conector Demiurgo está fóra do patrón modelo-vista-controlador. A súa única
+función é realizar as peticións ao motor de xogo Demiurgo (concretamente, ao
+seu xestor de servizos web) dunha forma centralizada cando os controladores llo
+requiran. A URL do motor de xogo e o porto deberán serlle especificados ao
+conector mediante ficheiros de configuración.
+
+\section{Linguaxe: COE}
+Un pilar fundamental deste proxecto, tanto pola súa carga de traballo como pola
+súa relevancia dentro do sistema, é a elaboración dunha linguaxe de script nova
+para manexar o mundo de xogo por parte do DX. Esta foi a tarefa de maior
+prioridade, polo que se definiu e implementou antes de comezar co resto de
+compoñentes.
+\par
+Inicialmente valorouse a posibilidade de empregar algunha linguaxe xa existente
+para evitar o esforzo de crear unha nova. Isto tería o beneficio de aforrar
+moitísimo tempo e traballo, permitindo dedicar máis tempo a outros aspectos do
+proxecto como a interface web. A pesar diso, a decisión final foi a de crear
+unha linguaxe de cero, xa que o concepto do programa non ten precedentes e
+ningunha das linguaxes dispoñibles cubriría correctamente os distintos aspectos
+requeridos sen sacrificar facilidade de uso.
+\par
+A linguaxe recibiu o nome de \textbf{COE}, acrónimo de \textit{Código de
+Obxectos e Escenarios}. No apéndice \ref{ch:manual} deste documento pódese
+atopar un manual desta linguaxe orientado ao seu uso por parte de directores de
+xogo.
+\par
+COE conta cunha gramática de tipo LL \cite{compiladores}, que é analizada por un
+analizador sintáctico descendente de esquerda a dereita.
+\par
+A sintaxe da linguaxe COE está fortemente inspirada na de linguaxes amplamente
+difundidas como C ou Java. Está deseñada tendo en mente a súa finalidade e
+buscando a maior simplicidade posible. É importante resaltar que, no programa,
+o código sempre se executa nun de dous posibles contextos:
 \begin{itemize}
-  \item A linguaxe na que se fundamenta o sistema. O sistema precisa unha
-  linguaxe orientada a obxectos, na que se poidan especificar clases cos seus
-  atributos e métodos. Unha parte crucial deste traballo é a de describir
-  formalmente esta linguaxe de forma que cumpra a súa función de definir o
-  mundo virtual do xogo, tal e como se indican nos obxectivos deste
-  anteproxecto. Debe realizarse unha análise das solucións abertas dispoñibles,
-  e no caso de non atopar unha linguaxe que satisfaga todas as necesidades do
-  sistema, será necesario implementar unha de cero co seu correspondente
-  intérprete.
-  \begin{itemize}
-    \item Esta linguaxe deberá conter todo o necesario para un correcto
-    tratamento da información:
-    variables, operadores aritméticos e lóxicos, condicións lóxicas,
-    modificación de atributos, etc.
-    Todo isto debe ser debidamente especificado na etapa de deseño.
-  \end{itemize}
-  \item A interface web que tanto o director como os xogadores empregarán para
-  interactuar co mundo.
-  \begin{itemize}
-    \item Os xogadores poderán en todo momento ver o estado do seu personaxe e
-    ler o texto descritivo das accións sucedidas na súa presencia (redactado e
-    filtrado segundo o criterio do director de xogo), ademais de escribir en
-    linguaxe natural as actuacións que desexan realizar ({\it decisións} na
-    terminoloxía do sistema) na seguinte iteración ou quenda. En ningún momento
-    terán acceso á linguaxe de xogo propiamente dita, nin a datos do mundo
-    virtual alleos ao seu personaxe.
-    \item O director de xogo pola súa parte terá acceso a unha consola de comandos,
-    que lle permitirá alterar o mundo virtual mediante o uso da linguaxe de
-    xogo. Recibirá todas as peticións de actuación dos xogadores e escribirá o
-    código en consecuencia que deberá ser executado; en tempo de execución o 
-   director de xogo poderá instanciar novos obxectos, chamar aos métodos de
-   obxectos xa instanciados ou modificar os seus atributos directamente.
-  \end{itemize}
-  \item A capa de software que mantén o estado do mundo e xestiona o resto de
-  aspectos do sistema, tales como a xestión de usuarios, ademais de servir de
-  ponte entre o resto de compoñentes.
-  \item Outros compoñentes necesarios para o funcionamento do sistema: servidor
-  web e base de datos relacional.
+  \item No contexto de definición dunha clase, no que o script se empregará
+  exclusivamente en definir os campos e métodos dunha clase determinada.
+  \item No contexto dunha acción nun escenario, no que o script actuará sobre os
+  obxectos e variables do propio escenario onde se executa.
 \end{itemize}
-O software a entregar por tanto terá dous elementos diferenciados: a interface
-web, sen lóxica interna e que se limitará a enviar e recibir mensaxes, e o
-motor do xogo, que se conectará coa interface web para comunicarse, pero que
-debe deseñarse tendo en mente a posibilidade de incorporar outros modos de
-comunicarse con el no futuro, tales como software de escritorio para os
-usuarios. Estas vías alternativas e o seu desenvolvemento, en todo caso, non
-entran no alcance deste proxecto concreto.
 
-\section{Información adicional de interese}
-% métodos, técnicas ou arquitecturas utilizadas, xustificación da súa elección
-\subsection{Tecnoloxías empregadas}
+\section{Análise tecnolóxica}
+Antes de comezar con este proxecto foi fundamental realizar unha busca
+exhaustiva para coñecer as diferentes ferramentas dispoñibles no mercado. Non
+obstante, isto non se detivo en ningún momento do desenvolvemento do mesmo, xa
+que a medida que o proxecto avanzaba era inevitable que apareceran cambios nos
+requisitos, ou simplemente descubrir novas tecnoloxías dispoñibles, o que
+obrigaba a tomar decisións sobre a incorporación de novas ferramentas.
 
-\subsubsection{Java SE}
-Para o desenvolvemento do software deste Traballo de Fin de Grao escolleuse Java
-como linguaxe para os distintos compoñentes.
-Os principais argumentos a favor para realizar esta escolla foron os seguintes:
+\subsection{Linguaxe de programación: Java SE}
+Antes de comezar co desenvolvemento, unha das primeiras decisións que era
+necesario tomar era a escolla dunha linguaxe de programación concreta para os
+distintos compoñentes. Valoráronse distintas posibilidades tanto para o motor de
+xogo como para a interface web.
+\par
+No caso do motor de xogo, era necesaria unha linguaxe potente e que ofrecera un
+rendemento aceptable. Unha prioridade era que tivera dispoñibles librarías
+opensource (un requisito do proxecto) para poder xerar linguaxes propias, xa que
+era imprescindible para a elaboración da linguaxe COE.
+\par
+Considerouse no seu momento momento a posibilidade de empregar unha linguaxe
+funcional como Scala. Esta idea foi finalmente descartada debido a que a falta
+de experiencia con este tipo de linguaxes e a menor documentación provocarían
+dificultades e retrasos nun proxecto xa de por si complexo.
+\par
+Para o DemiurgoWeb valorouse empregar PHP como linguaxe, xa que a experiencia do
+programador con esta linguaxe é significativa, e resulta máis sinxelo e
+económico montar un servidor Apache para un programa en PHP que un servidor
+Tomcat para Java.
+Descartouse tamén pola dificultade de manter o código dun proxecto grande en PHP
+en comparación cun servidor en Java.
+\par
+Finalmente a linguaxe escollida foi Java. Os principais argumentos a favor
+para realizar esta escolla foron os seguintes:
 \begin{itemize}
   \item Java é unha linguaxe amplamente difundida, cunha extensa documentación
-  na rede. Ademais disto, o autor deste TFG está familiarizado coa súa sintaxe.
+  na rede. Ademais disto, o programador deste proxecto está relativamente
+  familiarizado coa súa sintaxe.
   \item Dispón de numerosas librarías que permiten desenvolver os distintos
   compoñentes do proxecto. Dispón en particular de ferramentas para desenvolver
   analizadores léxico-sintácticos, e de librarías para montar sistemas web.
@@ -70,21 +199,51 @@ Os principais argumentos a favor para realizar esta escolla foron os seguintes:
   Eclipse, entorno que se empregará neste proxecto.
 \end{itemize}
 
-\subsubsection{ANTLR}
-Un dos pilares centrais deste Traballo de Fin de Grao é a linguaxe de script
-empregada polo Director de Xogo para comunicarse co sistema. Debido á alta
-especifidade deste proxecto, optouse por deseñar unha linguaxe de
-cero no canto de adaptar unha linguaxe de propósito xeral.
+\subsection{Entorno de desenvolvemento: Eclipse}
+Aínda que non forme parte do entregable final, é importante comentar a elección
+do entorno do desenvolvemento polo seu impacto crítico no desenvolvemento do
+proxecto. A decisión final estaba entre Eclipse e Netbeans, xa que son as dúas
+linguaxes máis próximas á linguaxe Java e que ofrecen máis ferramentas útiles.
+Finalmente optouse por Eclipse, xa que conta con numerosos plugins para
+facilitar o desenvolvemento dos distintos compoñentes do sistema, a linguaxe
+COE entre eles.
+
+\subsection{Xerador de parsers: ANTLR}
+Como xa se comentou previamente, a definición e implementación da linguaxe COE é
+un dos aspectos críticos deste proxecto, requerindo a maior parte da carga de
+traballo do mesmo. Debido a isto, foi necesario buscar entre as distintas
+ferramentas do mercado para atopar unha que facilitara a interpretación do
+código, e evitar deste modo a necesidade de codificar un analizador
+léxico-sintáctico manualmente (co esforzo e tempo desmesurados que iso
+requeriría).
 \par
 Escolleuse ANTLR como ferramenta para deseñar a linguaxe e xerar os
 correspondentes analizadores léxico e sintáctico. ANTLR trátase dunha ferramenta
-que a partir dunha gramática elabora un analizador sintáctico descendente;
-grazas a isto podemos deseñar unha gramática que satisfaga os requisitos do
-proxecto e deixar en mans de ANTLR o proceso de parsing.
+que a partir dunha gramática LL(1) elabora un analizador sintáctico descendente;
+grazas a isto podemos centrarnos no deseño da gramática para que satisfaga os
+requisitos do proxecto, e deixar en mans de ANTLR o proceso de implementación
+do \textit{parser} (recoñecedor de linguaxe).
+\par
+O principal motivo polo que se escolleu ANTLR sobre outras ferramentas foi a súa
+capacidade de xerar código en Java de forma directa.
 
-\subsubsection{Servizos web: Grizzly + Jersey}
-Para a comunicación entre o servidor de xogo e o servidor web valoráronse
-distintas posibilidades e métodos. Unha primeira aproximación suxeriu o uso de
+\subsection{Apache Maven}
+Tanto no Demiurgo como no DemiurgoWeb, decidiuse empregar Maven para
+xestionar os diversos paquetes e dependencias, así como os distintos elementos
+software de ambos compoñentes.
+As principais vantaxes disto son:
+\begin{itemize}
+  \item Ofrece unha estrutura de directorios estandarizada que facilita o
+  mantemento do código de cara ao futuro do proxecto.
+  \item Simplifica a xestión de dependencias, descargando de forma automática os
+  paquetes necesarios e aforrando tempo neste aspecto.
+  \item Simplifica a execución de tests no código.
+\end{itemize}
+
+\subsection{Servizos REST}
+Un aspecto importante do sistema era a forma na que a interface web (e outras
+posibles interfaces futuras non contempladas no alcance deste proxecto) se
+comunicaría co motor de xogo. Unha primeira aproximación suxeriu o uso de
 Java RMI para comunicar ambos compoñentes, aproveitando o feito de que ambos
 corrían sobre JVM. Non obstante, optouse finalmente por descartar esta
 opción e empregar servizos web de tipo REST en base ás seguintes cuestións:
@@ -94,171 +253,126 @@ opción e empregar servizos web de tipo REST en base ás seguintes cuestións:
   do sistema no futuro; empregando servizos web ábrese a porta a comunicarse co
   servidor de xogo mediante outras aplicacións desenvolvidas noutras
   tecnoloxías.
-  \item Java RMI é unha tecnoloxía menos flexible cós servizos
-  web, de mantemento máis complexo e que pode xerar dificultades cando os dous
+  \item Java RMI é unha tecnoloxía menos flexible cós servizos web, de
+  mantemento máis complexo e que pode xerar dificultades cando os dous
   servidores se atopan en distintas ubicacións físicas. Pola contra, os servizos
   web só requiren dunha conexión vía HTTP entre ambos servidores, polo que son
   máis fáciles de empregar.
   \item Con Java RMI é necesario compartir código entre ambos servidores a
-  través de librarías comúns para poder compartir POJOs ({\it Plain Old Java
-  Objects}). Mediante os servizos web, en cambio, a comunicación pode realizarse
-  mediante obxectos JSON.
+  través de librarías comúns para poder compartir POJOs (\textit{Plain Old
+  Java Objects}). Mediante os servizos web, en cambio, a comunicación pode
+  realizarse mediante obxectos JSON, totalmente independentes do entorno.
 \end{itemize}
-Para implementar os servizos web optouse por empregar as librarías Grizzly e
-Jersey, por tratarse da opción máis sinxela para poñer en funcionamento o
-servidor. Por un lado, Grizzly ofrece todo o necesario para poder montar un
-servidor web sen necesidade de programas adicionais, empregando simplemente o
-executable da nosa aplicación. Polo outro, Jersey encárgase da recepción,
-manipulación e resposta das peticións web recibidas, axilizando a
-implementación do sistema.
+Os servizos REST esencialmente fundaméntanse nos propios métodos de HTTP: GET,
+POST, PUT e DELETE. As peticións web son simples peticións por HTTP que conteñen
+obxectos JSON no corpo da mensaxe. Para este proxecto, todos os métodos son de
+tipo POST ou GET, pero poderían empregarse métodos distintos se se considerase
+necesario; a elección do método baséase no seguimento duns estándares, mais non
+afecta realmente ao funcionamento.
 
-\subsubsection{Apache Maven}
-Tanto no servidor de xogo como no servidor web, decidiuse empregar Maven para
-xestionar os distintos paquetes e dependencias. As principais vantaxes disto
-son:
-\begin{itemize}
-  \item Ofrece unha estrutura de directorios estandarizada que facilita o
-  mantemento do código.
-  \item Simplifica a xestión de dependencias, descargando de forma automática os
-  paquetes necesarios.
-  \item Simplifica a execución de tests no código.
-\end{itemize}
-
-\subsubsection{Spring Framework}
-Spring é un Framework que facilita o desenvolvemento de aplicacións complexas.
-Ten módulos útiles para todo tipo de tarefas, tales como montar un servidor web,
-empregar o patrón modelo-vista-controlador ou executar tests de JUnit. A
-principal característica de Spring é a inxección de dependencias, que simplifica
-o control do ciclo de vida dos obxectos: crear os obxectos, chamar aos seus
-métodos de inicialización, e referencialos entre eles.
+\subsection{Servidor web do motor de xogo: Grizzly}
+O motor de xogo precisa de ofrecer un \textit{endpoint} ao que se lle poidan
+facer peticións web, polo que foi necesario buscar unha solución para isto que
+permitira manter a funcionalidade do motor intacta. A escolla dos servizos REST
+sobre Java RMI realizouse nun momento no que o Demiurgo xa tiña un certo nivel
+de profundidade, polo que un requisito para a ferramenta a escoller era que non
+requerira modificar severamente o código.
 \par
-Neste proxecto empregaremos Spring no compoñente web, é dicir, Spring axudará a
-crear un servidor web que se conecte co servidor de xogo. Deste modo, aforrarase
-tempo que poderá ser empregado no deseño da web.
+Grizzly é unha ferramenta que permite que un executable Jar normal poida montar
+un servidor web sen necesidade de usar contenedores como Tomcat. Nese sentido,
+escolleuse por tratarse da opción máis sinxela para resolver o problema. Ademais
+disto, outro factor determinante foi a facilidade para empregar Grizzly en
+conxunto con Jersey, unha ferramenta para crear servizos REST.
 
-\subsubsection{MariaDB}
-MariaDB é un xestor de bases de datos derivado de MySQL. Empregaremos bases de
-datos MariaDB no noso proxecto para manter a persistencia do sistema de xogo.
+\subsection{Xestor de servizos REST: Jersey}
+Jersey e Grizzly son dúas librarías que foron escollidas simultaneamente xa que,
+como se comentou na subsección de Grizzly, son librarías que ofrecen gran
+facilidade para empregarse xuntas, e hai numerosos manuais en internet para
+crear servidores con estas dúas ferramentas. A finalidade de Jersey neste
+sentido é a de crear \textit{endpoints} nos que implementar os servizos REST que
+precisemos, os cales se encargará Grizzly de publicar nun servidor para recibir
+peticións.
 
-\subsubsection{Git}
+\subsection{Spring Framework}
+Spring é un Framework de Java que facilita o desenvolvemento de aplicacións
+grandes. A principal característica de Spring é a inxección de dependencias, que
+simplifica o control do ciclo de vida dos obxectos: crear os distintos
+compoñentes, inicializalos e manter as referencias entre eles. A maiores, dispón
+de módulos útiles para todo tipo de tarefas, tales como montar servidores web,
+empregar o patrón modelo-vista-controlador ou executar tests de JUnit.
+\par
+Neste proxecto empregaremos Spring no DemiurgoWeb. Debido a isto, será necesario
+invertir algo de tempo en familiarizarse co funcionamento de Spring, pero unha
+vez superado isto axilizará enormemente a implementación do compoñente web e o
+seu mantemento.
+
+\subsubsection{Spring Boot}
+Spring Boot é un módulo de Spring que permite crear ficheiros Jar executables
+sen necesidade de empregar Tomcat ou ferramentas similares; Spring Boot
+introduce Tomcat no interior do ficheiro Jar para obter un efecto semellante ao
+que conseguimos no Demiurgo con Grizzly. Ademais disto, é posible configuralo
+para empregar ficheiros WAR que funcionen como executables e tamén para montar
+en contenedores web, ofrecendo maior versatilidade. Deste modo, aforramos tempo
+ao evitar os erros que se puideran cometer na configuración de contenedores web.
+
+\subsubsection{Spring Web}
+Spring ofrece numerosas ferramentas para o desenvolvemento de aplicacións web.
+No canto de precisar servlets para as distintas webs, Spring ofrece un servlet
+propio que xestiona as distintas peticións e as redirixe aos controladores e
+vistas correspondentes, sen necesidade de ficheiros de configuración adicionais.
+Este módulo, e o Framework en conxunto, facilitan moito a división do código en
+modelo, vista e controlador.
+
+\subsubsection{Thymeleaf}
+Thymeleaf é un motor que nos permite enriquecer o código HTML das vistas de
+Spring para dotalo de funcionalidade, e deste modo mostrar os datos do modelo
+que o controlador lle proporciona. Inicialmente considerouse empregar JSP para
+este fin, pero a opción final foi Thymeleaf por varios motivos:
+\begin{itemize}
+  \item Thymeleaf é unha linguaxe máis nova e con maior potencia que JSP.
+  \item Thymeleaf é plenamente compatible con Spring e a interacción entre ambos
+  é moi natural.
+  \item Thymeleaf emprega ficheiros HTML e non precisa de etiquetas adicionais,
+  a diferencia de JSP, que emprega ficheiros JSP coas súas propias etiquetas;
+  isto permite que os ficheiros HTML poidan ser visualizados directamente nun
+  navegador con datos de proba sen necesidade de montar o servidor.
+\end{itemize}
+
+\subsection{Javascript}
+No apartado web empregouse Javascript para ofrecer contidos dinámicos nas
+distintas páxinas, e deste modo ofrecer unha interface máis amigable de cara ao
+usuario. A día de hoxe a inmensa maioría de usuarios empregan Javascript na súa
+navegación habitual.
+
+\subsubsection{JQuery}
+JQuery é unha libraría de Javascript que ofrece numerosas facilidades para facer
+accións complexas dentro da páxina. A maiores, moitos plugins que engaden
+funcionalidades avanzadas empregan JQuery como dependencia.
+
+\paragraph{JQuery UI:}
+JQuery UI é un plugin de JQuery que facilita o uso de \textit{drag-and-drop} na
+páxina (arrastrar e soltar). Empregouse en determinados puntos da web para
+facilitar a elaboración de scripts por parte do DX.
+
+\subsubsection{CodeMirror}
+CodeMirror é un plugin baseado en Javascript nativo que ofrece unha área de
+texto destinada á escritura de código con funcionalidades que o
+\textit{textarea} de HTML non ofrece, como resaltar a sintaxe do código ou
+acceder a posicións do texto mediante liña e columna, por exemplo. Moi útil á
+hora de redactar código COE.
+
+\subsection{Base de datos: MariaDB}
+Un dos requisitos do proxecto era a persistencia dos datos unha vez o sistema
+deixa de funcionar. Para iso é necesario o uso de bases de datos, e con elas, de
+sistemas xestores de bases de datos.
+\par MariaDB é un xestor de bases de datos derivado de MySQL. Optouse polo uso
+de MariaDB pola súa plena compatibilidade con MySQL e pola súa alta velocidade.
+
+\subsection{Control de versións: Git}
 Git é unha ferramenta para desenvolvedores que xestiona os cambios realizados no
 código, mantendo un control de versións e facilitando o desenvolvemento de
 software.
 \par
-Neste proxecto empregaremos repositorios Git para os distintos compoñentes.
-Usaremos Github para almacenar estes repositorios nun lugar publicamente
-accesible.
-
-%Deseño: cómo se realiza o Sistema, a división deste en diferentes compoñentes e
-%a comunicación entre eles. Así mesmo, determinarase o equipamento hardware e
-%software necesario, xustificando a súa elección no caso de que non fora un
-%requisito previo. Debe achegarse a un nivel suficiente de detalle que permita
-%comprender a totalidade da estrutura do produto desenvolvido, utilizando no 
-%posible representacións gráficas.
-
-O sistema deste proxecto está inicialmente dividido en dous compoñentes ben
-diferenciados pero comunicados entre si:
-\begin{itemize}
-  \item O servidor de xogo, co nome interno de {\it Demiurgo},
-  compoñente fundamental do sistema encargado de xestionar internamente os
-  mundos de xogo.
-  \item O servidor web co que interactuarán os usuarios, que terá como cometido
-  facer de ponte entre usuarios e servidor de xogo sen aplicar ningunha lóxica
-  interna.
-\end{itemize}
-
-Estes dous compoñentes comunícanse entre si mediante servizos web de tipo REST:
-o servidor web recibe peticións dos usuarios e fai peticións ao servidor de
-xogo mediante o envío de obxectos JSON a través de HTTP.
-
-\section{Servidor de xogo: Demiurgo}
-O servidor do xogo contén todo o necesario para manter unha partida de rol:
-mantemento e xestión do universo de xogo, e xestión de usuarios. A comunicación
-con el realízase por medio de servizos web. O nome que se lle deu a este
-software é {\it Demiurgo}.
-\subsection{Linguaxe COE}
-O sistema precisa dunha linguaxe de script que permita ao Director de
-Xogo manipular os obxectos que compoñen o mundo. Esta linguaxe desenvolveuse
-mediante a ferramenta ANTLR, e déuselle o nome de {\bf COE} (acrónimo de {\it
-Código de Obxectos e Escenarios}). Esta é unha linguaxe orientada a obxectos
-cunha sintaxe que lembra a Java ou C++, pero especializada na xestión de
-partidas de rol.
-\par
-O funcionamento desta linguaxe defínese con maior detalle no capítulo 5 deste
-documento.
-
-\subsection{Universo de xogo}
-O servidor é o encargado de manter en memoria todos os obxectos que poboan o
-universo do xogo, ademais de almacenar tamén as clases e os usuarios. Todo isto
-é almacenado en forma de {\it POJOs} ({\it Plain Old Java Objects}), é dicir,
-obxectos Java. A medida que o servidor executa código enviado polo Director de
-Xogo, o universo modifícase segundo sexa preciso, creando e modificando
-obxectos do xogo.
-\par
-Todos os obxectos de xogo, como se precisou en capítulos anteriores, están
-vinculados a escenarios creados polo propio Director de Xogo. Estes escenarios
-tamén son almacenados neste universo de xogo.
-\par
-Nun mesmo servidor é posible ter varios universos de xogo en funcionamento. Os
-distintos universos non teñen ningún tipo de comunicación entre si: funcionan
-como compartimentos estancos.
-\par
-Nos anexos pódense atopar os diagramas de clases que detallan polo miúdo o
-universo de xogo.
-
-\subsection{Servizos REST}
-A comunicación co servidor de xogo realízase mediante o uso de servizos web
-de tipo REST.
-O servidor provee de todas as funcións necesarias para o seu correcto manexo, que
-serán empregadas tanto polo servidor web como por potenciais terceiras
-aplicacións.
-\par
-Estes servizos realízanse enviando obxectos JSON vía HTTP, que conterán todos os
-datos precisos que a función requira. O servidor pola outra banda responde con
-JSON que conteñen os datos requeridos, ou unha confirmación como mínimo.
-\par
-Todas as peticións REST requiren autenticación do usuario. Unha petición
-de login recibe o nome do usuario e o contrasinal, devolvendo un token que
-identificará ao usuario nas posteriores peticións. Este token cifrado contén o
-nome de usuario e os seus permisos, diferenciando deste modo entre xogadores e
-directores de xogo. Debido a isto, o servidor non precisa almacenar o estado dos
-usuarios conectados.
-
-\subsection{Base de datos}
-O servidor de xogo comunícase cunha base de datos SQL para garantir a
-persistencia do universo de xogo. Nesta almacénase o estado de todos os obxectos
-e escenarios. O estado cárgase da base de datos cando se inicia o programa, e
-gárdase cando se finaliza a súa execución.
-
-\section{Servidor web}
-O servidor web mostra unha interface amigable de cara aos usuarios para poder
-acceder ao sistema. Non ten lóxica interna: a súa función exclusiva é a 
-comunicación co servidor de xogo.
-\par
-Neste proxecto, a maior parte da carga de traballo irá destinada ao servidor de
-xogo por ser o compoñente maior, polo que a complexidade do servidor web é
-reducida. Isto non quita que poda ser mellorado no futuro.
-
-\subsection{Spring Framework}
-O servidor web está desenvolvido mediante o uso de Spring Framework, unha
-libraría opensource para Java que ofrece ferramentas para crear un produto
-software completo. Grazas a este framework é posible centrarse no deseño da web
-e reducir o tempo de traballo en cuestións técnicas.
-\par
-Spring ofrécenos un {\it servlet} que podemos configurar mediante un ficheiro
-XML de configuración. Este servlet conta cun xestor de vistas, co cal podemos
-enlazar os ficheiros que conteñen as vistas (ficheiros {\it jsp}) coas clases
-Java que se encargan de recibir e mostrar os datos ({\it Controllers}).
-
-\subsubsection{Vistas}
-O código HTML que determina o aspecto visual das distintas páxinas está contido
-en ficheiros JSP. Ademais de HTML, inclúense etiquetas JSP para introducir os
-datos obtidos mediante o controlador asociado. Tamén se emprega a libraría JSTL
-para poder empregar certas funcionalidades (como bucles e condicionais) que
-faciliten a representación destes datos.
-
-\subsubsection{Controladores}
-Os controladores son clases Java que se encargan de procesar os datos
-transmitidos entre o usuario e o servidor de xogo. Cada controlador ten unha
-vista asociada, que o servlet de Spring localiza polo seu nome e devolve ao
-usuario, engadindo previamente o controlador os datos necesarios.
+Neste proxecto empregaremos repositorios Git para os distintos compoñentes, xa
+que é unha ferramenta coa que o programador está familiarizado, e pola
+posibilidade de manter repositorios públicos na web GitHub de forma gratuíta.
