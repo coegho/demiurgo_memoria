@@ -1,8 +1,835 @@
-\chapter{Manuais de usuario}
+\chapter{Manual de usuario}
 \label{ch:manual}
 
-Manuais de usuario: incluirán toda a información precisa para aquelas persoas
-que utilicen o Sistema: instalación, utilización, configuración, mensaxes de
-erro, etc. A documentación do usuario debe ser autocontida, é dicir, para o seu
-entendemento o usuario final non debe precisar da lectura de outro manual
-técnico.
+\section{Introdución}
+A linguaxe COE (acrónimo de Código de Obxectos e Escenarios) é a linguaxe
+empregada nas partidas no Demiurgo, o software de xestión de
+partidas de rol asíncronas. O director de xogo ({\it DX}) pode escribir código
+en COE para definir clases no mundo de xogo, e para realizar accións nos escenarios nas que
+os distintos obxectos interactúan entre si.
+\par
+A finalidade deste manual é definir esta linguaxe e ensinar a darlle uso para
+poder empregar todas as funcionalidades do Demiurgo sen dificultade, ofrecendo
+para isto definicións formais, explicacións e exemplos en cada apartado. Grazas
+a este sistema, o DX pode manter un mundo loxicamente coherente que lle faga de
+soporte á hora de levar as partidas, evitando así erros e automatizando en gran
+medida o apartado técnico das mesmas.
+
+
+
+
+\section{Escenarios, clases e obxectos}
+Un mundo de xogo de Demiurgo está composto por obxectos, cada un dos cales
+segue a definición dunha clase e atópase dentro dun escenario. A medida que
+a partida avanza, os distintos obxectos créanse, modifícanse, móvense dun
+escenario a outro e interactúan entre eles.
+\subsection{Exemplo dunha situación}
+Expresaremos unha situación normal do xogo mediante este exemplo:
+\par
+{\it A situación transcorre na taberna da capital do reino. Tres ananos están
+nun recuncho discutindo entre eles acaloradamente. Detrás da barra pódese ver ao
+taberneiro, un home corpulento que se distrae limpando un vaso. Detrás da barra
+ten un mosquetón agochado por se as cousas se poñen feas, e por se acaso non
+lle quita ollo aos ananos.}
+\par
+En base a esta descrición da situación, o director de xogo pode definir
+internamente o seguinte:
+\begin{itemize}
+  \item Un escenario que se corresponde coa {\bf taberna}. O escenario debería
+  ter un nome recoñecible para o director de xogo, como por exemplo {\it
+  /reino/capital/taberna}, máis iso explicarase máis en detalle
+  en \ref{subsec:nome-escenarios}.
+  \item Como mínimo {\bf 5 obxectos}: \begin{itemize}
+    \item Tres obxectos que representen aos {\bf ananos}. Xa que son tres
+    obxectos moi semellantes, o normal é que pertenzan á mesma clase; por
+    exemplo, unha clase chamada {\it Anano}. Máis isto non é unha norma,
+    dependerá de como o director de xogo teña definido o mundo.
+    \item Un obxecto que represente ao {\bf taberneiro}. Pode pertencer a unha
+    clase diferenciada da dos ananos (como {\it Humano}); non obstante, ben poden
+    pertencer tanto o taberneiro como os ananos a unha mesma clase {\it
+    Intelixente} ou {\it Criatura}, por exemplo.
+    \item Un obxecto que faga referencia á {\bf barra}, xa que o {\bf mosquetón}
+    que contén pode resultar relevante no futuro. Por tanto, o normal sería  que
+    houbese un obxecto que representase á barra (de clase {\it Mobiliario} por
+    exemplo), e no seu interior se atopase un inventario que conteña ao obxecto
+    mosquetón (de clase {\it Mosquetón}). Explicarase con detalle o concepto dos
+    inventarios en \ref{subsec:inventarios}.
+  \end{itemize}
+\end{itemize}
+\par
+Esta configuración é un simple exemplo que non ten por que cumprirse ao
+100\% nunha partida real, pero da unha idea do concepto. Poñamos agora outro
+exemplo: na mesma situación, comezan a suceder cousas.
+\par
+{\it Parece que a discusión dos ananos chega a un punto crítico. Dous deles
+deciden simultaneamente que non poderán resolver as súas diferencias mediante a
+diplomacia, polo que deciden sacar os puños e golpearse mutuamente. O
+taberneiro, que non lles quitaba ollo, saca o mosquetón como resposta por se
+comeza unha escalada de violencia.}
+\par
+Isto pode suceder por dous motivos: os dous ananos son personaxes
+controlados por xogadores e ambos tomaron a mesma decisión (golpear ao outro) ao
+mesmo tempo; ou ben son personaxes non xogadores ({\it NPC}, {\it non player
+character}) e foi o propio DX o que tomou a decisión por eles (para que outros
+xogadores no escenario presenciaran isto, por exemplo).
+\par
+En calquera caso, o que lle corresponde ao DX é executar o código necesario para
+cambiar o estado do mundo. O código a redactar debe facer tres cousas:
+\begin{enumerate}
+  \item Un dos ananos debe {\bf golpear} ao outro, cos cambios que iso implique
+  (por exemplo, reducir o seu campo {\it vida}).
+  \item O segundo anano debe {\bf golpear} ao primeiro.
+  \item O mosquetón debe deixar de estar no inventario da barra e debe
+  {\bf moverse} ao inventario do taberneiro.
+\end{enumerate}
+\par
+Este sería un exemplo de como podería ser este código:
+\begin{lstlisting}
+anano1.golpear(anano2)
+anano2.golpear(anano1)
+barra.contidos[0] >> taberneiro.inventario
+\end{lstlisting}
+\par
+Como entendemos este código? Temos unha variable anano1 que fai referencia ao
+obxecto {\it Anano} que da o primeiro golpe, unha variable anano2 que fai
+referencia ao segundo, unha variable {\it barra}, unha variable {\it
+taberneiro}, e un método {\it golpear()} definido para a clase {\it Anano}. Este
+código enténdese así:
+\begin{enumerate}
+  \item O obxecto correspondente á variable anano1 executa o {\bf método}
+  {\it golpear()}, collendo o obxecto da variable anano2 como argumento. Este
+  método, definido na clase {\it Anano}, reduce a vida do anano seleccionado
+  como argumento. Explicarase máis en detalle isto na sección
+  \ref{subsec:metodos}.
+  \item O mesmo que no anterior, pero ao revés.
+  \item O primeiro obxecto ({\it [0]}) dos contidos da barra (''contidos'' é un
+  inventario da clase {\it Mobiliario}), que neste caso entendemos que é o
+  mosquetón, {\bf móvese} (>>) ao inventario do taberneiro. 
+\end{enumerate}
+
+\subsection{Escenarios}
+\subsubsection{Definición de escenario}
+O mundo de xogo está dividido en escenarios (tamén chamados {\it habitacións}
+polo seu homólogo {\it rooms} en inglés). Cada escenario está composto por:
+\begin{itemize}
+  \item O seu nome, sobre o cal falaremos na subsección
+  \ref{subsec:nome-escenarios}.
+  \item O conxunto de obxectos que se atopan ''dentro'' do escenario.
+  \item As variables do escenario, as cales poden conter datos tales como
+  números enteiros ou texto, pero tamén referencias a obxectos ou outros
+  escenarios.
+\end{itemize}
+\par
+O escenario forma unha unidade lóxica fundamental no mundo de xogo, e o habitual
+é que as accións en cada escenario afecten só aos obxectos do propio escenario
+(aínda que pode haber excepcións).
+
+\subsubsection{Nome do escenario}
+\label{subsec:nome-escenarios}
+O nome de escenario serve para que o DX o identifique rapidamente. Ademais de
+ofrecer un nome descritivo, o nome completo permite organizar os escenarios
+nunha estrutura xerárquica, cunha lóxica semellante á das rutas de ficheiros nos
+sistemas operativos.
+\par
+Exemplo:
+\begin{lstlisting}
+/continente/reinohumano/cidadecapital/armeria
+/continente/reinohumano/cidadecapital/taberna
+/continente/reinohumano/aldeacosteira
+\end{lstlisting}
+\par
+Estes tres escenarios atópanse dentro de /continente/reinohumano, é dicir,
+na estrutura lóxica do mundo de xogo están dentro do mesmo reino, o cal forma
+parte do continente. A maiores, os dous primeiros están na mesma cidade. Estes
+compoñentes normalmente reciben o nome de {\it rexións}, pero poden ter o
+significado semántico que o DX de xogo prefira, por exemplo, nunha partida
+futurista poderíamos atopar algo como:
+\begin{lstlisting}
+/planetamarte/coloniahumana/suburbios/casa3/cocinha
+/planetamarte/orbita/sateliteflotante/laboratorio
+/espazoexterior/zonadeasteroides
+\end{lstlisting}
+\par
+Por último, o DX pode renunciar completamente a usar a xerarquía de escenarios,
+aínda que iso pode dificultar o nomeado de escenarios:
+\begin{lstlisting}
+/chairas_da_capital_humana
+/sala_do_gran_mago
+\end{lstlisting}
+\par
+É importante ter en conta que o nome dos escenarios só pode estar composto por
+caracteres alfanuméricos e barras baixas, e non pode conter letras que non
+formen parte do alfabeto inglés (tales como {\it ñ} ou {\it ç}). O nome completo
+sempre debe comezar por /. Por último, o Demiurgo non distingue entre
+minúsculas e maiúsculas.
+\par
+Nota: {\it /} en si mesmo pode ser un escenario, o coñecido como {\it escenario
+raíz}, pero non é habitual o seu uso.
+
+\subsubsection{Contido do escenario}
+O escenario pode conter obxectos (e de feito é habitual que os conteña). Estes
+obxectos á súa vez poden dispoñer de inventarios (ver
+subsección \ref{subsec:inventarios}) que conteñan outros obxectos. Mediante a
+interface gráfica, o DX pode ver os distintos obxectos do escenario para operar
+con eles no código.
+
+\subsubsection{Variables}
+O DX pode definir variables no escenario a través do código. Estas variables
+están accesibles dende o propio escenario e poden ter todo tipo de utilidades.
+Por exemplo, é habitual referenciar os obxectos do escenario en variables para
+poder manexalos co código máis facilidade.
+\par
+Exemplo: Imaxinemos que no escenario temos un obxecto que representa a un
+trasno. O obxecto ten un identificador propio ({\it ID}) que é \#1234 (ver
+sección \ref{sec:obxectos}).
+No momento de querer actuar, se non empregamos variables precisamos referirnos a
+el co seu ID:
+\begin{lstlisting}
+#1234.facerTrasnadas()
+if(#1234.famento == true)
+  ! "O trasno ten bastante fame"
+\end{lstlisting}
+\par
+En cambio, se temos unha variable cun nome descritivo (por exemplo, {\it
+trasno}) podemos codificalo así:
+\begin{lstlisting}
+trasno.facerTrasnadas()
+if(trasno.famento == true)
+  ! "O trasno ten bastante fame"
+\end{lstlisting}
+\par
+Outro uso frecuente das variables é gardar datos. Neste exemplo tírase un dado
+de 20 caras e móstrase un texto ou outro segundo o resultado:
+\begin{lstlisting}
+int resultado = d20
+if(resultado > 10) {
+  ! "A accion tivo exito"
+}
+if(resultado < 3) {
+  ! "A accion foi un fracaso absoluto"
+}
+\end{lstlisting}
+
+
+
+\subsection{Clases}
+\label{sec:clases}
+As clases son definicións empregadas a modo de modelo para crear obxectos. Todos
+os obxectos que teñan a mesma clase terán unha serie de métodos e campos
+comúns definidos na propia clase.
+\par
+Nesta sección explicarase como funcionan as clases e todo o relacionado con
+elas. No capítulo \ref{ch:definicion} explícase polo miúdo a sintaxe formal para
+crear clases.
+\subsubsection{Campos}
+Os campos son variables vinculadas aos obxectos, e a súa finalidade é
+almacenar datos relacionados con eles. Por exemplo, nun mundo de rol de fantasía
+medieval, é habitual atopar nos personaxes campos como forza, axilidade ou
+intelixencia. Nun mundo con máquinas de guerra, normalmente atoparemos campos
+como a potencia de disparo ou o blindaxe. E tamén podemos atopar campos en
+obxectos inanimados, como o peso, o prezo, a cor, etcéra.
+\par
+Os campos defínense coa clase, e cando é creado un obxecto desa clase,
+automaticamente pasa a posuír todos os campos da mesma.
+\par
+Exemplo:
+\begin{lstlisting}
+elfo {
+  int forza = 1
+  int axilidade = 3
+  int constitucion = 1
+  int intelixencia = 2
+  int vida
+}
+\end{lstlisting}
+\par No exemplo vemos a definición dunha clase chamada {\it Elfo}. Como vemos,
+os elfos teñen os campos forza, axilidade, constitución, intelixencia e vida,
+os cales son números enteiros {\it int} e teñen asignados uns valores por
+defecto (excepto vida).
+Cando se crean obxectos da clase {\it Elfo} automaticamente xorden con eses
+campos, pero o seu valor pode ser modificado posteriormente.
+
+\subsubsection{Métodos}
+\label{subsec:metodos}
+Cada clase pode ter definidos unha serie de métodos. Os métodos son fragmentos
+de código relacionados coa clase que poden ser invocados en calquera momento do
+xogo, útiles para simplificar procesos repetitivos.
+\par Por exemplo:
+\begin{lstlisting}
+elfo {
+  bendicir(elfo outro) {
+    outro.vida = outro.vida + 5
+    ! "O elfo foi bendecido"
+  }
+}
+\end{lstlisting}
+\par No exemplo, a clase {\it Elfo} dispón dun método {\it bendicir()} que recibe
+como argumento un obxecto {\it Elfo} (outro elfo ou el mesmo!) e aumenta a súa
+vida en 5. Deste modo, o DX non precisa escribir ese código cada vez que queira
+facer que un elfo bendiga a outro, e pode invocalo do seguinte xeito:
+\begin{lstlisting}
+elfo1.bendicir(elfo2)
+\end{lstlisting}
+\paragraph{Argumentos}
+Vimos no exemplo do método {\it bendicir()} que o código fai referencia a unha
+variable chamada {\it outro}. Isto é porque o ámbito dun método está reducido ao
+obxecto que o invoca e aos argumentos que recibe; isto é, non pode acceder ás
+variables do escenario.
+\par
+Cada método pode ter definidos un número indeterminado de argumentos de entrada,
+e un argumento de saída (ou ningún). Todos estes argumentos deben especificar o
+tipo, sexa un tipo primitivo como número enteiro ou texto, ou a clase se se
+trata dun obxecto. Se a chamada do método se realiza con argumentos incorrectos
+(por exemplo, enviando un obxecto dunha clase incorrecta, ou enviando un texto
+cando require un número) o Demiurgo devolverá un erro.
+\par
+Dixemos que no ámbito dos métodos tamén está o obxecto que o invoca. Isto
+faise mediante a variable {\it this}:
+\begin{lstlisting}
+elfo {
+  ceder_vida(elfo outro) {
+    outro.vida = outro.vida + 5
+    this.vida = this.vida - 5
+  }
+}
+\end{lstlisting}
+\par
+Os argumentos sempre teñen prioridade sobre os campos do obxecto en caso de que
+os nomes coincidan; debido a isto, o uso de {\it this} é necesario para
+referirse aos campos do obxecto cando isto suceda.
+
+\paragraph{Construtor}
+\label{subsubsec:construtor}
+Por último, hai un método especial moi importante chamado {\bf construtor}, que
+se executa automaticamente no momento de crear o obxecto. É útil por tanto para
+inicializar clases. O construtor recoñécese polo feito de chamarse igual ca
+clase. No caso de ter argumentos, é necesario especificalos na creación do
+obxecto:
+\begin{lstlisting}
+elfo {
+  int idade
+  str nome
+  elfo(int novaidade, str novonome) {
+    this.idade = novaidade
+    this.nome = novonome
+  }
+}
+\end{lstlisting}
+\par E no momento de crealo:
+\begin{lstlisting}
+elfo legolas = new elfo(100, "Legolas o elfo")
+\end{lstlisting}
+
+\subsubsection{Herdanza de clases}
+Un aspecto fundamental das clases é a herdanza das mesmas. Unha clase pode
+especificarse como herdeira ou filla doutra clase, e deste modo herdará todos os
+campos e métodos da clase pai. Esta característica, propia das linguaxes
+orientadas a obxectos, permite aforrar moito traballo:
+\begin{lstlisting}
+animal {
+  int altura
+  str cor
+  int peso
+  str ruido
+  
+  facerRuido() {
+  ! "este animal fai " + ruido
+  }
+}
+
+can : animal {
+  str tipoPelo
+  str raza
+  
+  can() {
+    ruido = "guau"
+  }
+}
+\end{lstlisting}
+\par
+Outra utilidade da herdanza é que podemos gardar un obxecto da clase filla nunha
+variable da clase pai. Por exemplo:
+\begin{lstlisting}
+personaxe {
+  int vida = 10
+}
+
+guerreiro : personaxe {
+  int ataque = 5
+  int vida = 20
+  atacar(personaxe outro) {
+    outro.vida = outro.vida - ataque 
+  }
+}
+\end{lstlisting}
+\par Neste exemplo, o método {\it atacar()} pode recibir un personaxe como
+argumento, ou calquera obxecto dunha clase filla (como outro guerreiro).
+
+\paragraph{Clase Object}
+Realmente todas as clases herdan dalgunha outra clase. Se a clase pai non é
+definida, esta será automaticamente a clase {\it Object}, unha clase auxiliar
+que non conta con campos. É posible crear obxectos da clase Object
+directamente, pero realmente non aportan demasiado ao xogo xa que non conteñen
+valor semántico ningún.
+
+\subsection{Obxectos}
+\label{sec:obxectos}
+Os obxectos son o elemento central do xogo. Cada obxecto representa a unha
+entidade no xogo, que pode ser física (como un cervo ou unha mesa) ou un
+concepto (como un estado alterado ou unha idea). Todos os obxectos teñen as
+seguintes características:
+\begin{itemize}
+  \item Identifícanse individualmente por un número enteiro coñecido como ID.
+  \item Correspóndense cunha clase determinada.
+  \item Atópanse nunha localización determinada, que pode ser un escenario, ou o
+  inventario de outro obxecto.
+\end{itemize}
+\par
+Os obxectos dispoñen dos campos definidos pola súa clase, e poden chamar
+métodos da mesma. Estes aspectos explicáronse na sección ''Clases'' na sección
+\ref{sec:clases}.
+
+\subsubsection{Inventarios}
+\label{subsec:inventarios}
+Os obxectos poden dispoñer duns campos especiais que non existen no caso das
+variables de escenario: os inventarios. Un inventario é unha localización
+vinculada a un determinado obxecto. Os inventarios, como o resto de campos,
+defínense na definición da clase, pero a diferencia do resto de campos non
+poden ser reasignados: o obxecto nace cos seus
+inventarios e só desaparecerán cando desapareza o obxecto.
+\par Exemplo:
+\begin{lstlisting}
+heroe {
+  % inventario
+  % estados
+  
+  personaxe() {
+    new espada() >> inventario
+  }
+}
+\end{lstlisting}
+\par
+No exemplo podemos ver como a clase {\it Heroe} conta con dous
+inventarios: un deles chámase ''inventario'' directamente, e o outro
+''estados''. No construtor da clase (ver \ref{subsubsec:construtor})
+especifícase que no momento de crearse o obxecto, crearase tamén un obxecto de
+clase {\it Espada} e gardarase no inventario.
+\par
+Os inventarios, a pesar de ter este nome, poden ter o valor semántico que desexe
+o DX: poden conter os tesouros que atopara o personaxe, conter unha lista de
+estados alterados, conter as ideas dun NPC, etcétera. 
+
+
+
+
+
+\section{Accións e usuarios}
+A acción do xogo desenvólvese mediante accións, que é o que comunica aos
+usuarios co mundo. Os usuarios escriben o que queren facer cos seus personaxes,
+e é labor do DX executar o código pertinente e mostrarlles unha narración
+por escrito que describa o sucedido.
+\subsection{Decisións}
+Un xogador nun momento dado pode escribir o que desexa que o seu personaxe faga.
+Isto no Demiurgo coñécese como {\it decisión}. Este texto non ten ningún tipo de
+efecto no sistema, simplemente é mostrado ao DX cando abre o escenario no que se
+atopa o obxecto do xogador.
+
+\subsection{Accións}
+Por acción enténdese todo o sucedido entre dúas narracións, é dicir, todo o
+código executado e as decisións correspondentes que o provocaron. O DX pode
+executar todo o código que precise, e facer varias execucións diferenciadas,
+antes de engadir unha narración e concluír por tanto a acción.
+\subsubsection{Testemuñas}
+As testemuñas son os xogadores que se atopan no escenario no momento de rematar
+a acción. Estas testemuñas recóllense xusto antes de executar o último código (o
+código que iniciou o proceso de narración), polo que se incluirán entre elas os
+personaxes que cambiasen de escenario no último momento.
+
+\subsection{Narracións}
+A narración é o resultado textual da acción. O DX redáctao baseándose no estado
+do escenario e nos {\it echos} (ver sección \ref{sec:echo}) producidos. Os
+xogadores que sexan testemuñas poderán ver este resultado textual.
+\subsubsection{Fragmentos ocultos}
+O DX poderá marcar fragmentos da narración como ocultos empregando as etiquetas
+[o][/o]. Por exemplo:
+\begin{lstlisting}
+Este texto e visible para todos.
+[o=gamer]Este texto so e visible para o xogador 'gamer'.[/o]
+[o=gamer user]
+Este texto e visible para 'gamer' e 'user'.
+[/o]
+\end{lstlisting}
+
+
+
+
+
+\section{Definición da linguaxe COE}
+\label{ch:definicion}
+No capítulo anterior abordouse o funcionamento dos escenarios, as clases e os
+obxectos. Neste capítulo mostrarase unha definición formal da linguaxe, tanto na
+definición de clases como no código das accións.
+\par
+Nas descricións sintácticas é preciso ter en conta as seguintes marcas:
+\begin{itemize}
+  \item {\bf \textless elemento \textgreater}: Os elementos marcados deste
+  xeito son elementos obrigatorios, pero non deben ser entendidos como código
+  literal, xa que o contido é unha descrición do elemento. Exemplo: \textless
+  argumento \textgreater.
+  \item {\bf [ elemento ]}: Os elementos marcados deste xeito son opcionais.
+  \item {\bf elemento \ldots}: Cando aparecen os puntos suspensivos, o último
+  elemento antes deles pódese repetir varias veces.
+  Exemplo:
+  \textless arg\textgreater {}[\textless arg\textgreater] \ldots.
+\end{itemize}
+
+\subsection{Tipos de datos}
+No Demiurgo e na linguaxe COE podemos atopar os seguintes tipos de datos:
+\begin{itemize}
+  \item {\bf Número enteiro:} Representa un número sen decimais. Útil para facer
+  cálculos, e para realizar tiradas de dados. Exemplo: {\it 27}. Tamén
+  representa valores lóxicos, sendo 0 o equivalente a dicir ``falso'' e calquera
+  outro valor (normalmente 1) o equivalente a dicir ``verdadeiro''. O seu tipo
+  denótase coa palabra reservada {\it int}.
+  \item {\bf Número con decimais:} Tamén coñecido como número con punto
+  flotante ou simplemente flotante, representa un número non enteiro. Pode
+  empregarse cando se empreguen campos que precisen decimais. Exemplo: {\it
+  3.14}. Debe terse en conta que ao converter números con decimais a números
+  enteiros, perderanse os decimais (non se redondea). O seu tipo
+  denótase coa palabra reservada {\it float}.
+  \item {\bf Cadea de texto:} Calquera fragmento de texto. Útil para mostrar
+  mensaxes aos xogadores, ou para gardar anotacións do DX. Exemplo: {\it ''este
+  é un texto de exemplo''}. O seu tipo
+  denótase coa palabra reservada {\it str}.
+  \item {\bf Escenario:} As variables e campos de escenario non conteñen o
+  escenario como tal, senón unha referencia ao mesmo. Pode ser útil almacenar
+  referencias a escenarios concretos para automatizar o movemento de obxectos
+  entre eles. Aparte diso, non serven para facer operacións. Para obter
+  unha referencia a un escenario concreto, emprégase o carácter {\it @}.
+  Exemplo: {\it @/rexion1/cidade1/taberna}. No caso de non comezar por /,
+  enténdese que é un nome parcial; por exemplo se o código se executa en
+  /rexion1/cidade1/taberna, e se chama a @casa3, o resultado é o mesmo que
+  chamando a @/rexion1/cidade1/casa3. Tamén é posible chamar ao propio
+  escenario co punto (@.), a un nivel superior cos dous puntos (@..) ou calquera
+  combinación.
+  O seu tipo denótase co carácter {\it @}.
+  \item {\bf Inventario:} Exclusivo dos campos de obxecto, fan referencia ao
+  inventario pertinente. Funcionan de maneira moi similar aos escenarios, salvo
+  polo feito de que non se poden enviar como argumento nin sobreescribir o seu
+  valor con outra referencia. O seu tipo denótase co carácter \%.
+  \item {\bf Obxecto:} Referencia a un obxecto concreto. Permite interactuar co
+  obxecto dende outro escenario, ou gardalo nunha variable cun nome descritivo.
+  É posible obter unha referencia a un obxecto coñecendo a súa ID. Exemplo:
+  \#{\it 1024}. O seu tipo
+  denótase co nome da clase correspondente.
+  \item {\bf Lista:} Lista de datos de calquera dos outros tipos. Exemplo:
+  \{{\it 1, 2, 3, 4}\}. Tamén se poden crear listas baleiras: \{\}. O seu tipo
+  denótase co tipo de elementos que contén e uns corchetes, por exemplo int[].
+  Tamén se poden especificar listas de listas: int[][].
+\end{itemize}
+
+
+\subsection{Echo}
+\label{sec:echo}
+{\it Echo} é o termo que recibe o feito de emitir un resultado textual. No
+Demiurgo, pódese facer echo de calquera valor que poida ser lido como unha cadea
+de texto (tamén números enteiros e flotantes, e listas). Facer echo no código
+ten unha utilidade: cando o DX estea redactando a narración da acción, poderá
+ver todos os echos, polo que é útil para ver información antes de facer a
+narración completa.
+\par O echo faise co carácter reservado {\bf !}.
+\begin{lstlisting}
+! <valor_a_mostrar>
+\end{lstlisting}
+\par Exemplo:
+\begin{lstlisting}
+! "este e un texto de proba"
+\end{lstlisting}
+
+\subsection{Operacións}
+No Demiurgo atopamos as seguintes operacións:
+\begin{itemize}
+  \item + {\bf Sumar:} Suma dous valores. Se os dous elementos son enteiros, o
+  resultado é un enteiro; se un é flotante e o outro enteiro ou flotante, o
+  resultado é un flotante. Se un dos elementos é unha cadea de texto, a
+  operación no canto de ser unha suma de números convírtese nunha concatenación
+  de texto: ``proba de '' + ``texto'' devolvería ``proba de texto'', e ``valor
+  de '' + 4 devolvería ``valor de 4''. En calquera outro caso, emite un erro.
+  \item - {\bf Restar:} Resta dous valores. Semellante a suma, salvo polo feito
+  de que non serve para concatenar texto. Pódese usar cun só operando para obter
+  o seu negativo.
+  \item ! {\bf Operador lóxico ``non'':} Operador unario, é dicir, que acepta un
+  operando. Devolve 1 se o dato é falso, ou 0 se o dato é verdadeiro. Un número
+  enteiro ou flotante é verdadeiro se é distinto de 0. Unha lista devolverá unha
+  lista de 1s  0s; o resto de tipos devolverá sempre un valor falso.
+  \item == {\bf Igual:} Compara dous datos. Se os datos son loxicamente iguais,
+  devolve un 1. En caso contrario, devolve un 0. Dúas referencias son iguais se
+  referencian ao mesmo obxecto ou escenario.
+  \item != {\bf Non igual:} Devolve 0 se os datos son loxicamente iguais, 1 en
+  caso contrario.
+  \item \textgreater {\bf Maior que:} Devolve 1 se o primeiro valor é maior co
+  segundo, 0 en caso contrario. Funciona con enteiros e flotantes.
+  \item \textless {\bf Menor que:} Devolve 1 se o primeiro valor é menor co
+  segundo, 0 en caso contrario.
+  \item \textgreater= {\bf Maior ou igual que:} Devolve 1 se o primeiro valor é maior ou
+  igual co segundo, 0 en caso contrario.
+  \item \textless= {\bf Menor ou igual que:} Devolve 1 se o primeiro valor é
+  menor ou igual co segundo, 0 en caso contrario.
+  \item \& {\bf Operador lóxico ``e'':} Compara dous elementos lóxicos. Se os
+  dous son verdadeiros, devolve 1, en caso contrario, devolve 0.
+  \item \textbar {\bf Operador lóxico ``ou'':} Compara dous elementos lóxicos.
+  Se polo menos un dos dous é verdadeiro, devolve 1, en caso contrario, devolve
+  0.
+  \item = {\bf Asignar:} Asigna o valor da dereita á variable ou campo da
+  esquerda. Ademais, se se usa en conxunto con outras operacións, devolve o
+  valor asignado. En caso de non ser compatibles o valor e a variable, emite un
+  erro.
+  \item \textgreater\textgreater {\bf Mover:} Move o obxecto da esquerda á
+  localización da dereita. Tamén se poden mover listas de obxectos: en tal caso,
+  móvense todos os obxectos da lista.
+  \item ++ {\bf Concatenar:} Concatena dúas listas. Deben ser do mesmo tipo. Se
+  un dos dous operandos non é unha lista pero ten o mesmo tipo que o tipo
+  interno da lista, engádese ao comezo ou ao final (dependendo da orde dos
+  operandos).
+  \item D {\bf Tirada de dados:} Pódese usar como operador unario ou binario. Se
+  se usa cun só operando, fai unha tirada dun dado onde o número de caras é o
+  número especificado polo operando (que debe ser un enteiro) e devolve o
+  resultado. Se se usa con dous operandos, fai X tiradas de Y caras, onde X é o
+  valor do primeiro operando e Y o do segundo, e devolve unha lista de
+  resultados.
+\end{itemize}
+\par A maiores, é posible recoller operacións entre parénteses para darlles
+prioridade.
+\par A prioridade de operadores é a seguinte:
+\par
+Tiradas de dados \textgreater parénteses \textgreater multiplicar ou dividir
+\textgreater sumar ou restar \textgreater comparacións \textgreater operacións
+lóxicas \textgreater asignacións \textgreater movementos
+\par
+Débese ter en conta que as asignacións sempre collerán unha variable do
+lado esquerdo, polo que teñen a máxima prioridade por este lado.
+\par Exemplos de operacións:
+\begin{lstlisting}
+(1+2*(3-4))                // Devolve -1
+3d20 > 10                  // Devolve unha lista de 3 valores 0 ou 1
+#42 >> @/zona1/estancia3   // Move o obxecto de ID 42 ao escenario
+\end{lstlisting}
+\subsubsection{Operacións con listas}
+As listas permiten realizar practicamente todas as operacións dos elementos que
+conteñen, pero teñen unha característica: o resultado cambia segundo a operación
+sexa con outra lista ou cun elemento dun tipo distinto.
+\paragraph{Operacións entre elementos e listas}
+Se se realiza unha operación entre un dato que non sexa lista e unha lista, o
+Demiurgo o que devolverá será unha lista de resultados entre o dato e cada
+elemento da lista.
+\par Exemplo:
+\begin{lstlisting}
+3*{1,2,3}
+\end{lstlisting}
+\par Este exemplo devolvería a lista \{3,6,9\}.
+\par Isto funciona tamén con listas de listas:
+\begin{lstlisting}
+5+{{5,5},{10,10}}
+\end{lstlisting}
+\par Este exemplo devolve a lista \{\{10,10\},\{15,15\}\}.
+\paragraph{Operacións entre listas}
+As operacións entre listas simplemente devolven unha lista cos resultados
+elemento a elemento. Se o tamaño das listas non coincide, devolverá un erro.
+\par Exemplo:
+\begin{lstlisting}
+{2,3,6}+{1,2,5}
+\end{lstlisting}
+\par Este exemplo devolve a lista \{3,5,11\}.
+\par Tamén valen combinacións entre os dous tipos de operación:
+\begin{lstlisting}
+{2,4}*{{10,10},{100,100}}
+\end{lstlisting}
+\par Devolvería a lista \{\{20,20\},\{400,400\}\}.
+
+\subsection{Variables}
+As variables de escenario créanse especificando o seu tipo e o nome da variable.
+No momento de definir unha variable nova, é posible asignarlle un valor na mesma
+liña:
+\begin{lstlisting}
+<tipo> <nome_variable> [ = <valor> ]
+\end{lstlisting}
+\par Exemplo de variables:
+\begin{lstlisting}
+int a               // define o enteiro 'a'
+str b = "proba"     // define a cadea de texto 'b' co valor "proba"
+elfo c = new elfo() // define a referencia 'c' e garda un novo Elfo 
+\end{lstlisting}
+
+\subsection{Condicionais}
+É posible marcar fragmentos do código para que sexan executados ou non en base a
+unha condición. Se a condición é verdadeira, o código execútase; en caso
+contrario, non se executa nada. Tamén é posible especificar un código
+alternativo para este último caso.
+\par Definición formal:
+\begin{lstlisting}
+if (<condicion>) {
+  <codigo_condicion_verdadeira>
+}
+[else {
+  <codigo_condicion_falsa>
+}]
+\end{lstlisting}
+\par Se o código só é unha liña, pódese prescindir das chaves.
+\par Exemplo de condicional:
+\begin{lstlisting}
+if(d6 > 3) {  // tira un dado de 6 e o compara co enteiro 3
+  ! "exito"
+}
+else {
+  "fracaso"
+}
+\end{lstlisting}
+
+\subsection{Bucles}
+É posible especificar bucles no código, é dicir, fragmentos de código que se
+executarán varias veces. O Demiurgo conta co bucle {\bf for}, que permite
+executar un fragmento de código unha vez por cada elemento dentro dunha lista.
+\par Definición formal:
+\begin{lstlisting}
+for (<variable> : <lista>) {
+  <codigo_for>
+}
+\end{lstlisting}
+\par Por cada elemento da lista, farase unha execución do código asignando tal
+elemento á variable especificada. Se no canto dunha lista se lle pasa unha cadea
+de texto, contará como unha lista de caracteres.
+\par Se o código só é unha liña, pódese prescindir das chaves.
+\par Exemplo de bucle:
+\begin{lstlisting}
+for(i : 5d10) {
+  ! "resultado: " + i
+}
+\end{lstlisting}
+
+\subsection{Funcións integradas}
+É posible empregar funcións predefinidas no propio Demiurgo para realizar
+determinadas operacións complexas. Estas funcións chámanse do seguinte xeito:
+\begin{lstlisting}
+[<saida>] = <nome_funcion> ( <arg> [, <arg> ] ... )
+\end{lstlisting}
+\par As funcións dispoñibles son as seguintes:
+\begin{itemize}
+  \item count({\it lista}): Recibe unha lista e devolve o número de elementos.
+  Se o argumento é unha cadea de texto, devolve o número de caracteres.
+  \item seq({\it inicio, fin}): Recibe dous números enteiros e devolve unha
+  lista formada pola secuencia de enteiros entre ambos números, cun paso de 1. O
+  número de inicio debe ser menor ou igual co de fin.
+  \item reverse({\it lista}): Recibe unha lista e devolve a lista do revés, é
+  dicir, co primeiro elemento en última posición e así sucesivamente. Se o
+  argumento é unha lista de listas, as listas do interior non son modificadas,
+  só a súa orde.
+  \item sub({\it lista, inicio, fin}): Recibe unha lista e dous números
+  enteiros e devolve unha sublista composta polos elementos entre a posición de inicio
+  (inclusive) e a posición de fin (exclusive).
+  \item sum({\it lista}): Recibe unha lista de enteiros e devolve a suma dos
+  seus elementos.
+  \item zeros({\it total}): Recibe un número enteiro e devolve unha lista
+  composta por tantos ceros como especifique o argumento.
+  \item destroy({\it obxecto}): Recibe unha referencia de obxecto, e destrúe ese
+  obxecto. Desaparecerá do mundo de xogo, e con el os seus inventarios e os
+  obxectos que estes conteñan. Esta función non devolve ningún valor.
+\end{itemize}
+\par Exemplo:
+\begin{lstlisting}
+sum( seq(1,10) )          // suma os enteiros do 1 ao 10
+\end{lstlisting}
+
+\subsection{Obxectos e métodos}
+\subsubsection{Creación de obxectos}
+Os obxectos créanse coa palabra reservada ``new'' o nome da clase, e se é
+preciso os argumentos do método construtor. A definición é esta:
+\begin{lstlisting}
+new <nome_clase> ( [ <arg> [, <arg> ] ... ] )
+\end{lstlisting} 
+\par Ademais de crear o obxecto, este método devolve unha referencia ao mesmo,
+que pode ser gardada nunha variable mediante unha asignación.
+\par
+Os obxectos no momento de ser creados aparecen no escenario no que se
+estea escribindo o código.
+\par Exemplo de creación de obxecto:
+\begin{lstlisting}
+elfo legolas = new elfo(100, "Legolas o elfo")
+\end{lstlisting}
+
+\subsubsection{Invocación de métodos}
+Para invocar un método cun obxecto é preciso ter a referencia dese obxecto,
+extraer o seu método co punto ({\bf .}) e engadir os argumentos en caso de ser
+necesarios. Se o método ten argumento de saída, pódese gardar o seu valor nunha
+variable, ou empregarse directamente para facer operacións.
+\begin{lstlisting}
+<referencia_obxecto>.<nome_metodo> ( [ <arg> [, <arg> ] ... ])
+\end{lstlisting} 
+\par Exemplo:
+\begin{lstlisting}
+legolas.bendicir(outroelfo)
+\end{lstlisting}
+
+\subsection{Definición de clases}
+No momento de crear a clase, especifícanse os atributos e métodos que terán os
+obxectos creados a partir dela. A definición dunha clase é a seguinte:
+\begin{lstlisting}
+<nome_clase> {
+  <atributos>
+  <metodos>
+}
+\end{lstlisting}
+\par Os atributos defínense como as variables de escenario. Os métodos defínense
+da seguinte forma:
+\begin{lstlisting}
+[<tipo> <arg_saida> =]
+  <nome_metodo>([ <tipo> <arg>[, <tipo> <arg>]...])
+{
+  <codigo_metodo>
+}
+\end{lstlisting}
+\par Se no código do método se asigna un valor ao argumento de saída, este
+devolverase cando o método sexa chamado.
+\par Exemplo de clase:
+\begin{lstlisting}
+anano : criatura {
+  int forza = 3
+  int axilidade = 1
+  int intelixencia = 1
+  int vida = 30
+  str nome
+  
+  anano(str nome) {
+    this.nome = nome
+  }
+  
+  int dano = golpear(criatura outro) {
+    dano = sum((forza)d6)
+    criatura.vida = criatura.vida - dano
+  }
+}
+\end{lstlisting}
+
+\subsection{Contidos das localizacións}
+Pódese obter unha lista dos obxectos que se atopan nun escenario ou nun
+inventario empregando o carácter reservado \% do seguinte xeito:
+\begin{lstlisting}
+<localizacion>.%
+\end{lstlisting}
+\par Por exemplo:
+\begin{lstlisting}
+personaxe.inventario.% >> @.
+\end{lstlisting}
+\par Este exemplo colle unha lista de obxectos no inventario do personaxe e
+móveos todos ao escenario actual.
+
+\subsection{Usuarios}
+Os usuarios non poden ser manexados como valores por ningún tipo de dato; pero
+hai unha operación especial ({\bf -\textgreater}) que permite asignarlle un
+obxecto a un usuario coñecendo o seu nome.
+\begin{lstlisting}
+$<nome_usuario> -> <referencia_obxecto>
+\end{lstlisting}
+\par Exemplo:
+\begin{lstlisting}
+$gamer -> #30
+\end{lstlisting}

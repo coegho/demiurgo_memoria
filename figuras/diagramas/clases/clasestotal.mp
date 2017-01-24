@@ -1,58 +1,67 @@
 input metauml;
 beginfig(1);
-    Class.WO("WorldObject")
+    Class.WO("DemiurgoObject")
       ("+id: long",
        "+fields: Map<String, ValueInterface>")
-      ("+moveTo(location: WorldLocation): void",
-       "+toJSON(): ObjectNode");
+      ("+moveTo(location: DemiurgoLocation): void");
     
-    Class.WL("WorldLocation")
+    Class.WL("DemiurgoLocation")
       ("+id: long",
        "+world: World")
-      ();
+      ("getRealLocation(): DemiurgoLocation",
+       "isInsideOf(DemiurgoLocation): boolean");
       
-    Class.WR("WorldRoom")
+    Class.WR("DemiurgoRoom")
       ("+longPath : String",
        "+variables : Map<String, ValueInterface>",
-       "+narratedAction: String",
-       "+decisions: Map<User, String>")
-      ("+toJSON(): ObjectNode"); 
+       "+prenarration: String")
+      ();
+      
+    Class.Action("Action") 
+      ("+id : long",
+       "+narration: String",
+       "+date: Date",
+       "+published: boolean")
+      ();
 
+    Class.Witness("Witness")
+      ("+decision: String")
+      ();
     
     Class.World("World")
       ("+name: String",
        "+currentObjId: long",
        "+currentRoomId: long",
        "+untraceableDecisions: Map<User, String>",
-       "+pendingRooms: List<WorldRoom>") %TODO
-      ("+moveTo(origin: WorldLocation, destination: WorldLocation, obj: WorldObject): void",
-       "#searchRoomGroup(loc: String, constructive: boolean): RoomPath",
-       "+newRoom(roomRelativeName: String, currentRoom: String): WorldRoom",
-       "+newRoom(room: WorldRoom): WorldRoom",
-       "+newRoom(roomLongName: String): WorldRoom",
-       "+getRoom(roomRelativeName: String, currentRoom: String): WorldRoom",
-       "+getRoom(roomLongName: String): WorldRoom",
-       "+getPendingRoomsJSON(): ArrayNode");
+       "+pendingRooms: List<DemiurgoRoom>") %TODO
+      ("+moveTo(origin: DemiurgoLocation, destination: DemiurgoLocation, obj: DemiurgoObject): void",
+       "+newRoom(room: DemiurgoRoom): DemiurgoRoom",
+       "+newRoom(roomLongName: String): DemiurgoRoom",
+       "+getRoom(roomRelativeName: String, currentRoom: String): DemiurgoRoom",
+       "+getRoom(roomLongName: String): DemiurgoRoom");
 	
-    Class.Klass("UserDefinedClass")
+    Class.Klass("DemiurgoClass")
       ("+className: String",
        "+fields: Map<String, ValueInterface>")
-      ("+inheritFrom(tryParent: UserDefinedClass): boolean");
+      ("+inheritFrom(tryParent: DemiurgoClass): boolean");
     
     Class.ROC("RootObjectClass") () ();
     
     Class.User("User")
       ("+username: String",
-       "+admin: boolean")
-      ("+toJSON(): ObjectNode");
+       "+role: UserRole",
+       "+decision: String")
+      ();
       
 	
     Class.RP("RoomPath")
       ("+path: String")
-      ("+getShortName(): String",
-       "+roomPathData(): ObjectNode");
+      ("+getShortName(): String");
       
-    Class.Inv("Inventory") () ();
+    Class.Inv("Inventory")
+      ("+container: DemiurgoObject",
+       "+varName : String")
+      ();
     
     Class.Method("ClassMethod")
       ("+node: ParseTree",
@@ -63,14 +72,15 @@ beginfig(1);
        "+checkArgs(argValues: List<ValueInterface>): boolean");
 
     
-    Package.Universe("es.usc.rai.coego.martin.demiurgo.universe")(WO, WL, WR, World, Klass, User, ROC, RP, Inv, Method);
+    Package.Universe("es.usc.rai.coego.martin.demiurgo.universe")(WO, WL, WR, World, Klass, User, ROC, RP, Inv, Method, Action, Witness);
     
     leftToRight(20)(WO, User);
     leftToRight(20)(WL, WR, Inv);
     leftToRight(20)(Method,RP);
     leftToRight(20)(Klass, ROC);
+    leftToRight(20)(Action, Witness);
     
-    topToBottom.left(17)(WO, WL, World, Method, Klass);
+    topToBottom.left(17)(WO, WL, World, Method, Klass, Action);
     
     drawObject(Universe);
     
@@ -81,6 +91,12 @@ beginfig(1);
     link(association)(User.w -- WO.e); %user
     
     link(aggregation)(WO.s-(20,0) -- WL.n); %objects
+    
+    link(aggregation)(Action.s-(20,0) -- WR.n); %actions
+    
+    link(aggregation)(Witness.s-(20,0) -- Action.n); %witnesses
+    
+    link(association)(User.s-(20,0) -- Witness.n); %user
     
     link(inheritance)(ROC.w -- Klass.e);
     link(association)(Klass.se -- Klass.sw); %parentClass
