@@ -1,2 +1,119 @@
 \chapter{Implementación e probas}
 \label{ch:implementacion}
+Unha vez exposto todo o funcionamento do sistema, e tras facer unha descrición
+exhaustiva da arquitectura e o deseño dos distintos compoñentes do mesmo, o
+último capítulo tratará sobre a implementación do sistema. Neste capítulo
+exporanse as principais dificultades atopadas durante o desenvolvemento do
+programa, e as decisións críticas que foi necesario tomar. Posteriormente haberá
+unha sección destinada ás probas, tanto unitarias como de usabilidade.
+Finalmente, farase un resumo do proceso de desenvolvemento, comentando os
+distintos sprints que se realizaron.
+
+\section{Principais problemas atopados}
+O desenvolvemento deste proxecto supuxo numerosos obstáculos e dificultades, e
+producíronse atrasos durante o mesmo que impediron que a entrega puidera ser
+realizada no prazo previsto inicialmente. A principal dificultade produciuse
+debido a unha incorrecta estimación da complexidade do proxecto, que conlevou
+que o prazo de entrega inicial non se puidera cumprir. Isto implicou a
+necesidade de cambiar esta data de entrega ata o 8 de febreiro, para cumplir
+deste modo coas normas do proxecto.
+\par
+Outra complicación que afectou de xeito constante ao desenvolvemento do
+programa foi o uso de tecnoloxías e ferramentas coas que o desenvolvedor ten
+pouca experiencia, que obrigou a unha constante formación e busca de
+alternativas ao longo do ciclo de vida do proxecto. Isto ademais supuxo unha
+perda de tempo en determinados momentos ao descartar o uso de certas tecnoloxías
+en beneficio de outras máis axeitadas.
+\par
+Por último, na fase final do proxecto xurdiu unha dificultade imprevista
+inicialmente: a necesidade de buscar e configurar un servidor VPS para montar un
+servidor de xogo completo e facer probas con usuarios reais. Isto implicou un
+custo tanto temporal como económico imprevisto que retrasou o proxecto.
+
+\section{Probas}
+
+\section{Sprints}
+Seguindo a metodoloxía Scrum, o proceso dividiuse en sprints nos que se
+agrupaban as tarefas entre dúas sesións. Os sprints finalmente foron os
+seguintes:
+\subsection{Fase de análise}
+\subsubsection{Análise de requisitos}
+\paragraph{Data de inicio:} 13/03/2016
+\paragraph{Data de fin:} 25/04/2016
+\paragraph{Tarefas:} Elaboración do anteproxecto, análise de requisitos
+
+
+\subsection{Definición da linguaxe}
+\subsubsection{Bosquexos da linguaxe}
+\paragraph{Data de inicio:} 25/04/2016
+\paragraph{Data de fin:} 23/05/2016
+\paragraph{Tarefas:} bosquexo dunha rolda de exemplo, bosquexos de varias clases
+de exemplo
+
+\subsubsection{Definición formal da linguaxe}
+\paragraph{Data de inicio:} 23/05/2016
+\paragraph{Data de fin:} 01/06/2016
+\paragraph{Tarefas:} Definición formal BNF
+
+\subsubsection{Analizador sintáctico}
+\paragraph{Data de inicio:} 01/06/2016
+\paragraph{Data de fin:} 09/06/2016
+\paragraph{Tarefas:} Implementación en ANTLR - análise sintáctica básica,
+Expansión da gramática, Revisión e probas da gramática
+
+\subsubsection{Implementación da linguaxe en Java}
+\paragraph{Data de inicio:} 09/06/2016
+\paragraph{Data de fin:} 21/06/2016
+\paragraph{Tarefas:} Implementación do programa base en Java, Implementación do
+analizador sintáctico no programa, Implementación do sistema de clases e
+escenarios
+
+\subsubsection{Clases e escenarios}
+\paragraph{Data de inicio:} 21/06/2016
+\paragraph{Data de fin:} 19/07/2016
+\paragraph{Tarefas:} Implementación da funcionalidade de definir clases no
+código, Implementación dos escenarios/estancias e toda a súa funcionalidade
+correspondente
+
+
+\subsection{Desenvolvemento de software}
+\subsubsection{Comprobación do input}
+\paragraph{Data de inicio:} 19:07/2016
+\paragraph{Data de fin:} 08/08/2016
+\paragraph{Tarefas:} Comprobacións de compatibilidade de tipos á hora de asignar
+valores, Implementación da clase object e os seus métodos por defecto, Método
+in-code para mostrar texto ao DX (echo), Construtor da clase, Control de erros
+
+\subsubsection{Interacción co usuario}
+\paragraph{Data de inicio:} 08/08/2016
+\paragraph{Data de fin:} 29/08/2016
+\paragraph{Tarefas:} Interface de proba para comunicarse co sistema, base de
+datos
+
+\subsubsection{Servizos REST}
+\paragraph{Data de inicio:} 29/08/2016
+\paragraph{Data de fin:} 19/09/2016
+\paragraph{Tarefas:} Substitución de RMI por servizos REST, deseño DemiurgoWeb a
+partir de Framework
+
+\subsubsection{Base da memoria}
+\paragraph{Data de inicio:} 19/09/2016
+\paragraph{Data de fin:} 09/11/2016
+\paragraph{Tarefas:} Memoria: introdución e trazos fundamentais no deseño,
+memoria: diagrama de clases do universo de xogo
+
+\subsubsection{Deseño inicial da web}
+\paragraph{Data de inicio:} 09/11/2016
+\paragraph{Data de fin:} 15/12/2016
+\paragraph{Tarefas:} Adaptación dos servizos web a JSON, interface web 	para DX,
+interface web para usuario, altas de usuarios
+
+\subsubsection{Apartado gráfico da interface}
+\paragraph{Data de inicio:} 15/12/2016
+\paragraph{Data de fin:} 28/12/2016
+\paragraph{Tarefas:} Deseño de CSS, Creación e modificación de clases
+
+\subsubsection{Inventarios e configuración}
+\paragraph{Data de inicio:} 28/12/2016
+\paragraph{Data de fin:} 08/02/2017
+\paragraph{Tarefas:} 

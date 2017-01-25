@@ -132,6 +132,7 @@ clase). Herda de DemiurgoLocation e a maiores ten unha referencia ao obxecto que
 o contén, así como o nome do campo asociado.
 
 \subsection{User}
+\label{subsec:user}
 A clase User contén a información dun usuario: nome, enderezo email, decisión
 actual (unha cadea de texto ou \textit{null}), e o seu rol. O seu contrasinal
 non se almacena no programa, polo que será necesario acceder á base de datos
@@ -413,7 +414,265 @@ definida por ANTLR, que detén a análise ante calquera erro.
 A maiores, foi preciso buscar o modo de deter a análise semántica en canto se
 detecte un problema (por exemplo, unha operación ilegal). Para isto optouse por
 encapsular as distintas excepcións que o noso Visitor pode lanzar dentro de
-RuntimeExceptions, para así deter o percorrido do Visitor e poder recuperar as
-causas do erro.
+RuntimeExceptions, para así deter o percorrido do Visitor e poder recuperar a
+causa do erro.
+
+\subsection{Servizos Web}
+O sistema que desenvolvemos neste proxecto está composto por dous elementos
+diferenciados: o motor de xogo (Demiurgo) e o servidor web (DemiurgoWeb). Para
+poder manter esta diferenciación, é preciso deseñar algún modo de comunicar
+ambos compoñentes. Os servizos web tipo REST, como xa se especificou en
+capítulos previos, son a solución escollida para realizar esta tarefa.
+\par
+Foi preciso por tanto implementar clases que sirvan de \textit{endpoint}, que
+definan os distintos métodos que poden ser empregados para comunicarse co
+Demiurgo. Definíronse dúas clases: WebService (para os distintos métodos de
+intercambio de información que requiren identificación) e AuthService (para os
+métodos que non requiren identificación, tales como o propio login). Ambas
+clases atópanse no paquete \textit{webservice}.
+\par
+Dentro de cada clase, os distintos métodos definidos corresponderanse cos
+distintos métodos que se poderán empregar na comunicación. Por cada método
+definido na clase atopamos etiquetas que determinan se se empregará GET ou POST,
+a URL relativa dentro do endpoint de cada método, e os roles que teñen acceso ao
+mesmo (na subsección \ref{subsec:user} viuse máis información sobre estes
+roles).
+\par
+O proceso de autentificación e autorización realízase mediante filtros que se
+aplican á clase WebService por cada petición que reciba, previamente a calquera
+procesamento. As clases relacionadas con este proceso atópanse no subpaquete
+\textit{webservice.auth}.
+\par
+Os distintos argumentos dos métodos correspóndense cos datos que recibe o
+servizo: cadeas de texto en peticións GET, obxectos Java transformables a JSON e
+viceversa nas peticións POST. O proceso de transformar obxectos Java a JSON e
+JSON a Java realízao automaticamente a libraría Jackson, compatible coa libraría
+Grizzly que usamos para implementar estos servizos. A maiores, os métodos
+devolven por norma xeral un obxecto de tipo \textit{Response} que representa
+unha resposta HTTP, sexa unha confirmación, unha resposta de erro (como NOT
+FOUND ou NOT ACCEPTED) ou un obxecto JSON.
+
+\subsubsection{Identificación}
+A identificación no Demiurgo realízase proporcionando un nome de usuario e un
+contrasinal. Non obstante, non é preciso enviar estes datos en cada petición
+para confirmar a identidade do usuario; para realizar a identificación
+posteriormente ao proceso de \textit{login}, emprégase un REST Token.
+\par
+O REST Token é unha cadea cifrada que contén todos os campos precisos para a
+identificación do usuario. Elabórase xuntando o nome de usuario, a partida á que
+pertence e o seu rol; o obxecto obtido cífrase no Demiurgo empregando unha chave
+secreta, e a cadea de texto resultante (o Token) envíase ao usuario.
+Posteriormente, o usuario enviará ese Token ao Demiurgo para identificarse, que
+o descifrará para recuperar os datos que precisa.
+\par
+Con este sistema non é posible suplantar a outro usuario sen posuír a chave
+secreta do servidor ou obter o Token do usuario en cuestión. Non obstante,
+permite conectarse dende calquera interface ou programa empregando o mesmo
+Token.
+
+\subsection{Configuración}
+O Demiurgo recibe os datos de configuración por dúas vías:
+\begin{itemize}
+  \item \textbf{Argumentos na execución:} é posible especificar deste modo o
+  dominio e o porto do servidor. Exemplo:
+  \begin{lstlisting}
+DEMIURGO_HOSTNAME=www.demiurgo.pro DEMIURGO_PORT=5324 
+   java -jar Demiurgo.jar
+  \end{lstlisting}
+  En caso de non especificarse, o dominio por defecto é localhost e o porto,
+  5324. O servidor non escoita directamente no dominio, senón en
+  dominio/demiurgo:
+  \begin{lstlisting}
+http://127.0.0.1:5324/demiurgo
+  \end{lstlisting}
+  \item \textbf{Ficheiro worlds.yml:} No ficheiro worlds.yml, escrito en
+  linguaxe YAML, atópanse as distintas partidas nunha lista. Por cada partida
+  debe especificarse o nome da mesma, e a URL da base de datos empregada.
+\end{itemize}
 
 \section{DemiurgoWeb}
+Unha vez chegados a este punto, xa temos exposto o funcionamento dos distintos
+compoñentes do Demiurgo, que se corresponde co compoñente de maior peso neste
+proxecto. Non obstante, para poder interactuar con este motor de xogo dende a
+posición do usuario é preciso deseñar unha interface, neste caso un servidor web
+ao que denominamos DemiurgoWeb. Nesta sección formularemos o funcionamento deste
+servidor e os seus distintos elementos.
+
+\subsection{Spring Framework}
+Para comprender o funcionamento de DemiurgoWeb é necesario ter unha idea do
+funcionamento de Spring, o framework Java sobre o que foi montado. Este
+framework permite centrar os nosos esforzos no deseño da web e na interacción co
+Demiurgo, ofrecendo numerosos compoñentes que axilizan a parte técnica da
+cuestión.
+\par
+Existen diferencias segundo os paquetes de Spring empregados e tamén segundo a
+versión; por exemplo, en versións antigas de Spring era preciso empregar un
+ficheiro de configuración en XML, e no caso non usar Spring Boot, é necesario
+configurar un \textit{container} (xeralmente Tomcat) no que implementar o
+servidor.
+\par
+No caso de DemiurgoWeb empregamos Spring Boot, polo que é preciso unha clase
+Java que conteña o clásico método main(); neste caso esa clase é DemiurgoWebApp.
+Dende o método main chámase ao método stático \textit{run} da clase
+SpringApplication, que pon en marcha todo o sistema.
+\par
+É preciso indicar que, ademais do método main(), tamén se implementou o método
+configure() na mesma clase. Este método permite poñer en funcionamento o
+framework no caso de ser chamado dende un container, habilitando que DemiurgoWeb
+poida tanto compilarse como un ficheiro jar e executarse directamente, como
+compilarse como un ficheiro war que poida poñerse en funcionamento nun
+servidor Tomcat.
+\par
+Na versión actual de Spring, os distintos compoñentes márcanse con etiquetas
+enriba das clases. Deste modo, non é preciso definilos nun ficheiro de
+configuración: o propio framework de Spring localízaos e xestiónaos debidamente.
+
+\subsubsection{Inxección de dependencias}
+A principal característica de Spring é a inxección de dependencias, que se
+encarga de controlar o ciclo de vida dos obxectos do programa. Deste modo, non
+precisamos levar o control da inicialización de obxectos e das referencias entre
+eles; podemos definir calquera clase como \textit{bean}, asignarlle un
+determinado ámbito ou \textit{scope} (sexa singleton para unha única instancia
+por aplicación, unha instancia por sesión, ou por petición web, por exemplo) e
+marcar referencias a esa clase en calquera campo dun compoñente coa etiqueta
+\textit{autowire}.
+\par
+Por exemplo, no DemiurgoWeb existe unha clase definida chamada LoggedUser, que
+contén datos relevantes do usuario conectado. Na configuración do sistema (a
+clase WebConfig) temos definido un bean desta clase, co scope \textit{session}
+(é dicir, unha instancia por sesión). Grazas a isto, podemos definir un campo
+LoggedUser en cada controlador que usemos coa etiqueta \textit{autowired} que
+nos dará acceso dende calquera parte aos datos do usuario, aforrándonos toda a
+implementación que nos daría esa funcionalidade no caso de non depender da
+inxección de dependencias.
+
+\subsubsection{Modelo-Vista-Controlador}
+Spring Framework emprega o patrón modelo-vista-controlador. Debido a isto,
+atopamos os tres conceptos da seguinte maneira:
+\begin{itemize}
+  \item As vistas son ficheiros JSP ou Thymeleaf (neste caso este último) que
+  mostran a web que verá o usuario. Conteñen etiquetas especiais que fan
+  referencia a valores que lle serán proporcionados a través do modelo.
+  \item O modelo impleméntase de distintas maneiras. Poden ser métodos dos
+  controladores marcados coa etiqueta \textit{ModelAttribute}: en tal caso, o
+  seu valor é o mesmo para calquera referencia que se faga deles. Tamén se pode
+  empregar un obxecto da clase Model ou ModelMap (cada un coas súas
+  características) que lle proporcione referencias á vista.
+  \item O controlador é cada unha das clases marcadas como tal, que realiza as
+  operacións necesarias, cubre o modelo de datos e marca a vista que debe ser
+  mostrada. Cada un dos métodos destas clases está asociado a unha URL concreta
+  (que invocará a execución do método) e a un método HTTP (GET ou POST). A
+  maiores, os argumentos dos métodos poden ser de distintos tipos: parámetros
+  tipo GET, un modelo de datos, un obxecto representando os datos dun
+  formulario\ldots Todos os métodos devolven un valor tipo String, que se
+  corresponde coa vista que debe empregarse.
+\end{itemize}
+
+\subsection{Estrutura da interface}
+A interface web nas distintas páxinas mantén sempre a mesma estrutura: un menú
+na cabeceira que permite acceder ás diferentes páxinas da web, que se despraza
+co usuario para mostrarse sempre na parte superior; e o \textit{main} onde se
+atopa a información pertinente á páxina. Os contidos varían segundo a páxina
+na que nos atopemos, tendo especial relevancia as que detallaremos a
+continuación. Cabe resaltar que as figuras mostradas nos seguintes apartados son
+capturas realizadas nunha partida real.
+
+\subsubsection{World Status}
+Nesta pantalla móstrase unha primeira impresión do estado do mundo. O primeiro
+que se atopa é unha lista de usuarios sen personaxe (no caso de que haxa algún).
+Xusto debaixo están os escenarios activos, é dicir, os escenarios con algún
+personaxe no seu interior (como pode verse na figura \ref{fig:demiurgoworld}).
+Por cada un destes escenarios móstrase o nome completo, o número de obxectos que
+contén, o número de usuarios, e cantos destes usuarios teñen algunha decisión
+pendente.
+
+\begin{figure}
+\centerline{\includegraphics{figuras/demiurgo_world.png}}
+\caption{World Status.}
+\label{fig:demiurgoworld}
+\end{figure}
+
+\subsubsection{Rooms}
+Na pantalla de escenarios móstrase a lista completa de escenarios do mundo
+actual, ordenados alfabeticamente. Por cada escenario móstrase un enlace para o
+panel de escenario, así como un enlace que permite destruílo se fora necesario.
+\par
+Ademais da lista de escenarios, tamén hai un pequeno formulario que permite
+crear un escenario novo. Pódese ver unha captura na figura
+\ref{fig:demiurgorooms}.
+
+\begin{figure}
+\centerline{\includegraphics{figuras/demiurgo_rooms.png}}
+\caption{Rooms.}
+\label{fig:demiurgorooms}
+\end{figure}
+
+\subsubsection{Room Panel}
+O panel de escenario é a pantalla máis complexa de DemiurgoWeb, como se aprecia
+na figura \ref{fig:demiurgoroompanel}. Podemos atopar as seguintes partes:
+\begin{itemize}
+  \item O nome do usuario, e debaixo un enlace para ver o historial de accións
+  do mesmo.
+  \item A lista de usuarios que se atopan no escenario. Por cada usuario vese o
+  obxecto que ten asociado e, se fora o caso, a decisión que redactou.
+  \item Unha lista de obxectos. Pulsando sobre un obxecto vemos os seus campos,
+  métodos e inventarios. Facendo doble clic en calquera obxecto vemos o panel de
+  obxecto (figura \ref{fig:demiurgoobject}), mostrando unha vista preliminar do
+  mesmo (para asignar unha imaxe a un obxecto asóciase a URL da mesma ao
+  campo \textit{v\_imgurl} do mesmo).
+  \item A lista de variables do escenario. Pasando o rato por enriba delas
+  móstrase o seu contido.
+  \item Un formulario que permite introducir o código da acción a executar; este
+  cadro de texto foi mellorado mediante o uso do plugin CodeMirror para resaltar
+  a sintaxe ao escribir.
+  \item Baixo o formulario, un elemento despregable que mostra a lista de
+  escenarios.
+\end{itemize}
+A principal característica deste panel é que todo é arrastrable ata o código,
+xerando o código correspondente: usuarios, obxectos, variables, métodos,
+escenarios\ldots Isto axiliza enormemente o traballo do DX.
+
+\begin{figure}
+\centerline{\includegraphics{figuras/demiurgo_roompanel.png}}
+\caption{Room Panel.}
+\label{fig:demiurgoroompanel}
+\end{figure}
+
+
+\begin{figure}
+\centerline{\includegraphics{figuras/demiurgo_object.png}}
+\caption{Visualización de obxecto.}
+\label{fig:demiurgoobject}
+\end{figure}
+
+\subsubsection{Class Panel}
+O panel de clase é a segunda pantalla máis complexa, aínda que a súa
+interactividade é menor xa que se emprega con menos frecuencia. Nesta pantalla
+modifícanse as clases xa existentes, e para facilitalo móstranse os datos
+relativos ao estado actual da clase: clase pai, campos e métodos (figura
+\ref{fig:demiurgoclasspanel}). A maiores, é posible despregar un menú semellante
+pero da clase pai ao lado, en modo de só lectura.
+
+\begin{figure}
+\centerline{\includegraphics{figuras/demiurgo_classpanel.png}}
+\caption{Class Panel.}
+\label{fig:demiurgoclasspanel}
+\end{figure}
+
+\subsubsection{User Situation}
+A pantalla de situación é o elemento de interacción básico do usuario. Aquí verá
+unha táboa coas últimas accións das que fose testemuña, así como un formulario
+para enviar decisións (figura \ref{fig:demiurgosituation}). As accións
+poden mostrar imaxes e vídeos, xa que o DX pode enriquecer as narracións con
+elementos BBCode.
+
+\begin{figure}
+\centerline{\includegraphics{figuras/demiurgo_situation.png}}
+\caption{User Situation.}
+\label{fig:demiurgosituation}
+\end{figure}
+
+\subsubsection{User Status}
+A pantalla de estado é a outra vía de información para o usuario. É moi
+semellante ao visualizador de obxectos do panel de escenario, pero mostrando
+exclusivamente o personaxe propio do usuario e os seus datos.

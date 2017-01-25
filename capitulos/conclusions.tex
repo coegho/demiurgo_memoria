@@ -1,3 +1,25 @@
 \chapter{Conclusións e posibles ampliacións}
-
-Conclusións e posibles ampliacións
+Ao longo deste proxecto deseñamos e implementamos un sistema que permite levar
+partidas de rol tipo play-by-post e ofrecerlle ao director de xogo ferramentas
+para manter a consistencia do mundo. Este sistema está composto por dous
+compoñentes diferenciados e independentes, o motor de xogo e o servidor web.
+Grazas a isto, é posible para calquera usuario montar o seu propio sistema de
+xogo nun servidor, pero ademais disto é posible tamén para outros
+desenvolvedores deseñar novas interfaces de xogo que se adapten ás súas
+necesidades, empregando o mesmo motor de xogo.
+\par
+O sistema permite numerosas ampliacións. A máis evidente é o desenvolvemento de
+novas interfaces, como unha app móbil ou un apartado web deseñado para móbiles e
+tables. Mais en realidade as posibilidades son moi amplas grazas á versatilidade
+dos servizos REST, puidendo comunicarse incluso dende redes sociais como
+Telegram para axilizar o acesso por parte dos usuarios.
+\par
+Outra posible ampliación que se valorou implementar durante o proxecto pero foi
+descartada por falta de tempo é o engadido dun servidor de chat XMPP no
+DemiurgoWeb, que facilite a comunicación inmediata entre o director de xogo e os
+xogadores, o cal podería enriquecer a experiencia de xogo notablemente.
+\par
+Como se pode ver nestes exemplos, o feito de separar o motor de xogo da
+interface gráfica ofrece posibilidades ilimitadas de mellora; xa que sempre é
+posible engadir campos extra para o seu uso na interface, tal e como fai
+DemiurgoWeb para engadir as imaxes dos obxectos.
