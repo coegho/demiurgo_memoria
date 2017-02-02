@@ -5,9 +5,10 @@ realizará unha análise das tecnoloxías empregadas no proxecto e os motivos da
 súa escolla entre as ferramentas dispoñibles no mercado.
 
 \section{Arquitectura do sistema}
-A arquitectura do proxecto xa foi parcialmente descrita no anteproxecto, e o
-seu aspecto máis importante é a separación do motor de xogo e a interface
-gráfica en dous elementos diferenciados.
+O aspecto máis importante da arquitectura do proxecto é a separación do motor de
+xogo e a interface gráfica en dous elementos diferenciados, para deste modo
+desacoplar o compoñente funcional do xogo da interface e permitir o seu acceso
+a través de ferramentas de terceiros.
 \par
 O sistema está orientado a realizar partidas de rol por internet. Tal e como
 a interacción co usuario foi formulada previamente, o usuario (neste caso o
@@ -122,7 +123,7 @@ requiran. A URL do motor de xogo e o porto deberán serlle especificados ao
 conector mediante ficheiros de configuración.
 
 \section{Linguaxe: COE}
-Un pilar fundamental deste proxecto, tanto pola súa carga de traballo como pola
+Un piar fundamental deste proxecto, tanto pola súa carga de traballo como pola
 súa relevancia dentro do sistema, é a elaboración dunha linguaxe de script nova
 para manexar o mundo de xogo por parte do DX. Esta foi a tarefa de maior
 prioridade, polo que se definiu e implementou antes de comezar co resto de
@@ -217,16 +218,36 @@ código, e evitar deste modo a necesidade de codificar un analizador
 léxico-sintáctico manualmente (co esforzo e tempo desmesurados que iso
 requeriría).
 \par
+Un analizador sintáctico é unha ferramenta que analiza o código fonte como
+secuencia de compoñentes léxicos e constrúe unha representación interna en forma
+de árbore sintáctica \cite{compiladores}. O analizador léxico é o que
+esnaquiza o código fonte para ofrecer a mencionada secuencia de compoñentes
+léxicos, os cales se corresponderán na gramática cos símbolos terminais.
+\par
+Dentro dos analizadores sintácticos podemos atopar dous tipos segundo a forma
+de xerar a árbore: os descendentes e os ascendentes. Como o seu nome indica, os
+descendentes parten da raíz da árbore e, empregando as regras da gramática,
+xeran a árbore de arriba cara abaixo. Os ascendentes, pola contra, constrúen a
+árbore de abaixo arriba, partindo das follas e realizando substitucións para
+acabar xerando o símbolo inicial ou raíz.
+\par
+As gramáticas LL(k) son aquelas gramáticas que se caracterizan por:
+\begin{itemize}
+  \item ler a entrada de código de esquerda a dereita (L=left),
+  \item nas derivacións substitúese o non-terminal situado máis á esquerda (L=left),
+  \item ler k compoñentes léxicos por anticipado (k).
+\end{itemize}
+\par
 Escolleuse ANTLR como ferramenta para deseñar a linguaxe e xerar os
 correspondentes analizadores léxico e sintáctico. ANTLR trátase dunha ferramenta
-que a partir dunha gramática LL(1) elabora un analizador sintáctico descendente;
-grazas a isto podemos centrarnos no deseño da gramática para que satisfaga os
+que a partir dunha gramática LL(1) elabora un analizador sintáctico descendente.
+Grazas a isto podemos centrarnos no deseño da gramática para que satisfaga os
 requisitos do proxecto, e deixar en mans de ANTLR o proceso de implementación
 do \textit{parser} (recoñecedor de linguaxe).
 \par
 O principal motivo polo que se escolleu ANTLR sobre outras ferramentas foi a súa
 capacidade de xerar código en Java de forma directa. Hai dispoñible un manual de
-usuario de ANTLR 4 (a versión empregada neste proxecto) \cite{antlr}.
+usuario de ANTLR 4 (a versión empregada neste proxecto) \cite{antlr4}.
 
 \subsection{Apache Maven}
 Tanto no Demiurgo como no DemiurgoWeb, decidiuse empregar Maven para
@@ -295,7 +316,7 @@ precisemos, os cales se encargará Grizzly de publicar nun servidor para recibir
 peticións.
 
 \subsection{Spring Framework}
-Spring é un Framework de Java que facilita o desenvolvemento de aplicacións
+Spring\cite{spring} é un Framework de Java que facilita o desenvolvemento de aplicacións
 grandes. A principal característica de Spring é a inxección de dependencias, que
 simplifica o control do ciclo de vida dos obxectos: crear os distintos
 compoñentes, inicializalos e manter as referencias entre eles. A maiores, dispón
@@ -306,8 +327,6 @@ Neste proxecto empregaremos Spring no DemiurgoWeb. Debido a isto, será necesari
 invertir algo de tempo en familiarizarse co funcionamento de Spring, pero unha
 vez superado isto axilizará enormemente a implementación do compoñente web e o
 seu mantemento.
-\par
-Pódese atopar máis información sobre Spring na súa páxina web \cite{spring}.
 
 \subsubsection{Spring Boot}
 Spring Boot é un módulo de Spring que permite crear ficheiros Jar executables

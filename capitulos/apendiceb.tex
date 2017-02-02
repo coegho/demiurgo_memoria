@@ -300,11 +300,10 @@ referirse aos campos do obxecto cando isto suceda.
 
 \paragraph{Construtor}
 \label{subsubsec:construtor}
-Por último, hai un método especial moi importante chamado {\bf construtor}, que
-se executa automaticamente no momento de crear o obxecto. É útil por tanto para
-inicializar clases. O construtor recoñécese polo feito de chamarse igual ca
-clase. No caso de ter argumentos, é necesario especificalos na creación do
-obxecto:
+Por último, hai un método especial moi importante chamado \textbf{construtor},
+que se executa automaticamente no momento de crear o obxecto. É útil por tanto
+para inicializar clases. O construtor recoñécese polo feito de chamarse igual ca
+clase. No caso de ter argumentos, é necesario especificalos na creación do obxecto:
 \begin{lstlisting}
 elfo {
   int idade
@@ -454,7 +453,9 @@ O DX poderá marcar fragmentos da narración como ocultos empregando as etiqueta
 [o][/o]. Por exemplo:
 \begin{lstlisting}
 Este texto e visible para todos.
-[o=gamer]Este texto so e visible para o xogador 'gamer'.[/o]
+[o=gamer]
+Este texto so e visible para o xogador 'gamer'
+[/o]
 [o=gamer user]
 Este texto e visible para 'gamer' e 'user'.
 [/o]
@@ -602,17 +603,19 @@ No Demiurgo atopamos as seguintes operacións:
 prioridade.
 \par A prioridade de operadores é a seguinte:
 \par
-Tiradas de dados \textgreater parénteses \textgreater multiplicar ou dividir
-\textgreater sumar ou restar \textgreater comparacións \textgreater operacións
-lóxicas \textgreater asignacións \textgreater movementos
+Tiradas de dados \textgreater{} parénteses \textgreater{} multiplicar ou dividir
+\textgreater{} sumar ou restar \textgreater{} comparacións \textgreater{} operacións
+lóxicas \textgreater{} asignacións \textgreater{} movementos
 \par
 Débese ter en conta que as asignacións sempre collerán unha variable do
 lado esquerdo, polo que teñen a máxima prioridade por este lado.
 \par Exemplos de operacións:
 \begin{lstlisting}
 (1+2*(3-4))                // Devolve -1
-3d20 > 10                  // Devolve unha lista de 3 valores 0 ou 1
-#42 >> @/zona1/estancia3   // Move o obxecto de ID 42 ao escenario
+3d20 > 10                  // Devolve unha lista de 
+                           // 3 valores 0 ou 1
+#42 >> @/zona1/estancia3   // Move o obxecto de
+                           // ID 42 ao escenario
 \end{lstlisting}
 \subsubsection{Operacións con listas}
 As listas permiten realizar practicamente todas as operacións dos elementos que
@@ -656,8 +659,10 @@ liña:
 \par Exemplo de variables:
 \begin{lstlisting}
 int a               // define o enteiro 'a'
-str b = "proba"     // define a cadea de texto 'b' co valor "proba"
-elfo c = new elfo() // define a referencia 'c' e garda un novo Elfo 
+str b = "proba"     // define a cadea de texto 'b' co
+                    // valor "proba"
+elfo c = new elfo() // define a referencia 'c' e garda
+                    // un novo Elfo 
 \end{lstlisting}
 
 \subsection{Condicionais}
@@ -677,7 +682,8 @@ if (<condicion>) {
 \par Se o código só é unha liña, pódese prescindir das chaves.
 \par Exemplo de condicional:
 \begin{lstlisting}
-if(d6 > 3) {  // tira un dado de 6 e o compara co enteiro 3
+if(d6 > 3) {  // tira un dado de 6 e o compara co
+              // enteiro 3
   ! "exito"
 }
 else {
@@ -762,7 +768,7 @@ extraer o seu método co punto ({\bf .}) e engadir os argumentos en caso de ser
 necesarios. Se o método ten argumento de saída, pódese gardar o seu valor nunha
 variable, ou empregarse directamente para facer operacións.
 \begin{lstlisting}
-<referencia_obxecto>.<nome_metodo> ( [ <arg> [, <arg> ] ... ])
+<referencia_obxecto>.<nome_metodo> ([<arg> [, <arg>] ...])
 \end{lstlisting} 
 \par Exemplo:
 \begin{lstlisting}

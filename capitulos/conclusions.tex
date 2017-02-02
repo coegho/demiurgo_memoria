@@ -8,18 +8,57 @@ xogo nun servidor, pero ademais disto é posible tamén para outros
 desenvolvedores deseñar novas interfaces de xogo que se adapten ás súas
 necesidades, empregando o mesmo motor de xogo.
 \par
+No proxecto optouse por seguir unha metodoloxía áxil de tipo Scrum. Esta
+decisión demostrou ser un acerto, xa que  permitiu obter versións executables do
+software dende etapas moi temperás do desenvolvemento, ademais de permitir unha
+reacción rápida ante a aparición de problemas ou o cambio de requisitos grazas
+á flexibilidade que proporcionan as metodoloxías áxiles. Tamén foi determinante
+á hora de facilitar o uso de tecnoloxías nas que o desenvolvedor conta con
+experiencia escasa e coas que resultaría difícil facer estimacións precisas de
+tempo.
+\par
+Como xa se resaltou ao longo do presente documento, o desenvolvemento da
+linguaxe COE foi un piar central no desenvolvemento deste proxecto. A súa
+definición e implementación levou a maior parte da carga de traballo, e a súa
+finalización foi condición necesaria para comezar co resto de tarefas. A maioría
+dos requisitos do proxecto están de feito relacionados con este compoñente.
+Entre algunhas das súas características atopamos:
+\begin{itemize}
+  \item É unha linguaxe orientada a obxectos, que permite definir herdanza de
+  clases entre outras características.
+  \item Emprega distintos tipos de datos, tanto tipos primitivos como tipos
+  asociados ás partidas de rol, principalmente obxectos e escenarios.
+  \item Permite realizar operacións básicas, operacións propias do xogo de rol e
+  definir métodos asociados ás clases.
+\end{itemize}
+\par
+O uso de tecnoloxías como ANTLR ou Spring foi determinante por dúas cuestións: a
+axilidade que proporcionan para definir a linguaxe e deseñar a web
+respectivamente foi crucial para cumprir cos prazos asignados. Por outra banda,
+o emprego destas tecnoloxías permitiu facer ampliacións tanto na linguaxe como
+na web con facilidade, ofrecendo a posibilidade de facer melloras en pouco tempo
+en base ás probas con usuarios reais.
+\par
 O sistema permite numerosas ampliacións. A máis evidente é o desenvolvemento de
 novas interfaces, como unha app móbil ou un apartado web deseñado para móbiles e
-tables. Mais en realidade as posibilidades son moi amplas grazas á versatilidade
-dos servizos REST, puidendo comunicarse incluso dende redes sociais como
-Telegram para axilizar o acesso por parte dos usuarios.
+tabletas. Mais en realidade as posibilidades son moi amplas grazas á
+versatilidade dos servizos REST, puidendo comunicarse incluso dende redes
+sociais como Telegram para axilizar o acesso por parte dos usuarios.
 \par
 Outra posible ampliación que se valorou implementar durante o proxecto pero foi
 descartada por falta de tempo é o engadido dun servidor de chat XMPP no
 DemiurgoWeb, que facilite a comunicación inmediata entre o director de xogo e os
 xogadores, o cal podería enriquecer a experiencia de xogo notablemente.
 \par
+Ademais disto, valorouse implementar un xestor de temas en DemiurgoWeb que
+permitise cambiar a estética da web segundo as preferencias do usuario: cores,
+imaxes, tipografías\ldots Esta opción quedou relegada a ampliación futura, mais
+non entra dentro do alcance do proxecto actual.
+\par
 Como se pode ver nestes exemplos, o feito de separar o motor de xogo da
-interface gráfica ofrece posibilidades ilimitadas de mellora; xa que sempre é
-posible engadir campos extra para o seu uso na interface, tal e como fai
-DemiurgoWeb para engadir as imaxes dos obxectos.
+interface gráfica ofrece numerosas posibilidades de mellora; xa que sempre é
+posible engadir campos extra para o seu uso na interface. Un exemplo desta
+aplicación é o uso que se fai en DemiurgoWeb do campo \textbf{str v\_imgurl}:
+cando un obxecto posúe este campo e ten asignado a el unha \textbf{URL}, o
+DemiurgoWeb interprétao como un enlace á imaxe propia dese obxecto, mostrándoa
+por pantalla.

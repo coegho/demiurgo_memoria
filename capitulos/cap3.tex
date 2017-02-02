@@ -151,31 +151,86 @@ usuarios potenciais. Son situacións típicas que se darán durante a
 execución do software.
 
 \subsubsection{HU-01: Alta de xogadores}
-Como xogador, quero poder rexistrarme no sistema coa finalidade de poder acceder
-a unha partida.
+Como \textbf{xogador}, quero poder rexistrarme no sistema coa finalidade de
+poder acceder a unha partida.
+\paragraph{Criterios de aceptación}
+\begin{itemize}
+  \item Quero poder escoller a partida na que quero xogar.
+  \item Quero ter un contrasinal escollido por min para identificarme.
+  \item Unha vez me rexistre, ninguén máis debería poder usar o meu nome de
+  usuario.
+\end{itemize}
 
 \subsubsection{HU-02: Definición dunha nova clase}
-Como director de xogo, quero poder definir unha clase nova no mundo de xogo,
-para poder crear obxectos da mesma no futuro.
+Como \textbf{director de xogo}, quero poder definir unha clase nova no mundo de
+xogo, para poder crear obxectos da mesma no futuro.
+\paragraph{Criterios de aceptación}
+\begin{itemize}
+  \item Quero poder especificar o nome da clase.
+  \item Quero poder especificar unha clase pai para aplicar a herdanza de
+  clases.
+  \item Non debo facer dúas clases co mesmo nome.
+  \item Quero poder definir campos na clase cos seus correspondentes tipos.
+  \item Quero poder definir métodos asociados á clase.
+  \item Debo poder especificar un método especial que sirva de construtor.
+\end{itemize}
 
 \subsubsection{HU-03: Creación de personaxe}
-Como director de xogo, quero poder asociar un obxecto a un xogador concreto,
-para que poda dispoñer dun personaxe propio.
+Como \textbf{director de xogo}, quero poder asociar un obxecto a un xogador
+concreto, para que poda dispoñer dun personaxe propio.
+\paragraph{Criterios de aceptación}
+\begin{itemize}
+  \item Debo poder asignar o obxecto ao usuario a través do código.
+  \item Non debo asignar dous obxectos ao mesmo usuario.
+  \item Non debo asignar o mesmo obxecto a dous usuarios distintos.
+  \item O usuario deberá poder ver todas as accións que sucedan no escenario no
+  que se atope o seu personaxe.
+  \item O usuario deberá poder ver os campos visibles do seu personaxe.
+\end{itemize}
 
 \subsubsection{HU-04: Envío de decisións}
-Como xogador, quero poder enviarlle as miñas decisións ao DX, para que este as
-teña en conta á hora de resolver accións.
+Como \textbf{xogador}, quero poder enviarlle as miñas decisións ao DX, para que
+este as teña en conta á hora de resolver accións.
+\paragraph{Criterios de aceptación}
+\begin{itemize}
+  \item Non debo necesitar coñecementos en ningunha linguaxe para escribir
+  decisións.
+  \item O DX debe ver en todo momento a miña decisión cando resolva accións no
+  escenario no que me atopo.
+  \item O DX debe poder ver o meu personaxe cando resolve decisións.
+\end{itemize}
+
 \subsubsection{HU-05: Resolución de accións}
-Como director de xogo, quero poder ler as decisións dos xogadores, para deste
-modo saber como resolver as accións.
+Como \textbf{director de xogo}, quero poder ler as decisións dos xogadores, para
+deste modo saber como resolver as accións.
+\paragraph{Criterios de aceptación}
+\begin{itemize}
+  \item Debo ver a lista de usuarios que se atopan no escenario e as súas
+  decisións.
+  \item Debo poder ver o estado do escenario mentres resolvo a acción.
+  \item Quero un manual de usuario para aprender a empregar a linguaxe do xogo.
+\end{itemize}
 
 \subsubsection{HU-06: Creación dun escenario}
-Como director de xogo, quero crear escenarios para poder introducir obxectos
-neles no futuro.
+Como \textbf{director de xogo}, quero crear escenarios para poder introducir
+obxectos neles no futuro.
+\paragraph{Criterios de aceptación}
+\begin{itemize}
+  \item Non debo poder crear dous escenarios co mesmo nome.
+  \item Quero poder crear un escenario novo só a partir do seu nome.
+\end{itemize}
 
 \subsubsection{HU-07: Cambio de escenario dun obxecto}
-Como director de xogo, quero mover obxectos dun escenario a outro, para poder
-desprazar aos xogadores polo mundo de xogo.
+Como \textbf{director de xogo}, quero mover obxectos dun escenario a outro, para
+poder desprazar aos xogadores polo mundo de xogo.
+\paragraph{Criterios de aceptación}
+\begin{itemize}
+  \item Quero poder mover obxectos mediante a linguaxe de xogo.
+  \item Cando un obxecto se mova a outro escenario, deberán moverse con el todos
+  os obxectos que leve nos inventarios.
+  \item Cando un personaxe se mova a outro escenario, o seu usuario deberá ver
+  as accións da nova localización.
+\end{itemize}
 
 
 \section{Requisitos funcionais}
@@ -413,7 +468,7 @@ verán o nome co que eles coñezan a tales personaxes.\\
 \section{Requisitos de proxecto}
 \subsubsection{Requisito PR.01}~\\
 {\bf Título:} Data límite do proxecto\\
-{\bf Descrición:} O proxecto deberá rematarse antes do 8 de febreiro do 2017,
+{\bf Descrición:} O proxecto deberá rematarse antes do 10 de febreiro do 2017,
 data establecida no regulamento de traballos fin de grao para GREI da USC.\\
 {\bf Importancia:} Esencial
 

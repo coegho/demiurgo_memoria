@@ -1,9 +1,751 @@
-\chapter{Manuais técnicos}
+\chapter{Manual técnico: API de Demiurgo}
+\renewcommand\theadfont{\bfseries}
+\renewcommand\cellalign{ll}
 
-Manuais técnicos: en función do tipo de Traballo e metodoloxía empregada, o
-contido poderase dividir en varios documentos. En todo caso, neles incluirase
-toda a información precisa para aquelas persoas que se vaian a encargar do
-desenvolvemento e/ou modificación do Sistema (por exemplo código fonte, recursos
-necesarios, operacións necesarias para modificacións e probas, posibles
-problemas, etc.). O código fonte poderase entregar en soporte informático en
-formatos PDF ou postscript.
+Os servizos web tipo REST son o xeito que teñen o DemiurgoWeb e outras posibles
+interfaces de comunicarse co Demiurgo. A comunicación realízase mediante
+conexións HTTP mediante GET ou POST, dependendo do método, que envían e reciben
+obxectos JSON.
+\par
+Neste manual especificaranse os distintos tipos de datos e os métodos
+dispoñibles para que calquera desenvolvedor poida implementar novas interfaces.
+
+\section{Tipos de datos}
+Os tipos de datos definen a estrutura JSON dos datos que se envían e reciben a
+través dos métodos. Para simplificar a lectura clasificaremos estes tipos en
+dúas categorías: tipos básicos e tipos complexos.
+
+\subsection{Tipos básicos}
+Os tipos básicos son os obxectos JSON que fan referencia a elementos
+fundamentais do sistema, tales como obxectos, escenarios ou usuarios. Na maioría
+dos casos estes obxectos correspóndense en gran medida co modelo de datos
+empregado internamente polo Demiurgo.
+
+\subsubsection{Action}
+Obxecto que se corresponde cunha acción determinada. Contén toda a información
+relativa á acción, polo que non se envía nunca aos xogadores, só aos DX.
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+id & Enteiro & non & Identificador único da acción. \\
+\hline
+narration & Texto & non & Narración textual da acción. \\
+\hline
+room & Texto & non & \makecell{Nome do escenario no que se \\ desenvolve a
+acción.}
+\\
+\hline
+witnesses & Lista: Witness & non & \makecell{Lista das testemuñas da
+acción; \\ é dicir, os usuarios que teñen \\ acceso a esta acción.} \\
+\hline
+date & Texto & non & Data na que se creou a acción. \\
+\hline
+published & Booleano & non & \makecell{Estado da acción. Verdadeiro \\ no caso
+de tratarse dunha \\ acción publicada; falso se aínda \\ non foi publicada. As
+accións \\ só se publican cando se redacta \\ a súa correspondente narración.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{Class}
+Correspóndese cunha clase do sistema de xogo, a partir da cal poden herdar
+os obxectos.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+classname & Texto & non & Nome da clase. \\
+\hline
+parent & Class & si & Clase pai da que herda. \\
+\hline
+fields & Lista: Variable & non & Lista de campos da clase. \\
+\hline
+methods & Lista: Method & non & Lista de métodos. \\
+\hline
+code & Texto & non & Código COE da clase. \\
+\hline
+\end{tabular}
+
+\subsubsection{Inventory}
+Correspóndese cun inventario dun obxecto. Esta clase non fai referencia ao campo
+de tipo \textit{inventario} do obxecto, senón ao inventario en si e os obxectos
+que contén.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+name & Texto & non & \makecell{Nome do inventario, que se \\ corresponde co nome
+do campo.}
+\\
+\hline
+objects & Lista: Object & non & \makecell{Lista de obxectos que contén o \\
+inventario.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{Method}
+Método asociado a unha clase. Contén o nome e o nome dos argumentos.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+name & Texto & non & Nome do método. \\
+\hline
+args & Lista: Texto & non & \makecell{Lista de argumentos de entrada \\ do
+método.}
+\\
+\hline
+returnArg & Texto & non & Nome do argumento de saída. \\
+\hline
+\end{tabular}
+
+\subsubsection{Object}
+Contén a información dun obxecto do mundo de xogo.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+id & Enteiro & non & \makecell{Identificador único do \\ obxecto.} \\
+\hline
+classname & Texto & non & Nome da clase do obxecto. \\
+\hline
+locationId & Enteiro & non & Identificador da localización. \\
+\hline
+fields & Lista: Variable & non & Lista de campos do obxecto. \\
+\hline
+methods & Lista: Method & non & Lista de métodos da clase. \\
+\hline
+inventories & Lista: Inventory & non & \makecell{Lista de inventarios do \\
+obxecto.} \\
+\hline
+\end{tabular}
+
+\subsubsection{Room}
+Correspóndese cun escenario do mundo de xogo. Contén as variables do escenario e
+tamén a lista de obxectos que se atopan nel.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+id & Enteiro & non & \makecell{Identificador único da \\ localización.} \\
+\hline
+longPath & Texto & non & Nome completo do escenario. \\
+\hline
+variables & Lista: Variable & non & \makecell{Lista de variables de \\
+escenario.}
+\\
+\hline
+objects & Lista: Object & non & \makecell{Lista de obxectos contidos no \\
+escenario.}
+\\
+\hline
+users & Lista: User & non & \makecell{Lista de usuarios con \\ personaxes no
+escenario.}
+\\
+\hline
+prenarration & Texto & si & \makecell{Prenarración do escenario, \\ xerada
+mediante os \\ comandos ``echo'' \\ invocados mediante o \\ código.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{Status Inventory}
+Obxecto especial. Fai referencia a un inventario tal e como é percibido por un
+usuario. Non contén todos os datos que contén un obxecto Inventory.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+name & Texto & non & Nome do inventario. \\
+\hline
+objects & Lista: Object & non &  Lista de obxectos no inventario.\\
+\hline
+\end{tabular}
+
+\subsubsection{Status Object}
+Obxecto especial. Fai referencia a un obxecto do mundo de xogo tal e como é
+percibido por un usuario. Non contén todos os datos que contén un obxecto
+Object.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+name & Texto & non & \makecell{Nome do obxecto, definido \\ polo campo
+``v\_name''.
+No \\ caso de non ter tal campo, \\ o nome será o nome da clase.}
+\\
+\hline
+description & Texto & si & \makecell{Descrición do obxecto, definida \\ polo
+campo ``v\_description''.}
+\\
+\hline
+imgUrl & Texto & si & \makecell{Imaxe do obxecto, definida \\ polo campo
+``v\_imgurl''.} \\
+\hline
+fields & Lista: Variable & non & \makecell{Lista de campos do obxecto \\
+visibles para o usuario.}
+\\
+\hline
+inventories & \makecell{Lista: Status \\ Inventory} & non & \makecell{Lista de
+inventarios do obxecto \\
+visibles para o usuario.} \\
+\hline
+\end{tabular}
+
+\subsubsection{User}
+Contén os datos asociados a un usuario.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+name & Texto & non & Nome do usuario. \\
+obj & Object & si & Personaxe do usuario, en caso de telo. \\
+decision & Texto & si & \makecell{Decisión do usuario, en caso de ter \\ escrito
+unha.}
+\\
+role & Texto & non & \makecell{Rol do usuario. Dous roles \\ dispoñibles:
+``gm'' e ``user''.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{Variable}
+Este obxecto contén información sobre unha variable de escenario, un campo dun
+obxecto ou un campo definido nunha clase. Contén o nome da variable, o seu valor
+en forma de cadea de texto, e o seu tipo.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+name & Texto & non & Nome da variable ou campo. \\
+\hline
+value & Texto & non & Valor textual da variable ou campo. \\
+\hline
+type & Texto & non & \makecell{Tipo da variable ou campo. Os tipos \\
+dispoñibles pódense atopar no manual \\ da linguaxe COE
+(apéndice \ref{ch:manual}).}
+\\
+\hline
+\end{tabular}
+
+
+\subsubsection{Witness}
+Obxecto auxiliar que serve para identificar ás testemuñas dunha acción. As
+testemuñas son os usuarios involucrados na acción, é dicir, que teñen personaxes
+no escenario no momento de suceder a acción.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+user & Texto & non & Nome do usuario. \\
+\hline
+decision & Texto & si & Decisión do usuario en caso de tela. \\
+\hline
+\end{tabular}
+
+
+\subsection{Tipos complexos}
+Os tipos complexos non se corresponden con elementos do modelo de datos; no seu
+lugar, serven para agrupar diferentes tipos básicos. A maioría de métodos que
+devolven un obxecto JSON como resposta devolven un tipo complexo.
+
+\subsubsection{AllClasses Response}
+Resposta ao método \textit{allclasses}. Contén unha árbore de clases
+estruturadas segundo a herdanza.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+classes & ClassTree & non & \makecell{Clase raíz ``object" que contén ao
+\\ resto.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{AllRoomPaths Response}
+Resposta ao método \textit{roompaths}. Contén unha lista con todos os
+nomes de escenarios.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & Resposta co estado da operación.
+\\
+\hline
+paths & Lista: Texto & non & Lista de nomes de escenario. \\
+\hline
+\end{tabular}
+
+\subsubsection{ChangePassword Request}
+Datos para a petición de cambio de contrasinal mediante o método
+\textit{changepasswd}.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+username & Texto & non & Nome do usuario. \\
+\hline
+oldPassword & Texto & non & Contrasinal anterior. \\
+\hline
+newPassword & Texto & non & Contrasinal novo. \\
+\hline
+\end{tabular}
+
+\subsubsection{CheckRoom Response}
+Resposta ao método \textit{checkroom}. Contén un obxecto de tipo \textit{Room}
+e, no caso de haber algunha acción sen resolver, o obxecto \textit{Action}
+correspondente.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & \makecell{Resposta co estado da
+\\ operación.}
+\\
+\hline
+room & Room & non & Escenario solicitado. \\
+\hline
+unpublishedAction & Action & si & \makecell{Acción sen resolver, no caso \\ de
+que haxa unha.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{ClassTree}
+Obxecto intermedio empregado para facer árbores de clases baseándose na súa
+herdanza.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+className & Texto & non & \makecell{Nome da clase que se \\ corresponde con este
+nodo.}
+\\
+\hline
+children & Lista: ClassTree & si & \makecell{Lista de clases fillas.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{CreateClass Request}
+Datos da petición de creación dunha clase do xogo.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+name & Texto & non & Nome da clase. \\
+\hline
+code & Texto & non & Código COE de definición da clase. \\
+\hline
+\end{tabular}
+
+\subsubsection{CreateClass Response}
+Resposta á petición de creación dunha clase do xogo.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & Resposta co estado da operación.
+\\
+\hline
+createdClass & Class & non & Devolve a clase creada. \\
+\hline
+\end{tabular}
+
+\subsubsection{CreateRoom Request}
+Datos da petición de creación dun escenario. É un obxecto moi sinxelo que só
+contén o nome do escenario.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+path & Texto & non & \makecell{Nome completo do escenario.} \\
+\hline
+
+\hline
+\end{tabular}
+
+\subsubsection{DeleteVariable Request}
+Datos da petición de borrado dunha variable de escenario.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+path & Texto & non & \makecell{Nome do escenario que contén a variable.}
+\\
+\hline
+varName & Texto & non & \makecell{Nome da variable.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{DeleteVariable Response}
+Resposta á petición de borrado dunha variable de escenario.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & Resposta co estado da operación.
+\\
+\hline
+\end{tabular}
+
+\subsubsection{DestroyClass Request}
+Datos da petición de destrución dunha clase do xogo.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+className & Texto & non & \makecell{Nome da clase a borrar.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{DestroyClass Response}
+Resposta á petición de destrución dunha clase do xogo.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & Resposta co estado da operación.
+\\
+\hline
+\end{tabular}
+
+\subsubsection{DestroyObject Request}
+Datos da petición de destrución dun obxecto do mundo.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+objId & Enteiro & non & \makecell{Identificador do obxecto a \\ borrar.}
+\\
+\hline
+destroyContents & Booleano & non & \makecell{Se é verdadeiro, destruiranse \\
+todos os obxectos contidos \\ nos inventarios do obxecto. \\ Se é falso, serán
+desprazados \\ ao escenario no que se atopa \\  o obxecto en cuestión.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{DestroyObject Response}
+Resposta á petición de destrución dun obxecto do mundo.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & Resposta co estado da operación.
+\\
+\hline
+\end{tabular}
+
+\subsubsection{DestroyRoom Request}
+Datos da petición de destrución dun escenario.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+path & Texto & non & \makecell{Nome completo do escenario.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{DestroyRoom Response}
+Resposta á petición de destrución dun escenario.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & Resposta co estado da operación.
+\\
+\hline
+\end{tabular}
+
+\subsubsection{ExecuteCode Request}
+Datos da petición de execución de código.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+path & Texto & non & \makecell{Nome do escenario no que se \\ executará o
+código.}
+\\
+\hline
+code & Texto & non & \makecell{Código COE a executar.}
+\\
+\hline
+createAction & Booleano & non & \makecell{Se é verdadeiro, crearase unha \\ nova
+acción sen publicar e \\\ solicitarase unha narración ao \\ DX. Se é falso,
+non se crearán \\ accións.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{ExecuteCode Response}
+Resposta á petición de execución de código.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & Resposta co estado da operación.
+\\
+\hline
+action & Action & si & Acción creada no caso de existir unha. \\
+\hline
+\end{tabular}
+
+\subsubsection{GetPendingRooms Response}
+Resposta á petición de escenarios activos.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & \makecell{Resposta co estado da
+\\ operación.}
+\\
+\hline
+pendingRooms & \makecell{Lista: Pending \\ Room} & non & Lista de escenarios
+activos.
+\\
+\hline
+numUsers & Enteiro & non & \makecell{Número de usuarios en \\ xogo.} \\
+\hline
+noObjUsers & Lista: User & non & \makecell{Lista de usuarios sen un \\ personaxe
+asignado.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{Login Request}
+Datos da petición de \textit{login}.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+name & Texto & non & \makecell{Nome de usuario.}
+\\
+\hline
+password & Texto & non & \makecell{Contrasinal do usuario.}
+\\
+\hline
+world & Texto & non & Nome do mundo. \\
+\hline
+\end{tabular}
+
+\subsubsection{MyUser Response}
+Resposta á petición de datos do usuario.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & Resposta co estado da operación.
+\\
+\hline
+user & User & non & Datos do usuario. \\
+\hline
+obj & \makecell{Status \\ Object} & si & Personaxe do usuario. \\
+\hline
+world & Texto & non & Mundo ao que pertence o usuario. \\
+\hline
+\end{tabular}
+
+\subsubsection{NarrateAction Request}
+Datos da petición de narración dunha acción.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+id & Enteiro & non & \makecell{Identificador da acción.}
+\\
+\hline
+narration & Texto & non & \makecell{Narración da acción.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{NarrateAction Response}
+Resposta á petición de narración dunha acción.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & Resposta co estado da operación.
+\\
+\hline
+action & Action & non & Acción modificada. \\
+\hline
+\end{tabular}
+
+\subsubsection{PastActions Response}
+Resposta á petición de accións pasadas do xogador.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & \makecell{Resposta co estado da
+\\ operación.}
+\\
+\hline
+totalActions & Enteiro & non & \makecell{Total de accións visibles \\ para o
+xogador.}
+\\
+\hline
+actions & Lista: Texto & non & \makecell{Lista co texto das accións \\
+solicitadas.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{Pending Room}
+Obxecto que contén os datos relativos a un escenario activo.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+path & Texto & non & Nome completo do escenario. \\
+\hline
+numObjects & Enteiro & non & \makecell{Total de obxectos no \\ escenario.} \\
+\hline
+numUsers & Enteiro & non & \makecell{Total de xogadores no \\ escenario.} \\
+\hline
+decidingUsers & Lista: Texto & non & \makecell{Nome dos xogadores que \\
+mandaron decisións.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{RegisterUser Request}
+Datos da petición de rexistro dun usuario.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+world & Texto & non & \makecell{Nome do mundo onde se rexistra o \\ usuario.}
+\\
+\hline
+username & Texto & non & \makecell{Nome do usuario.}
+\\
+\hline
+password & Texto & non & Contrasinal do usuario. \\
+\hline
+mail & Texto & non & \makecell{Enderezo de correo electrónico do \\ usuario.} \\
+\hline
+\end{tabular}
+
+\subsubsection{RegisterUser Response}
+Resposta á petición de rexistro dun usuario.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & Resposta co estado da operación.
+\\
+\hline
+active & Booleano & non & \makecell{Se é verdadeiro, a conta está activa e \\ o
+xogador pode comezar a xogar \\ inmediatamente.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{Response Status}
+Obxecto auxiliar que acompaña ás respostas indicando se a operación se executou
+correctamente ou houbo algún problema.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+ok & Booleano & non & \makecell{Se é verdadeiro, a operación \\ executouse
+correctamente. Se é \\ falso, houbo algún problema.}
+\\
+\hline
+description & Texto & si & \makecell{No caso de haber algún problema, \\ devolve
+unha descrición do mesmo.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{RoomHistory Response}
+Resposta á petición de historial dun escenario.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+status & \makecell{Status \\ Response} & non & \makecell{Resposta co estado da
+\\ operación.}
+\\
+\hline
+actions & Lista: Action & non & Lista coas accións devoltas. \\
+\hline
+totalActions & Enteiro & non & Total de accións do escenario. \\
+\hline
+\end{tabular}
+
+\subsubsection{SubmitDecision Request}
+Datos da petición de envío dunha decisión.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+decision & Texto & non & \makecell{Texto da decisión do usuario.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{WorldList Response}
+Resposta á petición da lista de mundos.
+
+\begin{tabular} { | l | l | l | l | }
+\hline
+\thead{Campo} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+worlds & Lista: Texto & non & \makecell{Lista cos nomes dos mundos \\
+dispoñibles.}
+\\
+\hline
+\end{tabular}
+
+\section{Métodos dispoñibles}
+\subsection{Métodos GET}
+\subsection{Métodos POST}
