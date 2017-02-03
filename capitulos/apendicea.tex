@@ -564,7 +564,7 @@ world & Texto & non & Nome do mundo. \\
 \hline
 \end{tabular}
 
-\subsubsection{MyUser Response}
+\subsubsection{Me Response}
 Resposta á petición de datos do usuario.
 
 \begin{tabular} { | l | l | l | l | }
@@ -746,6 +746,325 @@ dispoñibles.}
 \hline
 \end{tabular}
 
+
 \section{Métodos dispoñibles}
-\subsection{Métodos GET}
-\subsection{Métodos POST}
+Nesta sección especificaremos os métodos que ofrece a API. Por cada método
+indicarase, ademais dunha breve descrición: se é unha petición HTTP por método
+GET ou POST, o obxecto JSON que devolve, e os parámetros que require. Por cada
+parámetro especificarase o nome no caso de ir por GET; nos métodos POST deberán
+ir no corpo da petición.
+
+\subsection{Métodos de autentificación}
+Estes métodos chámanse sen estar identificado polo sistema. Empréganse por tanto
+para xestionar a autentificación e rexistro de usuarios.
+
+\subsubsection{login}
+Método POST. Identifica o usuario co seu nome e contrasinal no mundo
+especificado. Devolve unha cadea de texto coñecida como \textit{token}, que
+deberá ser especificada nos distintos métodos que requiran autentificación. O
+token inclúese dentro da cabeceira HTTP no campo \textit{Authorization} da
+seguinte forma:
+\begin{lstlisting}
+Authorization: Bearer <token>
+\end{lstlisting}
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & Login Request & non & Datos de usuario. \\
+\hline
+\end{tabular}
+
+\subsubsection{register}
+Método POST. Rexistra un novo usuario cos datos proporcionados. Devolve un
+obxecto \textit{RegisterUser Response}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & RegisterUser Request & non & Datos de usuario. \\
+\hline
+\end{tabular}
+
+\subsection{Métodos xenéricos}
+Os métodos xenéricos poden ser empregado sen importar o rol do usuario. A súa
+función está vinculada principalmente aos propios datos do usuario, e non a
+elementos funcionais do xogo.
+
+\subsubsection{changepasswd}
+Método POST. Emprégase para cambiar o contrasinal do usuario. Devolve un obxecto
+\textit{Response Status}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & \makecell{ChangePassword \\ Request} & non & \makecell{Contén o
+contrasinal vello e \\ o novo.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{me}
+Método GET. Útil para recibir información do usuario e, no caso de tratarse dun
+xogador, obter un estado do personaxe. Devolve un obxecto \textit{Me
+Response}.
+
+O método \textit{me} non ten parámetros.
+
+
+\subsection{Métodos para xogadores}
+Os xogadores contan só con dous métodos: un para enviar novas decisións, e outro
+para ler accións. Isto débese ao feito de que os usuarios nunca perciben
+directamente o mundo de xogo, só acceden á información que o DX lles ofrece.
+
+\subsubsection{pastactions}
+Método GET. Devolve as narracións das últimas accións. É posible especificar un
+rango de accións concreto. As narracións obtidas con este método estarán
+filtradas no caso de conter fragmentos ocultos para o xogador. Devolve un
+obxecto \textit{PastActions Response}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+first & Texto & si & \makecell{Índice da primeira acción que se \\ desexa 
+recibir. Debe ser convertible a \\ un número enteiro. Se o valor é \\ negativo,
+calcularase a primeira acción \\ restando o valor dende a última acción \\
+dispoñible. O valor por defecto é -10.}
+\\
+\hline
+count & Texto & si & \makecell{Número de accións que se queren \\ recibir dende
+a primeira. Debe ser \\ convertible  un número enteiro. Por \\ defecto este
+valor é 10.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{submitdecision}
+Método POST. Envía unha decisión redactada polo usuario. Non devolve ningún
+obxecto.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & \makecell{SubmitDecision \\ Request} & non & \makecell{Contén a
+decisión do \\ usuario.}
+\\
+\hline
+\end{tabular}
+
+
+\subsection{Métodos para o DX}
+Os métodos do DX son os que xestionan a partida, ofrecendo ao DX unha canle para
+executar código e recibir información do mundo de xogo. Ademais disto, tamén
+ofrece métodos útiles para realizar modificacións no mundo directamente.
+
+\subsubsection{action}
+Método GET. Emprégase para recibir a información dunha acción concreta. Devolve
+un obxecto \textit{Action}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+id & Enteiro & non & Identificador único da acción. \\
+\hline
+\end{tabular}
+
+\subsubsection{allclasses}
+Método GET. Emprégase para obter unha árbore de todas as clases no mundo de
+xogo. As clases están organizadas segundo a herdanza, comezando pola clase que
+fai de raíz: a clase \textit{Object}. As clases que herdan directamente de
+\textit{Object} aparecen como fillas deste primeiro nodo, e así sucesivamente.
+Devolve un obxecto \textit{AllClasses Response}.
+
+O método \textit{allclasses} non ten parámetros.
+
+\subsubsection{checkroom}
+Método GET. Serve para comprobar o estado dun escenario. Ademais do escenario
+en si, se existe algunha acción sen publicar, este método serve para chegar a
+ela. Devolve un obxecto \textit{CheckRoom Response}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+path & Texto & non & Nome completo do escenario. \\
+\hline
+\end{tabular}
+
+\subsubsection{createclass}
+Método POST. Método empregado para crear clases novas. Devolve un obxecto
+\textit{CreateClass Response}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & \makecell{CreateClass \\ Request} & non & Nome e código da clase. \\
+\hline
+\end{tabular}
+
+\subsubsection{createroom}
+Método POST. Método empregado para crear novos escenarios. Devolve un obxecto
+\textit{Room} correspondente ao escenario creado.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & \makecell{CreateRoom \\ Request} & non & Especifica o escenario a
+borrar.
+\\
+\hline
+\end{tabular}
+
+\subsubsection{delvar}
+Método POST. Indica unha variable de escenario para que sexa borrada. Devolve un
+obxecto \textit{DeleteVariable Response}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & \makecell{DeleteVariable \\ Request} & non & Especifica a variable a
+borrar.
+\\
+\hline
+\end{tabular}
+
+\subsubsection{destroyclass}
+Método POST. Destrúe unha clase do xogo. Devolve un obxecto \textit{DestroyClass
+Response}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & \makecell{DestroyClass \\ Request} & non & Especifica a clase a borrar.
+\\
+\hline
+\end{tabular}
+
+\subsubsection{destroyobj}
+Método POST. Destrúe un obxecto do mundo de xogo. Devolve un obxecto
+\textit{DestroyObject Response}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & \makecell{DestroyObject \\ Request} & non & Especifica o obxecto a
+borrar.
+\\
+\hline
+\end{tabular}
+
+\subsubsection{destroyroom}
+Método POST. Destrúe un escenario. Devolve un obxecto \textit{DestroyRoom
+Response}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & \makecell{DestroyRoom \\ Request} & non & \makecell{Especifica o
+escenario a \\ borrar.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{executecode}
+Método POST. Executa código COE nun escenario, podendo xerarse unha acción ou
+non segundo se especifique. Devolve un obxecto \textit{ExecuteCode Response}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & \makecell{ExecuteCode \\ Request} & non & \makecell{Contén o código e
+outros \\ datos adicionais.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{getclass}
+Método GET. Método empregado para obter unha clase do xogo. Devolve un obxecto
+\textit{Class}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+classname & Texto & non & Nome da clase. \\
+\hline
+\end{tabular}
+
+\subsubsection{history}
+Método GET. Permite acceder ao historial dun escenario. Ten un funcionamento
+semellante ao método \textit{pastactions}. Devolve un obxecto
+\textit{RoomHistory Response}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+path & Texto & non & Nome completo do escenario. \\
+\hline
+first & Texto & si & \makecell{Índice da primeira acción que se \\ desexa 
+recibir. Debe ser convertible a \\ un número enteiro. Se o valor é \\ negativo,
+calcularase a primeira acción \\ restando o valor dende a última acción \\
+dispoñible. O valor por defecto é -10.}
+\\
+\hline
+count & Texto & si & \makecell{Número de accións que se queren \\ recibir dende
+a primeira. Debe ser \\ convertible  un número enteiro. Por \\ defecto este
+valor é 10.} \\
+\hline
+\end{tabular}
+
+\subsubsection{modifyclass}
+Método POST. Serve para modificar unha clase xa existente. Devolve un obxecto
+\textit{CreateClass Response}, e ten un funcionamento semellante ao método
+\textit{createclass}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & \makecell{CreateClass \\ Request} & non & \makecell{Contén o novo
+código COE da \\ clase.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{narrateaction}
+Método POST. Engade a narración a unha acción concreta. No caso de xa contar
+cunha narración, sobreescríbea. Devolve un obxecto \textit{NarrateAction
+Response}.
+
+\begin{tabular} {| l | l | l | l |}
+\hline
+\thead{Parámetro} & \thead{Tipo} & \thead{Opcional} & \thead{Descrición} \\
+\hline
+(POST) & \makecell{NarrateAction \\ Request} & non & \makecell{Contén a
+narración da acción.}
+\\
+\hline
+\end{tabular}
+
+\subsubsection{pendingrooms}
+Método GET. Método empregado para obter infomación sobre os escenarios activos
+e o estado dos xogadores. Devolve un obxecto \textit{PendingRooms Response}.
+
+O método \textit{pendingrooms} non ten parámetros.
+
+\subsubsection{roompaths}
+Método GET. Ofrece unha lista de nomes de escenarios no mundo actual. Devolve
+un obxecto \textit{AllRoomPaths Response}.
+
+O método \textit{roompaths} non ten parámetros.
