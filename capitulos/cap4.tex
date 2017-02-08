@@ -187,8 +187,8 @@ Tomcat para Java.
 Descartouse tamén pola dificultade de manter o código dun proxecto grande en PHP
 en comparación cun servidor en Java.
 \par
-Finalmente a linguaxe escollida foi Java. Os principais argumentos a favor
-para realizar esta escolla foron os seguintes:
+Finalmente a linguaxe escollida foi Java\cite{java}. Os principais argumentos a
+favor para realizar esta escolla foron os seguintes:
 \begin{itemize}
   \item Java é unha linguaxe amplamente difundida, cunha extensa documentación
   na rede. Ademais disto, o programador deste proxecto está relativamente
@@ -205,8 +205,8 @@ Aínda que non forme parte do entregable final, é importante comentar a elecci�
 do entorno do desenvolvemento polo seu impacto crítico no desenvolvemento do
 proxecto. A decisión final estaba entre Eclipse e Netbeans, xa que son as dúas
 linguaxes máis próximas á linguaxe Java e que ofrecen máis ferramentas útiles.
-Finalmente optouse por Eclipse, xa que conta con numerosos plugins para
-facilitar o desenvolvemento dos distintos compoñentes do sistema, a linguaxe
+Finalmente optouse por Eclipse\cite{eclipse}, xa que conta con numerosos plugins
+para facilitar o desenvolvemento dos distintos compoñentes do sistema, a linguaxe
 COE entre eles.
 
 \subsection{Xerador de parsers: ANTLR}
@@ -221,7 +221,7 @@ requeriría).
 Un analizador sintáctico é unha ferramenta que analiza o código fonte como
 secuencia de compoñentes léxicos e constrúe unha representación interna en forma
 de árbore sintáctica \cite{compiladores}. O analizador léxico é o que
-esnaquiza o código fonte para ofrecer a mencionada secuencia de compoñentes
+particiona o código fonte para ofrecer a mencionada secuencia de compoñentes
 léxicos, os cales se corresponderán na gramática cos símbolos terminais.
 \par
 Dentro dos analizadores sintácticos podemos atopar dous tipos segundo a forma
@@ -238,7 +238,7 @@ As gramáticas LL(k) son aquelas gramáticas que se caracterizan por:
   \item ler k compoñentes léxicos por anticipado (k).
 \end{itemize}
 \par
-Escolleuse ANTLR como ferramenta para deseñar a linguaxe e xerar os
+Escolleuse ANTLR\cite{antlr4} como ferramenta para deseñar a linguaxe e xerar os
 correspondentes analizadores léxico e sintáctico. ANTLR trátase dunha ferramenta
 que a partir dunha gramática LL(1) elabora un analizador sintáctico descendente.
 Grazas a isto podemos centrarnos no deseño da gramática para que satisfaga os
@@ -250,7 +250,7 @@ capacidade de xerar código en Java de forma directa. Hai dispoñible un manual 
 usuario de ANTLR 4 (a versión empregada neste proxecto) \cite{antlr4}.
 
 \subsection{Apache Maven}
-Tanto no Demiurgo como no DemiurgoWeb, decidiuse empregar Maven para
+Tanto no Demiurgo como no DemiurgoWeb, decidiuse empregar Maven\cite{maven} para
 xestionar os diversos paquetes e dependencias, así como os distintos elementos
 software de ambos compoñentes.
 As principais vantaxes disto son:
@@ -268,7 +268,8 @@ posibles interfaces futuras non contempladas no alcance deste proxecto) se
 comunicaría co motor de xogo. Unha primeira aproximación suxeriu o uso de
 Java RMI para comunicar ambos compoñentes, aproveitando o feito de que ambos
 corrían sobre JVM. Non obstante, optouse finalmente por descartar esta
-opción e empregar servizos web de tipo REST en base ás seguintes cuestións:
+opción e empregar servizos web de tipo REST\cite{rest} en base ás seguintes
+cuestións:
 \begin{itemize}
   \item Java RMI só funciona entre programas que corran sobre JVM. A pesar de
   non ser este un problema no alcance actual deste proxecto, limita a evolución
@@ -300,15 +301,15 @@ sobre Java RMI realizouse nun momento no que o Demiurgo xa tiña un certo nivel
 de profundidade, polo que un requisito para a ferramenta a escoller era que non
 requerira modificar severamente o código.
 \par
-Grizzly é unha ferramenta que permite que un executable Jar normal poida montar
-un servidor web sen necesidade de usar contenedores como Tomcat. Nese sentido,
+Grizzly\cite{grizzly} é unha ferramenta que permite que un executable Jar normal
+poida montar un servidor web sen necesidade de usar contenedores como Tomcat. Nese sentido,
 escolleuse por tratarse da opción máis sinxela para resolver o problema. Ademais
 disto, outro factor determinante foi a facilidade para empregar Grizzly en
 conxunto con Jersey, unha ferramenta para crear servizos REST.
 
 \subsection{Xestor de servizos REST: Jersey}
-Jersey e Grizzly son dúas librarías que foron escollidas simultaneamente xa que,
-como se comentou na subsección de Grizzly, son librarías que ofrecen gran
+Jersey\cite{jersey} e Grizzly\cite{grizzly} son dúas librarías que foron
+escollidas simultaneamente xa que, como se comentou na subsección de Grizzly, son librarías que ofrecen gran
 facilidade para empregarse xuntas, e hai numerosos manuais en internet para
 crear servidores con estas dúas ferramentas. A finalidade de Jersey neste
 sentido é a de crear \textit{endpoints} nos que implementar os servizos REST que
@@ -316,8 +317,8 @@ precisemos, os cales se encargará Grizzly de publicar nun servidor para recibir
 peticións.
 
 \subsection{Spring Framework}
-Spring\cite{spring} é un Framework de Java que facilita o desenvolvemento de aplicacións
-grandes. A principal característica de Spring é a inxección de dependencias, que
+Spring\cite{springweb}\cite{spring} é un Framework de Java que facilita o
+desenvolvemento de aplicacións grandes. A principal característica de Spring é a inxección de dependencias, que
 simplifica o control do ciclo de vida dos obxectos: crear os distintos
 compoñentes, inicializalos e manter as referencias entre eles. A maiores, dispón
 de módulos útiles para todo tipo de tarefas, tales como montar servidores web,
@@ -361,15 +362,15 @@ este fin, pero a opción final foi Thymeleaf por varios motivos:
 \end{itemize}
 
 \subsection{Javascript}
-No apartado web empregouse Javascript para ofrecer contidos dinámicos nas
-distintas páxinas, e deste modo ofrecer unha interface máis amigable de cara ao
-usuario. A día de hoxe a inmensa maioría de usuarios empregan Javascript na súa
-navegación habitual.
+No apartado web empregouse Javascript\cite{javascript} para ofrecer contidos
+dinámicos nas distintas páxinas, e deste modo ofrecer unha interface máis
+amigable de cara ao usuario. A día de hoxe a inmensa maioría de usuarios
+empregan Javascript na súa navegación habitual.
 
 \subsubsection{JQuery}
-JQuery é unha libraría de Javascript que ofrece numerosas facilidades para facer
-accións complexas dentro da páxina. A maiores, moitos plugins que engaden
-funcionalidades avanzadas empregan JQuery como dependencia.
+JQuery\cite{javascript} é unha libraría de Javascript que ofrece numerosas
+facilidades para facer accións complexas dentro da páxina. A maiores, moitos
+plugins que engaden funcionalidades avanzadas empregan JQuery como dependencia.
 
 \paragraph{JQuery UI:}
 JQuery UI é un plugin de JQuery que facilita o uso de \textit{drag-and-drop} na
@@ -377,8 +378,8 @@ páxina (arrastrar e soltar). Empregouse en determinados puntos da web para
 facilitar a elaboración de scripts por parte do DX.
 
 \subsubsection{CodeMirror}
-CodeMirror é un plugin baseado en Javascript nativo que ofrece unha área de
-texto destinada á escritura de código con funcionalidades que o
+CodeMirror\cite{codemirror} é un plugin baseado en Javascript nativo que ofrece
+unha área de texto destinada á escritura de código con funcionalidades que o
 \textit{textarea} de HTML non ofrece, como resaltar a sintaxe do código ou
 acceder a posicións do texto mediante liña e columna, por exemplo. Moi útil á
 hora de redactar código COE.
@@ -387,14 +388,32 @@ hora de redactar código COE.
 Un dos requisitos do proxecto era a persistencia dos datos unha vez o sistema
 deixa de funcionar. Para iso é necesario o uso de bases de datos, e con elas, de
 sistemas xestores de bases de datos.
-\par MariaDB é un xestor de bases de datos derivado de MySQL. Optouse polo uso
-de MariaDB pola súa plena compatibilidade con MySQL e pola súa alta velocidade.
+
+MariaDB\cite{mariadb} é un xestor de bases de datos derivado de MySQL. Optouse
+polo uso de MariaDB pola súa plena compatibilidade con MySQL e pola súa alta
+velocidade.
 
 \subsection{Control de versións: Git}
-Git é unha ferramenta para desenvolvedores que xestiona os cambios realizados no
-código, mantendo un control de versións e facilitando o desenvolvemento de
-software.
-\par
+Git\cite{git} é unha ferramenta para desenvolvedores que xestiona os cambios
+realizados no código, mantendo un control de versións e facilitando o
+desenvolvemento de software.
+
 Neste proxecto empregaremos repositorios Git para os distintos compoñentes, xa
 que é unha ferramenta coa que o programador está familiarizado, e pola
 posibilidade de manter repositorios públicos na web GitHub de forma gratuíta.
+
+\subsection{Probas unitarias: JUnit e Mockito}
+\label{subsec:junit}
+Para a realización das probas empregouse a libraría JUnit\cite{junit}, unha
+ferramenta que proporciona un entorno de desenvolvemento de probas unitarias.
+Grazas a esta ferramenta é posible simplificar o proceso e, en conxunto con
+Maven, automatizar a execución das distintas probas.
+
+Ademais de JUnit, en algunhas probas usouse adicionalmente
+Mockito\cite{mockitoweb}\cite{mockito}, unha libraría que nos permite crear
+\textit{mocks} das clases do noso software. Estes mocks esencialmente son
+obxectos baleiros que simulan o comportamento das clases que imitan, nos que se
+pode definir previamente as súas respostas no momento de executar os distintos
+métodos das clases. Isto permite simplificar o código das probas e ofrecer datos
+iniciais para as mesmas sen necesidade de definir un determinado estado do
+sistema.

@@ -31,6 +31,169 @@ servidor de xogo completo e facer probas con usuarios reais. Isto implicou un
 custo tanto temporal como económico imprevisto que retrasou o proxecto.
 
 \section{Probas}
+Realizouse un plan de probas para cada unha das dúas partes básicas da
+arquitectura do proxecto. Por un lado, no motor do xogo deseñouse unha batería
+de probas unitarias específica  con jUnit para comprobar o correcto
+funcionamento do intérprete do código COE, debido ao feito de ser este o
+compoñente principal e o que conleva unha maior posibilidade de erro. En canto
+ao servidor web, aproveitouse o feito de que o programa será probado por
+usuarios reais antes da data de entrega do proxecto para centrar o plan de
+probas no \textit{feedback} dos propios usuarios.
+ 
+\subsection{Motor de xogo}
+As probas formais estiveron centradas en probar as distintas funcionalidades da
+linguaxe. Nelas enviouse un fragmento de código COE ao sistema, e comprobouse
+se o resultado no mundo de xogo foi o esperado. As probas están centradas nas
+funcionalidades máis frecuentes e/ou máis complexas do sistema.
+ 
+As probas implementáronse mediante o uso de jUnit \cite{junit}, e poden atoparse
+no código fonte do sistema no directorio src/test/java. A ferramenta Maven
+fomenta o uso deste tipo de probas, que executa automaticamente no momento de
+compilar e empaquetar o programa.
+
+Todas as probas parten dun mundo inicial baleiro que conta cun único escenario,
+chamado \textit{/room}.
+ 
+A continuación móstranse as distintas probas realizadas:
+ 
+\subsubsection{Crear un obxecto}
+A creación de obxectos é unha das actividades máis habituais do sistema. Debido
+a isto, fíxose unha proba para comprobar que funciona correctamente. O código
+solicita crear un obxecto de clase \textit{Object}, e compróbase que tal obxecto
+foi creado correctamente.
+
+\textbf{Código COE}:
+\begin{lstlisting}
+new object()
+\end{lstlisting}
+
+\subsubsection{Crear unha clase}
+Crear clases é unha tarefa crucial para deseñar o mundo de xogo. Nesta proba
+introdúcese o código COE preciso para crear unha clase chamada
+\textit{newclass}, que contén dous campos e un método. Tras a execución do
+código, compróbase que a clase está correctamente creada.
+
+\textbf{Código COE}:
+\begin{lstlisting}
+newclass {
+int integer
+str string
+method() { }
+}
+\end{lstlisting}
+
+\subsubsection{Actualizar unha clase}
+A actualización ou redeseño de clases é unha tarefa relativamente pouco
+frecuente, pero cunha alta probabilidade de fallos debido á súa complexidade.
+Cando unha clase é modificada, o sistema debe actualizar os seus campos e
+métodos, pero tamén actualizar todos os obxectos que herden desa clase. Na proba
+créase unha clase \textit{oldclass} e un obxecto da mesma, e posteriormente
+modifícase a clase tal e como o faría o Demiurgo. Unha vez executado todo o
+código, compróbase o estado da clase e do obxecto.
+
+\textbf{Código COE}:
+\begin{lstlisting}
+oldclass {
+}
+
+newclass {
+int var1
+str var2
+int out = method(int in) {
+}
+}
+\end{lstlisting}
+
+\subsubsection{Mover un obxecto}
+Mover obxectos dunha localización a outra é unha tarefa frecuente e con
+posibilidades de erro, xa que debe modificar tanto o obxecto como as dúas
+localizacións involucradas. Nesta proba créase un novo escenario e un obxecto
+\textit{Object}, para posteriormente realizar o desprazamento. Finalmente,
+compróbase que o obxecto está no escenario correcto e os escenarios teñen a súa
+lista de obxectos actualizada.
+
+\textbf{Código COE}:
+\begin{lstlisting}
+#0 >> @/anew/room
+\end{lstlisting}
+
+\subsubsection{Chamar a un método}
+Os métodos son a forma de executar código relativo ás clases, e por tanto o seu
+uso é moi frecuente. Na proba, créase unha clase \textit{newclass} que conta cun
+campo e un método; a única operación do método é cambiar o valor do campo. A
+proba consiste en comprobar o valor final do campo tras a execución do método.
+
+\textbf{Código COE}:
+\begin{lstlisting}
+newclass {
+int vAr = 5
+method() {
+var = 7
+}
+}
+
+newclass oBj = new newclass()
+obJ.method()
+\end{lstlisting}
+
+\subsubsection{Bucle for}
+Os bucles \textit{for} proporcionan a posibilidade de realizar operacións
+iterativas sobre os elementos do xogo. Nesta proba execútase un bucle
+\textit{for} con 10 iteracións, e compróbase se a execución se realizou as 10
+veces.
+
+\textbf{Código COE}:
+\begin{lstlisting}
+for(a : seq(1,10)) {
+var = a }
+\end{lstlisting}
+
+\subsubsection{Condición if}
+Nesta proba impleméntase unha condición falsa, e compróbase que o código que
+contén non se executa.
+
+\textbf{Código COE}:
+\begin{lstlisting}
+$useR1 -> #0
+\end{lstlisting}
+
+\subsubsection{Asignar personaxe}
+O código COE permite asignar un obxecto a un usuario, convertíndose o primeiro
+no personaxe do segundo. Nesta proba compróbase que a asignación se fai
+correctamente.
+
+\textbf{Código COE}:
+\begin{lstlisting}
+new object()
+\end{lstlisting}
+
+\subsection{Servidor web}
+O plan de probas do servidor web está centrado nos usuarios. Para as probas
+contratouse un plan cunha compañía de hosting para ter acceso a un servidor VPS
+no que instalar o sistema completo. Posteriormente, inicializouse o mesmo e
+foi creada unha partida no mesmo. A partir dese punto, o papel de director de
+xogo déixase en mans dun usuario non relacionado co traballo, e incorpóranse
+xogadores reais. Debido a isto, as probas contan cunha gran fiabilidade, xa que
+se fundamentan no uso do software por parte de usuarios normais sen coñecementos
+de informática.
+\subsubsection{Probas de usabilidade}
+Para as probas de usabilidade fixéronse dous cuestionarios: un destinado ao
+director de xogo, e outro feito para os xogadores. Estes cuestionarios serán
+cubertos regularmente polos distintos usuarios, obtendo deste modo información
+útil á hora de realizar cambios no Demiurgoweb.
+
+\begin{figure}
+\centerline{\includegraphics[width=0.8\textwidth]{figuras/cuestionario_dx.pdf}}
+\caption{Cuestionario de usabilidade para o director de xogo.}
+\label{fig:cuestion-dx}
+\end{figure}
+
+\begin{figure}
+\centerline{\includegraphics[width=0.8\textwidth]{figuras/cuestionario_xogador.pdf}}
+\caption{Cuestionario de usabilidade para o xogador.}
+\label{fig:cuestion-xog}
+\end{figure}
+
 
 \section{Sprints}
 Seguindo a metodoloxía Scrum, o proceso dividiuse en sprints nos que se

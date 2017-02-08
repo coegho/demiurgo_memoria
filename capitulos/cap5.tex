@@ -498,6 +498,16 @@ posición do usuario é preciso deseñar unha interface, neste caso un servidor 
 ao que denominamos DemiurgoWeb. Nesta sección formularemos o funcionamento deste
 servidor e os seus distintos elementos.
 
+\begin{figure}
+\centerline{\includegraphics[width=1\textwidth]{figuras/diagramas/secuencia.png}}
+\caption{Diagrama de secuencia mostrando de forma simplificada o funcionamento
+do sistema. O controlador, que é chamado polo framework de Spring no momento de
+solicitar o enderezo correspondente, solicítalle ao Conector Demiurgo que faga
+unha petición ao motor de xogo. Esta petición é recibida polo endpoint, que
+carga os datos do mundo de xogo.}
+\label{fig:secuencia}
+\end{figure}
+
 \subsection{Spring Framework}
 Para comprender o funcionamento de DemiurgoWeb é necesario ter unha idea do
 funcionamento de Spring, o framework Java sobre o que foi montado. Este
