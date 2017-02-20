@@ -1,28 +1,27 @@
 \chapter{Conclusións e posibles ampliacións}
 O presente proxecto tiña por obxecto o deseño e implementación dun software
-orientado ao xogo de rol en liña. O xogo de rol é unha actividade baseada na
-elaboración dunha narrativa común entre os participantes, onde por unha banda os
-xogadores interpretan os seus personaxes, e por outra o director de xogo
+orientado ao xogo de rol en liña. O xogo de rol é unha actividade que consiste
+na elaboración dunha narrativa común entre os participantes, onde por unha banda
+os xogadores interpretan aos seus personaxes, e por outra o director de xogo
 organiza e dirixe a partida.
 
 Nunha partida de rol típica, o director define un mundo de xogo poboado por
-obxectos que interactúan entre si, obxectos entre os que se atopan os personaxes
-propios dos xogadores. Os xogadores poden describir as súas accións empregando a
-linguaxe natural, pero quedará en mans do director de xogo interpretalas e
-elaborar unha narrativa común a todos. Esta modalidade xogo é coñecida co
-nome de \textit{play-by-post}. Este programa permite que os xogadores poidan
-enviar as súas decisións, pero ofrecendo ao director ferramentas para manter
-unha equivalencia dixital do mundo que pode manipular mediante o uso dunha
-linguaxe de \textit{script}. O produto resultante deste proxecto, por tanto, é
-unha ferramenta de xestión para crear e manter partidas de rol en liña, nas que
+obxectos que interactúan entre si, entre eles os propios personaxes  dos
+xogadores. Os xogadores poden describir as súas accións empregando a linguaxe
+natural, pero quedará en mans do director de xogo interpretalas e elaborar unha
+narrativa común a todos. Esta modalidade de xogo é coñecida co nome de
+\textit{play-by-post}. O resultado do presente proxecto é unha plataforma
+software que permite que os xogadores poidan enviar as súas decisións, pero
+ofrecendo ao director ferramentas para manter unha equivalencia dixital do mundo, que pode manipular mediante o uso dunha linguaxe
+de \textit{script}. O produto resultante, por tanto, é unha
+ferramenta de xestión para crear e manter partidas de rol en liña, nas que
 xogadores e director de xogo poidan comunicarse e xerar unha dinámica de xogo de
 forma sinxela e intuitiva.
 
 A linguaxe de script empregada para definir o mundo de xogo e interactuar con el
 é un compoñente singular deste proxecto. Recibe o nome de \textbf{linguaxe COE},
-acrónimo de \textit{Código de Obxectos e Escenarios}, posto que os obxectos e os
-escenarios son dous elementos fundamentais no sistema. Esta linguaxe, orientada
-ás necesidades do xogo de rol, contén todas as funcionalidades e operacións
+acrónimo de \textit{Código de Obxectos e Escenarios}, os dous elementos
+fundamentais no sistema. Esta linguaxe, orientada ás necesidades do xogo de rol, contén todas as funcionalidades e operacións
 necesarias para definir o sistema de xogo, ofrecendo unha considerable
 flexibilidade á hora de implementar as distintas mecánicas e permitindo que o
 software se adapte ás normas empregadas na partida.
@@ -33,16 +32,16 @@ obxectos. No proxecto inclúese un manual no apéndice \ref{ch:manual} para
 coñecer e aprender a usar esta linguaxe.
 
 Sendo un elemento fundamental no proxecto, a linguaxe COE e o seu correspondente
-intérprete conlevaron a maior carga de traballo no presente proxecto e foron a
+intérprete conlevaron a maior carga de traballo e foron a
 principal prioridade no mesmo, dende a análise de requisitos ata o plan de
 probas.
 
 Optouse por seguir unha metodoloxía áxil de tipo Scrum. Esta decisión demostrou
-ser un acerto dadas as características do proxecto: tendo en conta que o
-programa ten unha temática pouco explorada no mercado, deuse por feito que sería
-frecuente a aparición de novos requisitos e a modificación de requisitos novos,
-tendo como exemplo máis claro os progresivos cambios na linguaxe COE para
-adaptarse correctamente ás necesidades do sistema.
+ser un acerto dadas as características do proxecto: tendo en conta que a
+plataforma software aborda un dominio con escasas aportacións tecnolóxicas,
+deuse por feito que sería frecuente a aparición de novos requisitos e a modificación de requisitos existentes, tendo como exemplo máis claro os progresivos cambios na linguaxe COE
+para adaptarse correctamente a novos casos de uso procedentes da comunidade de
+xogo de rol en liña.
 A maiores, o autor deste proxecto conta cunha experiencia limitada tanto en
 xestión de proxectos grandes como no uso das tecnoloxías aquí empregadas. Por
 tanto, decidiuse seguir a metodoloxía de Scrum e descartar outras opcións menos
@@ -56,58 +55,64 @@ xogo como de interpretar a linguaxe COE. Por outra banda, o outro compoñente é
 servidor web, co nome de \textbf{DemiurgoWeb}, que ofrece unha interface
 interactiva aos usuarios para comunicarse co sistema.
 
-No desenvolvemento deste software empregáronse numerosas tecnoloxías e
-ferramentas, pero destaca especialmente o uso de \textit{ANTLR} como ferramenta
-para elaborar un intérprete de código a partir da definición dunha gramática.
-ANTLR usouse neste proxecto para crear o intérprete da linguaxe COE sen precisar
-implementar a fase de análise léxico e sintáctico, compoñentes que ANTLR nos
-proporciona de maneira automática. Isto ofrécenos unha axilidade de
-desenvolvemento que resultou crucial no proxecto, xa que permitiu elaborar unha
+No desenvolvemento deste software empregáronse numerosas tecnoloxías, pero
+destaca especialmente o uso de \textit{ANTLR} como ferramenta para elaborar un
+intérprete de código a partir da definición dunha gramática.
+ANTLR usouse neste proxecto para crear o intérprete da linguaxe COE sen ser
+preciso implementar analizadores léxico e sintáctico, compoñentes que
+ANTLR nos proporciona de maneira automática a partires dunha especificación
+formal.
+Isto ofreceunos unha axilidade no desenvolvemento que resultou crucial no proxecto, xa que permitiu elaborar unha
 linguaxe relativamente complexa dentro duns prazos asumibles para o mesmo.
 
-No caso do DemiurgoWeb, cabe destacar o uso do framework de \textit{Spring}, que
+No caso de DemiurgoWeb, cabe destacar o uso do framework \textit{Spring}, que
 proporciona numerosas ferramentas útiles para deseñar unha web de forma rápida e
-sinxela. Spring baséase no patrón modelo-vista-controlador, por
-tanto diferenciando claramente os compoñentes estritamente visuais da lóxica
+sinxela. \textit{Spring} baséase no patrón modelo-vista-controlador, por
+tanto diferencia claramente os compoñentes estritamente visuais da lóxica
 interna e a comunicación co motor de xogo. A maiores, a web conta con diferentes
-plugins baseados en Javascript ou en JQuery que proporcionan ao usuario un
-entorno interactivo.
+plugins baseados en \textit{Javascript} ou en \textit{JQuery} que proporcionan
+ao usuario un entorno interactivo.
 
+
+\section{Traballo futuro}
 O proxecto cumpre con todos os requisitos esenciais definidos ao inicio do
 mesmo, ofrecendo deste xeito un programa completo e plenamente funcional. A
 maiores, algúns requisitos opcionais pospuxéronse pola súa menor prioridade,
 mais xa hai formuladas liñas de traballo para implementalos no futuro.
 
-\section{Ampliacións do sistema}
-O sistema dá pé a varias ampliacións, sendo de mención obrigada o
-desenvolvemento de novas interfaces adicionais a maiores do DemiurgoWeb; isto é,
-apps orientadas ao mercado de móbiles e tabletas, novos deseños temáticos no
-propio DemiurgoWeb ou outras aplicacións web, etc.
+Neste senso, a plataforma software aquí presentada dá pé a varias ampliacións,
+sendo de mención obrigada o desenvolvemento de novas interfaces adicionais a maiores do DemiurgoWeb; isto é,
+\textit{apps} orientadas ao mercado de móbiles e tabletas, novos deseños
+temáticos no propio DemiurgoWeb ou outras aplicacións web. Ademais:
 
-Cabe destacar nesta liña a implementación dun bot en Telegram que permite
-interactuar co sistema a través desta rede social; esta aplicación, ideada na
-etapa final do proxecto como unha vía para ampliar o público potencial, xa
-conta cunha liña de traballo definida para o seu desenvolvemento, e conta na
-actualidade cun prototipo inicial.
+\begin{itemize}
 
-O desenvolvemento de novas formas de comunicarse co motor de xogo é unha tarefa
-sinxela grazas ao uso de servizos REST no motor de xogo, que permiten
-comunicarse co mesmo mediante peticións web. O presente documento conta cunha
-API detallada destes servizos no apéndice \ref{ch:api}.
+\item Cabe destacar nesta liña a implementación xa realizada dun \textit{bot}
+para o servizo de mensaxería instantánea \textit{Telegram} que permite interactuar co
+sistema a través da súa rede social.
+Esta aplicación, ideada na etapa final do proxecto como unha vía para chegar potencialmente a un público
+maior, xa conta cunha liña de traballo definida para o seu desenvolvemento, e
+dispón na actualidade dun prototipo inicial.
 
-O engadido dun chat XMPP ao servidor web foi outra opción valorada no proxecto,
-que xa está planificada como unha futura ampliación como un modo de comunicar
-aos xogadores co director de xogo en tempo real, enriquecendo deste xeito a
-experiencia de xogo.
+\item O desenvolvemento de novas formas de comunicarse co motor de xogo é unha
+tarefa sinxela grazas ao uso de servizos REST no motor de xogo, que permiten
+establecer a comunicación co mesmo mediante peticións web. O presente documento
+conta cunha API detallada destes servizos no apéndice \ref{ch:api}.
 
-Finalmente, no ámbito do motor de xogo tamén hai espazo para melloras. As
-principais ampliacións cuxa implementación futura está sendo estudada son: a
-adaptación a sistemas xestores de bases de datos diferentes a MySQL, tales como
-no-SQL ou o uso de ficheiros YAML; e a ampliación da linguaxe COE para
+\item O engadido dun chat XMPP ao servidor web foi outra opción valorada no
+proxecto, que xa está planificada como unha futura ampliación. Supón un modo de
+permitir a comunicación directa entre os xogadores e o director de xogo en
+tempo real, enriquecendo deste xeito a experiencia de xogo.
+
+\item Finalmente, no ámbito do motor de xogo tamén hai espazo para melloras. As
+principais ampliacións formuladas para o futuro son: a
+adaptación a bases de datos diferentes a MySQL, tales como
+sistemas no-SQL ou o uso de ficheiros YAML; e a ampliación da linguaxe COE para
 proporcionar novas funcionalidades, como un tipo de datos \textit{map}
 semellante á clase \textit{Map} de Java, ou visibilidade para campos e métodos
 que afecten á forma de visualizalos na interface gráfica, facendo que algúns
 atributos dos obxectos non se mostren por pantalla.
+\end{itemize}
 
 \section{Comunidade e visibilidade do proxecto}
 O proxecto está enfocado á comunidade dos xogadores de rol. Céntrase por tanto
@@ -115,9 +120,9 @@ nun sector do mercado moi específico, e convén coñecelo á hora de promociona
 o software. A comunidade de rol é relativamente pequena en comparación con
 outras, pero está fortemente interrelacionada, e funciona con especial eficacia
 o ``boca a boca''. Isto, combinado co feito de que na actualidade non existen
-ferramentas que cumpran a función para a que este programa foi desenvolvido,
-proporciona a posibilidade de difundir este produto a un número considerable de
-usuarios.
+ferramentas que cumpran a función para a que esta plataforma software foi
+desenvolvida, proporciona a posibilidade de difundir este produto a un número
+considerable de usuarios.
 
 Un elemento a destacar neste proxecto é o feito de usar a xogadores reais no
 plan de probas. Na fase final do proxecto instalouse o sistema nun servidor VPS
@@ -131,8 +136,8 @@ recomendalo aos seus amigos ou en foros de internet se quedan satisfeitos coa
 experiencia de xogo.
 
 Cabe destacar o aspecto da internacionalización do sistema. A pesar de atoparse
-a interface web unicamente en inglés no momento actual, o uso de Spring facilita
-a creación de ficheiros de idioma adicionais para traducir DemiurgoWeb ás
+a interface web unicamente en inglés actualmente, o uso de Spring facilita
+a creación de ficheiros de idioma adicionais para traducir DemiurgoWeb a
 distintas linguas. A maiores, por fundamentarse o sistema no código e nas
 narracións elaboradas polo propio director de xogo, é posible facer partidas de
 rol nos idiomas que os xogadores prefiran, relegando a tradución dos elementos
@@ -141,24 +146,25 @@ da interface a unha cuestión secundaria.
 En canto á comunidade de desenvolvemento, tanto o código fonte do Demiurgo como
 do DemiurgoWeb están ubicados en repositorios públicos en \textit{GitHub},
 ofrecendo a posibilidade a terceiros de realizar melloras en calquera dos dous
-proxectos, ou incluso iniciar un \textit{fork} propio. O código fonte está
-escrito en idioma inglés e conta con abundante documentación, facilitando a
+compoñentes, ou incluso iniciar un desenvolvemento propio. O código fonte está
+escrito en inglés e conta con abundante documentación, facilitando a
 colaboración a nivel internacional. Finalmente, o feito de contar cunha API do
 motor de xogo fomenta o desenvolvemento de ferramentas de terceiros segundo as
 súas necesidades.
 
-Ademais da difusión do produto por vía do ``boca a boca'', está planificada a
-promoción do mesmo a través das redes sociais tales como \textit{Facebook} ou
+Tamén forma parte da planificación a
+promoción do produto a través de redes sociais tales como \textit{Facebook} ou
 \textit{Twitter}, así como a súa presentación en foros adicados ao rol. É
 importante para isto o feito de contar xa cunha primeira partida, para deste
-xeito poder mostrar exemplos visuais aos potenciais usuarios. Para a promoción
-do produto pódense resaltar características positivas á marxe do que é
+xeito poder mostrar exemplos visuais aos usuarios potenciais. Para a
+promoción do produto pódense resaltar características positivas á marxe do que é
 estritamente entretemento, como o feito de que achegue a programación
 informática aos usuarios por vía da linguaxe COE, ou os aspectos positivos dos
 xogos de rol nas aulas.
 
 En definitiva, este proxecto non só satisface os intereses dun pequeno colectivo
 de usuarios, senón que pode estenderse a nivel internacional e obter unha
-comunidade de usuarios considerable, aproveitando dúas características
-fundamentais: a carencia de ferramentas similares, e a facilidade para
-desenvolver ferramentas novas a través da API.
+comunidade de usuarios considerable, aproveitando como oportunidade
+a carencia de ferramentas semellantes, ademais das súas características
+competitivas, como a facilidade para
+desenvolver novas ferramentas a través da API.
